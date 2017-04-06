@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noImplicitThis": false,
+        "pretty": true,
+        "declaration": false,
+        "skipDefaultLibCheck": false,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "module": "commonjs",
+        "target": "es5",
+        "lib": [ "webworker", "scripthost", "es7", "dom" ],
+        "jsx": "react"
+    },
+    "files": [
+        "./src/utils/routerTypes.d.ts"
+    ],
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "typings",
+        "**/*.spec.ts"
+    ]
+}

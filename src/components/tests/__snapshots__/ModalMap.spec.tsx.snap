@@ -1,0 +1,13 @@
+exports[`test <ModalMap/> component matches snapshot 1`] = `
+<div>
+  <button
+    className="ant-btn ant-btn-primary"
+    onClick={[Function]}
+    onMouseUp={[Function]}
+    type="button">
+    <span>
+      Open Modal Map
+    </span>
+  </button>
+</div>
+`;

@@ -1,0 +1,393 @@
+exports[`test <RadarGraph /> component should render 1`] = `
+<div>
+  <div
+    className="recharts-wrapper"
+    style={
+      Object {
+        "cursor": "default",
+        "height": 512,
+        "position": "relative",
+        "width": 512,
+      }
+    }>
+    <svg
+      className="recharts-surface"
+      height={512}
+      style={undefined}
+      version="1.1"
+      viewBox="0 0 512 512"
+      width={512}>
+      <g
+        className="recharts-polar-grid">
+        <g
+          className="recharts-polar-grid-angle">
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={256}
+            y1={256}
+            y2={128} />
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={366.85125168440817}
+            y1={256}
+            y2={192} />
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={366.85125168440817}
+            y1={256}
+            y2={320} />
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={256}
+            y1={256}
+            y2={384} />
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={145.14874831559183}
+            y1={256}
+            y2={320} />
+          <line
+            stroke="#ccc"
+            x1={256}
+            x2={145.14874831559186}
+            y1={256}
+            y2={192} />
+        </g>
+        <g
+          className="recharts-polar-grid-concentric">
+          <path
+            className="recharts-polar-grid-concentric-polygon"
+            d="M 256,256L 256,256L 256,256L 256,256L 256,256L 256,256Z"
+            fill="none"
+            stroke="#ccc" />
+          <path
+            className="recharts-polar-grid-concentric-polygon"
+            d="M 256,224L 283.71281292110206,240L 283.71281292110206,272L 256,288L 228.28718707889797,272L 228.28718707889797,240Z"
+            fill="none"
+            stroke="#ccc" />
+          <path
+            className="recharts-polar-grid-concentric-polygon"
+            d="M 256,192L 311.42562584220406,224L 311.42562584220406,288L 256,320L 200.57437415779592,288L 200.57437415779594,224Z"
+            fill="none"
+            stroke="#ccc" />
+          <path
+            className="recharts-polar-grid-concentric-polygon"
+            d="M 256,160L 339.1384387633061,208L 339.1384387633061,304L 256,352L 172.8615612366939,304L 172.8615612366939,208Z"
+            fill="none"
+            stroke="#ccc" />
+          <path
+            className="recharts-polar-grid-concentric-polygon"
+            d="M 256,128L 366.85125168440817,192L 366.85125168440817,320L 256,384L 145.14874831559183,320L 145.14874831559186,192Z"
+            fill="none"
+            stroke="#ccc" />
+        </g>
+      </g>
+      <g
+        className="recharts-layer recharts-polar-radius-axis">
+        <line
+          className="recharts-polar-radius-axis-line"
+          fill="none"
+          stroke="#ccc"
+          x1={256}
+          x2={256}
+          y1={256}
+          y2={128} />
+        <g
+          className="recharts-layer recharts-polar-radius-axis-ticks">
+          <g
+            className="recharts-layer recharts-polar-radius-axis-tick">
+            <text
+              className="recharts-text recharts-polar-radius-axis-tick-value"
+              fill="#ccc"
+              stroke="none"
+              textAnchor="start"
+              transform="rotate(0, 256, 256)"
+              x={256}
+              y={256}>
+              <tspan
+                dy="0em"
+                x={256}>
+                0
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-radius-axis-tick">
+            <text
+              className="recharts-text recharts-polar-radius-axis-tick-value"
+              fill="#ccc"
+              stroke="none"
+              textAnchor="start"
+              transform="rotate(0, 256, 224)"
+              x={256}
+              y={224}>
+              <tspan
+                dy="0em"
+                x={256}>
+                3
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-radius-axis-tick">
+            <text
+              className="recharts-text recharts-polar-radius-axis-tick-value"
+              fill="#ccc"
+              stroke="none"
+              textAnchor="start"
+              transform="rotate(0, 256, 192)"
+              x={256}
+              y={192}>
+              <tspan
+                dy="0em"
+                x={256}>
+                6
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-radius-axis-tick">
+            <text
+              className="recharts-text recharts-polar-radius-axis-tick-value"
+              fill="#ccc"
+              stroke="none"
+              textAnchor="start"
+              transform="rotate(0, 256, 160)"
+              x={256}
+              y={160}>
+              <tspan
+                dy="0em"
+                x={256}>
+                9
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-radius-axis-tick">
+            <text
+              className="recharts-text recharts-polar-radius-axis-tick-value"
+              fill="#ccc"
+              stroke="none"
+              textAnchor="start"
+              transform="rotate(0, 256, 128)"
+              x={256}
+              y={128}>
+              <tspan
+                dy="0em"
+                x={256}>
+                12
+              </tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g
+        className="recharts-layer recharts-polar-angle-axis">
+        <polygon
+          className="recharts-polygon recharts-polar-angle-axis-line"
+          fill="none"
+          points="256,128 366.85125168440817,192 366.85125168440817,320 256,384 145.14874831559183,320 145.14874831559186,192" />
+        <g
+          className="recharts-layer recharts-polar-angle-axis-ticks">
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={256}
+              x2={256}
+              y1={128}
+              y2={120} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="middle"
+              x={256}
+              y={120}>
+              <tspan
+                dy="0em"
+                x={256}>
+                Attack
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={366.85125168440817}
+              x2={373.7794549146837}
+              y1={192}
+              y2={188} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="start"
+              x={373.7794549146837}
+              y={188}>
+              <tspan
+                dy="0em"
+                x={373.7794549146837}>
+                Defense
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={366.85125168440817}
+              x2={373.7794549146837}
+              y1={320}
+              y2={324} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="start"
+              x={373.7794549146837}
+              y={324}>
+              <tspan
+                dy="0em"
+                x={373.7794549146837}>
+                Speed
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={256}
+              x2={256}
+              y1={384}
+              y2={392} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="middle"
+              x={256}
+              y={392}>
+              <tspan
+                dy="0em"
+                x={256}>
+                HP
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={145.14874831559183}
+              x2={138.22054508531633}
+              y1={320}
+              y2={324} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="end"
+              x={138.22054508531633}
+              y={324}>
+              <tspan
+                dy="0em"
+                x={138.22054508531633}>
+                Sp. Atk
+              </tspan>
+            </text>
+          </g>
+          <g
+            className="recharts-layer recharts-polar-angle-axis-tick">
+            <line
+              className="recharts-polar-angle-axis-tick-line"
+              fill="none"
+              x1={145.14874831559186}
+              x2={138.22054508531636}
+              y1={192}
+              y2={188} />
+            <text
+              className="recharts-text recharts-polar-angle-axis-tick-value"
+              fill={undefined}
+              stroke="none"
+              textAnchor="end"
+              x={138.22054508531636}
+              y={188}>
+              <tspan
+                dy="0em"
+                x={138.22054508531636}>
+                Sp. Def
+              </tspan>
+            </text>
+          </g>
+        </g>
+      </g>
+      <g
+        className="recharts-layer recharts-radar">
+        <g
+          className="recharts-layer recharts-radar-polygon"
+          transform="translate(256, 256)">
+          <polygon
+            className="recharts-polygon"
+            fill="#108ee9"
+            fillOpacity={0.3}
+            height={512}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            points="0,-53.33333333333334 55.425625842204056,-32 18.475208614068038,10.666666666666686 0,74.66666666666669 -18.475208614068038,10.666666666666686 -83.13843876330611,-48"
+            stroke="#108ee9"
+            style={
+              Object {
+                "MozTransform": "scale(0)",
+                "OTransform": "scale(0)",
+                "WebkitTransform": "scale(0)",
+                "msTransform": "scale(0)",
+                "transform": "scale(0)",
+              }
+            }
+            width={512} />
+        </g>
+      </g>
+      <g
+        className="recharts-layer recharts-radar">
+        <g
+          className="recharts-layer recharts-radar-polygon"
+          transform="translate(256, 256)">
+          <polygon
+            className="recharts-polygon"
+            fill="#108ee9"
+            fillOpacity={0}
+            height={512}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            points="0,0 0,0 0,0 0,0 0,0 0,0"
+            stroke="#108ee9"
+            strokeOpacity={0}
+            style={
+              Object {
+                "MozTransform": "scale(0)",
+                "OTransform": "scale(0)",
+                "WebkitTransform": "scale(0)",
+                "msTransform": "scale(0)",
+                "transform": "scale(0)",
+              }
+            }
+            width={512} />
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+`;

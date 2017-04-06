@@ -1,0 +1,78 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Raleway, Futura, 'Helvetica Neue', sans-serif;
+  color: #222;
+  padding: 1px;
+  margin: 0px;
+}
+
+
+h1 {
+  font-weight: lighter;
+}
+
+.auth0-lock-badge-bottom {
+  opacity: 0;
+}
+
+// antd override
+::selection {
+  background: #222 !important;
+}
+
+a:hover {
+  color: #D4AFDF !important;
+}
+
+.ant-select {
+  display: block !important;
+  width: 100%;
+}
+
+.ant-select-show-search {
+  z-index: 0;
+}
+
+// end antd
+
+
+.mapboxgl-popup {
+  max-width: 320px;
+  font: 12px/20px Raleway, Futura, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+.mapboxgl-popup-tip {
+  border: none !important;
+}
+
+.mapboxgl-popup-content {
+  /* background: #fff; */
+  /* border-radius: 3px; */
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
+  /* padding: 5px 5px 5px; */
+  padding: 0px 0px 0px 0px !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.mapboxgl-popup-close-button {
+  border: 0px !important;
+  background: #fff !important;
+  position: absolute !important;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+.ReactFlipCard {
+  position: absolute;
+  top: 0px;
+}
+

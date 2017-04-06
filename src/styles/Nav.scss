@@ -1,0 +1,28 @@
+
+
+
+div.Nav.Breadcrumb {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  z-index: 2;
+  padding: 4px;
+  padding-right: 8px;
+  background-color: #222;
+  border: 1px solid #222;
+  color: #fff;
+}
+div.Nav.Breadcrumb:hover {
+  border: 1px solid RGBA(212, 175, 223, 1.00);
+}
+
+span.ant-breadcrumb-separator {
+  color: #eee;
+}
+
+span.ant-breadcrumb-link a {
+  color: #eee;
+}
+span.ant-breadcrumb-link a:hover {
+  color: RGBA(212, 175, 223, 1.00);
+}

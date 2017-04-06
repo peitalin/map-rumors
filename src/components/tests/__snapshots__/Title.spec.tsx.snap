@@ -1,0 +1,5 @@
+exports[`test  component matches snapshot 1`] = `
+<div
+  className="Title"
+  style={Object {}} />
+`;

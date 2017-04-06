@@ -1,0 +1,70 @@
+
+
+// landing-page only
+.subscriptions-landing-page {
+  margin: 5% 10% 10% 10%;
+  padding: 4%;
+  z-index: 1;
+  border: 1px solid #222;
+   subscriptions-heading {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+}
+
+
+
+// not landing-page
+.subscriptions-container {
+  position: absolute;
+  width: 30vw;
+  right: 0px;
+  top: 50px;
+  backgroundColor: #fff;
+  transform: translateX(220px);
+  transition: transform 0.2s ease;
+  transition-delay: 0.5s;
+}
+.subscriptions-container:hover {
+  transform: translateX(0px);
+  transition: transform 0.2s ease;
+}
+
+
+
+.subscriptions-outer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.subscriptions-outer:hover {
+}
+
+.subscriptions-inner {
+  border: 1px solid #444;
+	border-radius: 2px;
+  background-color: rgba(22,22,22,0.8);
+  color: #aaa;
+  padding: 2%;
+  transition: background-color 0.2s ease;
+}
+.subscriptions-inner:hover {
+  background-color: #D4AFDF;
+  color: #222;
+  transition: background-color 0.2s ease;
+}
+
+
+.draggable-item {
+  filter: blur(0px);
+  transition: filter 0.3s ease;
+  flex: 1 1 50%;
+  flex-basis: 240px;
+  margin: 2%;
+}
+
+.draggable-item:hover {
+  filter: blur(0px);
+  transition: filter 0.3s ease;
+}
+
