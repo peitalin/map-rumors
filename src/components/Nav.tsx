@@ -15,9 +15,10 @@ interface NavProps {
   location?:  Location
 }
 
+
 export class Nav extends React.Component<NavProps, any> {
 
-  getRouterPath = (pathname: string, n: number = 0): string => {
+  static getRouterPath = (pathname: string, n: number = 0): string => {
     return (pathname === '') ? '/' : pathname.split('/').slice(0, n+1).join('/')
   }
 
@@ -26,7 +27,7 @@ export class Nav extends React.Component<NavProps, any> {
     let crumbs = pathname.split('/').map((url, i) => {
       return (
         <Breadcrumb.Item key={url}>
-          <Link to={ this.getRouterPath(pathname, i) }>
+          <Link to={ Nav.getRouterPath(pathname, i) }>
             { url }
           </Link>
         </Breadcrumb.Item>

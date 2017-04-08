@@ -91,9 +91,8 @@ export default class App extends React.Component {
     GRAPHQL_PROJECT_ID: "cixfj2p7t5esw0111742t44e8"
   }
 
-  createApolloClient = (GRAPHQL_PROJECT_ID: string) => {
+  private createApolloClient = (GRAPHQL_PROJECT_ID: string) => {
     //////////// APOLLO-GRAPHQL /////////////////////
-		console.info(`GraphQL endpoint: ${GRAPHQL_PROJECT_ID}`)
     const wsClient = new SubscriptionClient(
       `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
       { reconnect: true }
