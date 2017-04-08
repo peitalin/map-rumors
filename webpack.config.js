@@ -29,7 +29,7 @@ var entry = isProduction
 ]
 
 var sourceMap = isProduction
-  ? 'eval'
+  ? false
   : 'source-map'
 
 var imgSrc = isProduction
