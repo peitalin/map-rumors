@@ -68,7 +68,7 @@ import Subscriptions from './components/Subscriptions'
 const Login = (): JSX.Element => {
   const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
   const domain: string = 'peitalin.au.auth0.com'
-  const redirectUrl = '/map' // redirect to route on authentication
+  const redirectUrl: string = '/map' // redirect to route on authentication
   return (
     <LoginAuth0GQL clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
   )
@@ -88,11 +88,12 @@ export default class App extends React.Component {
 
   state = {
     rehydrated: false
-    GRAPHQL_PROJECT_ID: string = "cixfj2p7t5esw0111742t44e8"
+    GRAPHQL_PROJECT_ID: "cixfj2p7t5esw0111742t44e8"
   }
 
-  private createApolloClient = (GRAPHQL_PROJECT_ID: string) => {
+  createApolloClient = (GRAPHQL_PROJECT_ID: string) => {
     //////////// APOLLO-GRAPHQL /////////////////////
+		console.info(`GraphQL endpoint: ${GRAPHQL_PROJECT_ID}`)
     const wsClient = new SubscriptionClient(
       `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
       { reconnect: true }
@@ -143,7 +144,7 @@ export default class App extends React.Component {
       )
     }
     return (
-      <ApolloProvider client={ this.createApolloClient(this.GRAPHQL_PROJECT_ID) }>
+      <ApolloProvider client={ this.createApolloClient(this.state.GRAPHQL_PROJECT_ID) }>
         <Provider store={ reduxStore }>
           <LocaleProvider locale={ enUS }>
             <HashRouter>
