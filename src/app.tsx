@@ -16,7 +16,6 @@ import reducerFunction from './reducer'
 //// Styles
 import * as enUS from 'antd/lib/locale-provider/en_US';
 import * as LocaleProvider from 'antd/lib/locale-provider'
-import 'tachyons'
 import './index.scss'
 //// Components
 import Title from './components/Title'
@@ -24,9 +23,6 @@ import { lazyLoad } from './utils/lazyLoad'
 
 import LandingPage from './components/LandingPage'
 import LoginAuth0GQL from './components/LoginAuth0'
-
-import PokemonStats from './components/PokemonStats'
-import PokemonListings from './components/PokemonListings'
 
 import PredictionListings from './components/PredictionListings'
 import PredictionStats from './components/PredictionStats'
@@ -45,13 +41,6 @@ import Subscriptions from './components/Subscriptions'
 // )
 // const LoginAuth0GQL = lazyLoad(() =>
 //   System.import('./components/LoginAuth0.tsx').then(module => module.default)
-// )
-//
-// const PokemonStats = lazyLoad(() =>
-//   System.import('./components/PokemonStats.tsx').then(module => module.default)
-// )
-// const PokemonListings = lazyLoad(() =>
-//   System.import('./components/PokemonListings.tsx').then(module => module.default)
 // )
 //
 // const PredictionListings = lazyLoad(() =>
@@ -73,44 +62,7 @@ import Subscriptions from './components/Subscriptions'
 // const Subscriptions = lazyLoad(() =>
 //   System.import('./components/Subscriptions.tsx').then(module => module.default)
 // )
-
-
-
-
-
-//////////// APOLLO-GRAPHQL /////////////////////
-let GRAPHQL_PROJECT_ID: string = "cixfj2p7t5esw0111742t44e8"
-// console.info(`GraphQL Endpoint: https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`)
-
-const wsClient = new SubscriptionClient(
-  `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
-  { reconnect: true }
-)
-
-const networkInterface = createBatchingNetworkInterface({
-  uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
-  batchInterval: 10
-})
-networkInterface.use([
-  {
-    // applyMiddleware: (req, next) => {
-    applyBatchMiddleware: (req, next) => {
-      req.options.headers = (req.options.headers) ? req.options.headers : {}
-      req.options.headers.authorization = (localStorage.getItem('auth0IdToken'))
-        ? `Bearer ${localStorage.getItem('auth0IdToken')}`
-        : undefined
-      // get the authentication token from local storage if it exists
-      next()
-    },
-  }
-])
-const client = new ApolloClient({
-  networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
-  dataIdFromObject: o => o.id,
-  queryDeduplication: true,
-})
-
-
+//
 
 
 const Login = (): JSX.Element => {
@@ -122,7 +74,6 @@ const Login = (): JSX.Element => {
   )
 }
 
-
 ////////// REDUX /////////////
 export const reduxStore = createStore(
   reducerFunction,
@@ -133,12 +84,46 @@ export const reduxStore = createStore(
   )
 )
 
-
-
-
 export default class App extends React.Component {
 
-  state = { rehydrated: false }
+  state = {
+    rehydrated: false
+    GRAPHQL_PROJECT_ID: string = "cixfj2p7t5esw0111742t44e8"
+  }
+
+  private createApolloClient = (GRAPHQL_PROJECT_ID: string) => {
+    //////////// APOLLO-GRAPHQL /////////////////////
+    const wsClient = new SubscriptionClient(
+      `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
+      { reconnect: true }
+    );
+
+    const networkInterface = createBatchingNetworkInterface({
+      uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
+      batchInterval: 10
+    });
+
+    networkInterface.use([
+      {
+        applyBatchMiddleware: (req, next) => {
+          req.options.headers = (req.options.headers) ? req.options.headers : {}
+          req.options.headers.authorization = (localStorage.getItem('auth0IdToken'))
+            ? `Bearer ${localStorage.getItem('auth0IdToken')}`
+            : undefined
+          // get the authentication token from local storage if it exists
+          next()
+        },
+      }
+    ]);
+
+    const client = new ApolloClient({
+      networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
+      dataIdFromObject: o => o.id, // enable object ID for better cacheing
+      queryDeduplication: true, // batch graphql queries
+    });
+
+    return client
+  }
 
   componentWillMount() {
     // persistStore(reduxStore, {}, () => console.info("Purged redux store.")).purge()
@@ -158,7 +143,7 @@ export default class App extends React.Component {
       )
     }
     return (
-      <ApolloProvider client={ client }>
+      <ApolloProvider client={ this.createApolloClient(this.GRAPHQL_PROJECT_ID) }>
         <Provider store={ reduxStore }>
           <LocaleProvider locale={ enUS }>
             <HashRouter>
@@ -176,9 +161,6 @@ export default class App extends React.Component {
                     </div>
                 )}/>
 
-                {/* <Route path="/map" component={ PokemonListings }/> */}
-                {/* <Route path="/map/pokemon/:pname" component={ PokemonStats }/> */}
-
                 <Route path="/map" component={ MapBackground }/>
                 <Route path="/map" component={ Nav }/>
                 <Route path="/map" component={ PredictionListings }/>
@@ -188,9 +170,6 @@ export default class App extends React.Component {
                     <Subscriptions landingPage={false}/>
                   </div>
                 )}/>
-
-                <Route path="/map/pokemon" component={ PokemonListings }/>
-                <Route path="/map/pokemon/:pname" component={ PokemonStats }/>
 
                 {/* <Route path="/map/:lotPlan" component={ PredictionStats }/> */}
 

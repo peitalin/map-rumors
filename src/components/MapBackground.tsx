@@ -37,7 +37,7 @@ import { isParcelNear } from '../worker'
 let MyWorker = require('worker-loader!../worker.ts')
 
 
-let localData = require('../data/parkinson_parcels.json')
+let localData: geoData = require('../data/parkinson_parcels.json')
 
 
 interface MapBackgroundProps {
@@ -84,15 +84,15 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       isSearch: false,
       gParcels: {
         ...localData,
-        features: localData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0014))
+        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0014))
       },
       gParcelsWide: {
         ...localData,
-        features: localData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
+        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
       },
       gRadius: {
         ...localData,
-        features: localData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0005))
+        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0005))
       },
       gClickedParcels: {
         ...localData,
@@ -129,7 +129,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     // initial batch of land parcels
     let gData = {
       ...localData,
-      features: localData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0040)
+      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0040)
     }
     this.props.updateGData(gData)
   }
@@ -161,9 +161,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       // update parcels near home which you flew to
       this.props.updateGData({
         ...this.props.gData,
-        features: localData.features.filter(x => isParcelNear(x, nextProps.longitude, nextProps.latitude, 0.0040))
+        features: localData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0040))
       })
     }
+
+
+
   }
 
   componentWillUpdate(nextProps) {
@@ -172,12 +175,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         gParcels: {
           ...this.state.gParcels,
           features: nextProps.gData.features
-            .filter(x => isParcelNear(x, nextProps.longitude, nextProps.latitude, 0.0014))
+            .filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0014))
         },
         gParcelsWide: {
           ...this.state.gParcelsWide,
           features: nextProps.gData.features
-            .filter(x => isParcelNear(x, nextProps.longitude, nextProps.latitude, 0.0020, 0.0010))
+            .filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0020, 0.0010))
         },
         gPredictions: {
           ...this.state.gPredictions,
@@ -205,28 +208,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   }
 
 
-  private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
-    // requires redux-thunk to dispatch 2 actions at the same time
-    this.props.updateLngLat(event.lngLat)
-    // var bearings = [-30, -15, 0, 15, 30]
-    map.flyTo({
-      center: event.lngLat,
-      speed: 2,
-      // bearing: bearings[parseInt(Math.random()*4)],
-      // pitch: parseInt(40+Math.random()*20)
-    })
-    // this.props.toggleShowModal(true)
-
-    let features = map.queryRenderedFeatures(event.point, { layer: ['radius-fills'] }).filter(f => (
-      f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN')
-    ))
-    if (!features.length) {
-      this.setState({ showHouseCard: false })
-      return
-    } else {
-      console.info(features)
-    }
-
+  private handleClickedParcel = (features: GeoJSON.Feature<GeoJSON.GeometryObject>[]): void => {
+    // features: are property parcels (polygons)
     if (features.length > 1) {
       // hover layer and parcel layer == 2 layers
       let { LOT, PLAN, LOTPLAN, LOT_AREA, O_SHAPE_Area, O_SHAPE_Length, LOCALITY } = features[0].properties
@@ -267,7 +250,30 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       //   .addTo(map);
     }
 
+  }
 
+  private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
+    // requires redux-thunk to dispatch 2 actions at the same time
+    this.props.updateLngLat(event.lngLat)
+    // var bearings = [-30, -15, 0, 15, 30]
+    map.flyTo({
+      center: event.lngLat,
+      speed: 2,
+      // bearing: bearings[parseInt(Math.random()*4)],
+      // pitch: parseInt(40+Math.random()*20)
+    })
+    // this.props.toggleShowModal(true)
+
+    let features = map.queryRenderedFeatures(event.point, { layer: ['radius-fills'] })
+      .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
+    if (!features.length) {
+      this.setState({ showHouseCard: false })
+      return
+    } else {
+      console.info(features)
+    }
+
+    this.handleClickedParcel(features)
 
     // update parcels near mouse click
     this.setState({
@@ -282,7 +288,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     })
     map.getSource('parcels').setData(this.state.gParcels)
     map.getSource('radius').setData(this.state.gRadius)
-
     map.setPaintProperty('radius-fills', 'fill-opacity', 0.1)
     map.setPaintProperty('radius-fills', 'fill-color', '#c68')
     map.setPaintProperty('parcel-borders', 'line-color', '#c68')
@@ -345,22 +350,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       }
     })
 
-    // this.worker2.postMessage({
-    //   features: this.props.gData.features,
-    //   longitude: lngLat.lng,
-    //   latitude: lngLat.lat,
-    //   radiusMax: 0.0020,
-    //   radisuMin: 0.0014
-    // })
-    // this.worker2.onmessage = (m) => {
-    //   this.setState({
-    //     gParcelsWide: {
-    //       ...this.state.gParcelsWide,
-    //       features: m.data
-    //     }
-    //   });
-    // }
-
     this.setState({
       gParcelsWide: {
         ...this.state.gParcelsWide,
@@ -370,7 +359,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
     map.setPaintProperty('parcel-borders-wide', 'line-color', '#aa88cc')
     map.setPaintProperty('parcel-borders', 'line-color', '#58c')
-
 
     let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
     this.setState({
@@ -415,7 +403,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         })
       }
     }, 300))
-
 
     map.setStyle({
       ...map.getStyle(),
@@ -484,27 +471,16 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     //   },
     // })
 
-    // map.addLayer({
-    //   id: 'terrain-contour',
-    //   type: 'line',
-    //   source: {
-    //     type: 'vector',
-    //     url: 'mapbox://mapbox.mapbox-terrain-v2'
-    //   },
-    //   paint: { 'line-opacity': 0.3 },
-    //   'source-layer': 'contour'
-    // });
-
-    // map.addLayer({
-    //   id: 'traffic',
-    //   type: 'line',
-    //   source: {
-    //     type: 'vector',
-    //     url: 'mapbox://mapbox.mapbox-traffic-v1'
-    //   },
-    //   'source-layer': 'traffic',
-    //   paint: { 'line-color': '#222' }
-    // });
+    map.addLayer({
+      id: 'traffic',
+      type: 'line',
+      source: {
+        type: 'vector',
+        url: 'mapbox://mapbox.mapbox-traffic-v1'
+      },
+      'source-layer': 'traffic',
+      paint: { 'line-color': '#666', 'line-width': 2 }
+    });
   }
 
 
@@ -594,28 +570,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         </ReactMapboxGl>
 
 
-
         <HouseCard id='housecard1'
           longitude={this.props.longitude}
           latitude={this.props.latitude}
           houseProps={this.state.houseProps}
           showHouseCard={this.state.showHouseCard}
         />
-
-        {/* <HouseCard id='housecard2' */}
-        {/*   longitude={this.props.longitude} */}
-        {/*   latitude={this.props.latitude} */}
-        {/*   houseProps={this.state.houseProps} */}
-        {/*   showHouseCard={this.state.showHouseCard} */}
-        {/* /> */}
-        {/* <HouseCard id='housecard3' */}
-        {/*   longitude={this.props.longitude} */}
-        {/*   latitude={this.props.latitude} */}
-        {/*   houseProps={this.state.houseProps} */}
-        {/*   showHouseCard={this.state.showHouseCard} */}
-        {/*   isFlipped={true} */}
-        {/* /> */}
-
 
 
         <div className={classNames({
@@ -637,7 +597,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
             {/*   ) */}
             {/* } */}
 
-
             <Geosuggest
               location={new google.maps.LatLng(this.props.longitude, this.props.latitude)}
               country='au'
@@ -647,6 +606,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
               inputClassName="searchBox__destination__input"
               onSuggestSelect={this.onSuggestSelect}
             />
+
           </div>
         </div>
 

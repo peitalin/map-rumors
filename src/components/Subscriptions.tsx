@@ -24,8 +24,6 @@ import 'antd/lib/message/style/css'
 
 
 
-
-
 interface SubscriptionsProps {
   data: SubscriptionState
   updateLngLat(lngLat: mapboxgl.LngLat): void
