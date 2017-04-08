@@ -29,7 +29,7 @@ var entry = isProduction
 ]
 
 var sourceMap = isProduction
-  ? false
+  ? 'eval'
   : 'source-map'
 
 var imgSrc = isProduction
@@ -58,6 +58,8 @@ if (isProduction) {
         warnings: false,
         screw_ie8: true,
         conditionals: true,
+        // comparisons: false, // uglify bug: fails with mapbox
+        // https://github.com/mapbox/mapbox-gl-js/issues/4359
         comparisons: true,
         sequences: true,
         evaluate: true,
@@ -126,6 +128,7 @@ const config = {
   externals: {
     // "react": "React",
     // "react-dom": "ReactDOM",
+    // "auth0-lock": "Auth0Lock",
     // "mapbox-gl": "mapboxgl",
     // // must keep mapboxgl external if not using alias.
     // "react-mapbox-gl": 'ReactMapboxGl'
@@ -135,6 +138,7 @@ const config = {
   // in order to ignore built-in modules like path, fs, etc.
 
   module: {
+    noParse: /(mapbox-gl)\.js$/,
     rules: [
       {
         test: function (fpath) {
