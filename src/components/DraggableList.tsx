@@ -99,7 +99,7 @@ export default class DraggableList extends React.Component<any, any> {
             boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
             transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
             WebkitTransform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-            zIndex: i === originalPosOfLastPressed ? 99 : i,
+            zIndex: i === originalPosOfLastPressed ? 1 : i,
           }}>
           { child }
         </div>

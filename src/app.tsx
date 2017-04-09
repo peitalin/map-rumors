@@ -17,52 +17,39 @@ import reducerFunction from './reducer'
 import * as enUS from 'antd/lib/locale-provider/en_US';
 import * as LocaleProvider from 'antd/lib/locale-provider'
 import './index.scss'
-//// Components
-import Title from './components/Title'
+//// Lazyload
 import { lazyLoad } from './utils/lazyLoad'
 
-import LandingPage from './components/LandingPage'
-import LoginAuth0GQL from './components/LoginAuth0'
-
-import PredictionListings from './components/PredictionListings'
-import PredictionStats from './components/PredictionStats'
-
-import MapBackground from './components/MapBackground'
-import HouseStats from './components/HouseStats'
-import Nav from './components/Nav'
-
-// import Demo from './components/DraggableGrid'
-import Subscriptions from './components/Subscriptions'
-
+//// Components
+// import Title from './components/Title'
+// import LandingPage from './components/LandingPage'
+// import LoginAuth0GQL from './components/LoginAuth0'
+//
+// import PredictionListings from './components/PredictionListings'
+// import PredictionStats from './components/PredictionStats'
+//
+// import MapBackground from './components/MapBackground'
+// import HouseStats from './components/HouseStats'
+// import Nav from './components/Nav'
+//
+// // import Demo from './components/DraggableGrid'
+// import Subscriptions from './components/Subscriptions'
+//
 
 //////// Lazy-loading Components by Route /////////
-// const LandingPage = lazyLoad(() =>
-//   System.import('./components/LandingPage.tsx').then(module => module.default)
-// )
-// const LoginAuth0GQL = lazyLoad(() =>
-//   System.import('./components/LoginAuth0.tsx').then(module => module.default)
-// )
-//
-// const PredictionListings = lazyLoad(() =>
-//   System.import('./components/PredictionListings.tsx').then(module => module.default)
-// )
-// const PredictionStats = lazyLoad(() =>
-//   System.import('./components/PredictionStats.tsx').then(module => module.default)
-// )
-//
-// const MapBackground = lazyLoad(() =>
-//   System.import('./components/MapBackground.tsx').then(module => module.default)
-// )
-// const HouseStats = lazyLoad(() =>
-//   System.import('./components/HouseStats.tsx').then(module => module.default)
-// )
-// const Nav = lazyLoad(() =>
-//   System.import('./components/Nav.tsx').then(module => module.default)
-// )
-// const Subscriptions = lazyLoad(() =>
-//   System.import('./components/Subscriptions.tsx').then(module => module.default)
-// )
-//
+const Title = lazyLoad(() => System.import('./components/Title.tsx').then(module => module.default))
+const LandingPage = lazyLoad(() => System.import('./components/LandingPage.tsx').then(module => module.default))
+const LoginAuth0GQL = lazyLoad(() => System.import('./components/LoginAuth0.tsx').then(module => module.default))
+
+const PredictionListings = lazyLoad(() => System.import('./components/PredictionListings.tsx').then(module => module.default))
+const PredictionStats = lazyLoad(() => System.import('./components/PredictionStats.tsx').then(module => module.default))
+
+const MapBackground = lazyLoad(() => System.import('./components/MapBackground.tsx').then(module => module.default))
+const HouseStats = lazyLoad(() => System.import('./components/HouseStats.tsx').then(module => module.default))
+const Nav = lazyLoad(() => System.import('./components/Nav.tsx').then(module => module.default))
+
+const Subscriptions = lazyLoad(() => System.import('./components/Subscriptions.tsx').then(module => module.default))
+
 
 
 const Login = (): JSX.Element => {
@@ -97,12 +84,10 @@ export default class App extends React.Component {
       `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
       { reconnect: true }
     );
-
     const networkInterface = createBatchingNetworkInterface({
       uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
       batchInterval: 10
     });
-
     networkInterface.use([
       {
         applyBatchMiddleware: (req, next) => {
@@ -115,14 +100,11 @@ export default class App extends React.Component {
         },
       }
     ]);
-
-    const client = new ApolloClient({
+    return new ApolloClient({
       networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
       dataIdFromObject: o => o.id, // enable object ID for better cacheing
       queryDeduplication: true, // batch graphql queries
     });
-
-    return client
   }
 
   componentWillMount() {
@@ -137,10 +119,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    if(!this.state.rehydrated){
-      return (
-        <Title></Title>
-      )
+    if(!this.state.rehydrated) {
+      return <Title></Title>
     }
     return (
       <ApolloProvider client={ this.createApolloClient(this.state.GRAPHQL_PROJECT_ID) }>

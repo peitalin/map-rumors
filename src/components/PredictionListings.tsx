@@ -115,13 +115,13 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
       <div className='prediction-listings-container'>
         <div className='prediction-listings-inner'>
 
-          <div className='prediction-listings-heading'>
-            {(
-              this.props.loading
-              ? <Loader color="#222" size="12px" margin="4px"/>
-              : <h1>Listings</h1>
-            )}
-          </div>
+          {/* <div className='prediction-listings-heading'> */}
+          {/*   {( */}
+          {/*     this.props.loading */}
+          {/*     ? <Loader color="#222" size="12px" margin="4px"/> */}
+          {/*     : <h1>Listings</h1> */}
+          {/*   )} */}
+          {/* </div> */}
 
           <Tabs defaultActiveKey={this.props.userGQL.predictions[0].id}>
             { predictionTabs }

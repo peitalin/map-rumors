@@ -75,7 +75,7 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
     let cardStyle = {
       backgroundColor: '#fff',
       position: 'fixed',
-      top: window.innerHeight/3,
+      top: '6vw',
       left: 10,
       opacity: houseCardOpacity,
       houseCardZIndex,

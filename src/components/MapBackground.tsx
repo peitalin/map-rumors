@@ -340,6 +340,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
   private onDrag = (map: mapboxgl.Map, event: EventData): void => {
+
+    if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
+      // laggy on mobile, so disabl
+      return
+    }
+
     let lngLat: mapboxgl.LngLat = map.getCenter()
     this.props.updateLngLat(lngLat)
 
@@ -488,7 +494,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   render() {
     return (
-      <div>
+      <div className="MapBackground">
 
         <ReactMapboxGl style="mapbox://styles/mapbox/dark-v9"
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"

@@ -12,27 +12,35 @@
   }
 }
 
-
-
 // not landing-page
 .subscriptions-container {
   position: absolute;
-  width: 30vw;
-  right: 0px;
-  top: 50px;
-  backgroundColor: #fff;
-  transform: translateX(220px);
-  transition: transform 0.2s ease;
-  transition-delay: 0.5s;
+  right: 0vw;
+  top: 6vw;
+  width: 25vw;
+  // transform: translateX(20vw);
+  // transition: transform 0.2s ease;
+  // transition-delay: 0.5s;
 }
 .subscriptions-container:hover {
-  transform: translateX(0px);
-  transition: transform 0.2s ease;
+  // transform: translateX(0vw);
+  // transition: transform 0.2s ease;
 }
 
-
+@media screen and (min-aspect-ratio: 9/16) and (max-width: 600px) {
+  .subscriptions-container {
+    position: absolute;
+    right: 0vw;
+    top: initial;
+    bottom: 12vw;
+    width: initial;
+    height: 176px;
+    overflow-y: scroll;
+  }
+}
 
 .subscriptions-outer {
+  background-color: rgba(222,222,222, 0.2);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -42,11 +50,12 @@
 
 .subscriptions-inner {
   border: 1px solid #444;
-	border-radius: 2px;
+  border-radius: 2px;
   background-color: rgba(22,22,22,0.8);
   color: #aaa;
   padding: 2%;
   transition: background-color 0.2s ease;
+  transition: width 0.2s ease;
 }
 .subscriptions-inner:hover {
   background-color: #D4AFDF;
@@ -56,7 +65,6 @@
 
 
 .draggable-item {
-  filter: blur(0px);
   transition: filter 0.3s ease;
   flex: 1 1 50%;
   flex-basis: 240px;
@@ -64,7 +72,6 @@
 }
 
 .draggable-item:hover {
-  filter: blur(0px);
   transition: filter 0.3s ease;
 }
 
