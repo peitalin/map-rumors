@@ -11,6 +11,10 @@ body {
   margin: 0px;
 }
 
+#root {
+  overflow-x: hidden;
+}
+
 h1 {
   font-weight: lighter;
 }
