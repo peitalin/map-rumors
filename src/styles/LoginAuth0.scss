@@ -1,16 +1,21 @@
 
 
-.LoginAuth0 {
+.login-auth0 {
   position: fixed;
   top: 1%;
   right: 1%;
   z-index: 2;
 }
 
+.login-auth0-loader {
+ color: #eee;
+ display: flex;
+}
+
 button#antd-login {
   border-radius: 0px;
-  background-color: #222;
-  border-color: #222;
+  background-color: #444444;
+  border-color: #4a4a4a;
   color: #eee;
 }
 

@@ -389,6 +389,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     this.map = map
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
+
+    if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
+      // disable zoom on mobile, UX issues with native browser zoom
+      map.scrollZoom.disable()
+      map.addControl(new mapboxgl.NavigationControl(), );
+    }
     // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
     map.on("mouseout", () => {
         map.setFilter("parcel-fills-hover", ["==", "LOT", ""])
@@ -642,12 +648,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 const mapStateToProps = ( state: ReduxState ) => {
   return {
-    latitude: state.latitude,
-    longitude: state.longitude,
-    mapboxZoom: state.mapboxZoom,
-    userGQL: state.userGQL,
-    flying: state.flying,
-    gData: state.gData,
+    latitude: state.reduxReducer.latitude,
+    longitude: state.reduxReducer.longitude,
+    mapboxZoom: state.reduxReducer.mapboxZoom,
+    userGQL: state.reduxReducer.userGQL,
+    flying: state.reduxReducer.flying,
+    gData: state.reduxReducer.gData,
   }
 }
 

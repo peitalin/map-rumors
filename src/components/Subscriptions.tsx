@@ -13,7 +13,7 @@ import { iPrediction, iHouse } from './interfaceDefinitions'
 import Title from './Title'
 
 
-import 'styles/Subscriptions.scss'
+import '../styles/Subscriptions.scss'
 
 import * as Loader from 'halogen/PulseLoader'
 import DraggableList from './DraggableList'

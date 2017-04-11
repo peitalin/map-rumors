@@ -1,16 +1,5 @@
 
 
-// landing-page only
-.subscriptions-landing-page {
-  margin: 5% 10% 10% 10%;
-  padding: 4%;
-  z-index: 1;
-  border: 1px solid #222;
-   subscriptions-heading {
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-}
 
 // not landing-page
 .subscriptions-container {
@@ -67,7 +56,7 @@
 .draggable-item {
   transition: filter 0.3s ease;
   flex: 1 1 50%;
-  flex-basis: 240px;
+  flex-basis: 180px;
   margin: 2%;
 }
 

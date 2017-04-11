@@ -31,7 +31,7 @@ const initialReduxState = {
   allPredictions: [],
 }
 
-const reducerFunction = (state: ReduxState = initialReduxState, action): ReduxState => {
+const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState => {
 
   switch ( action.type ) {
     case "UPDATE_LNGLAT":
@@ -70,4 +70,4 @@ const reducerFunction = (state: ReduxState = initialReduxState, action): ReduxSt
   }
 }
 
-export default reducerFunction
+export default reduxReducer

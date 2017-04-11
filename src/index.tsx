@@ -18,16 +18,16 @@ render(App)
 
 // Hot Module Replacement API
 if (module.hot) {
-  // module.hot.accept(['./app', './reducer'], () => {
-  //   const nextReducer = require('./reducer').default
-  //   reduxStore.replaceReducer(nextReducer)
-  //   const NewApp = require('./app').default
-  //   render(NewApp)
-  // })
-  module.hot.accept('./app', () => {
-    const NewApp = require('./app.tsx').default
+  module.hot.accept(['./app', './reducer'], () => {
+    const nextReducer = require('./reducer').default
+    reduxStore.replaceReducer(nextReducer)
+    const NewApp = require('./app').default
     render(NewApp)
   })
+  // module.hot.accept('./app', () => {
+  //   const NewApp = require('./app.tsx').default
+  //   render(NewApp)
+  // })
   // module.hot.accept()
 }
 

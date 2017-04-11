@@ -1,4 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
+//
 
 html {
   -webkit-box-sizing: border-box;
@@ -7,8 +8,10 @@ html {
 }
 
 body {
-  font-family: Raleway, Futura, 'Helvetica Neue', sans-serif;
+  font-family: Helvetica, sans-serif !important;
+  line-height: initial !important;
   color: #222;
+	background-color: #F8F8F8 !important;
   padding: 1px;
   margin: 0px;
 }
@@ -18,8 +21,21 @@ body {
 }
 
 h1 {
-  font-weight: lighter;
+  font-size: 3.5rem !important;
+  font-weight: 500 !important;
+  color: #565A5C;
 }
+
+h2 {
+  font-size: 1.2rem !important;
+  font-weight: 300 !important;
+  color: #AAADAD;
+}
+
+h3 {
+  font-size: 1.2rem !important;
+}
+
 
 .auth0-lock-badge-bottom {
   opacity: 0;
@@ -72,6 +88,14 @@ a:hover {
   top: 10px;
   left: 10px;
   z-index: 1;
+}
+
+.mapboxgl-ctrl-top-right.mapboxgl-ctrl-top-right {
+  // doubling up specificity
+  top: 5vh;
+}
+.mapboxgl-ctrl-icon.mapboxgl-ctrl-compass {
+  display: none;
 }
 
 .ReactFlipCard {

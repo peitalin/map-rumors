@@ -45,7 +45,6 @@ export class Nav extends React.Component<NavProps, any> {
 }
 
 
-
 export default withRouter( Nav )
 
 

@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 
 import { Redirect } from 'react-router-dom'
@@ -38,10 +38,11 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
   }
 
   componentDidMount() {
-    this.lock.on('authenticated', (authResult) => {
-      window.localStorage.setItem('auth0IdToken', authResult.idToken)
 
-      this.lock.getProfile(authResult.idToken, (err, profile) => {
+    this.lock.on('authenticated', ({ accessToken, idToken }) => {
+      window.localStorage.setItem('auth0IdToken', idToken)
+
+      this.lock.getProfile(idToken, (err, profile) => {
         window.localStorage.setItem('profile', JSON.stringify(profile))
       })
 
@@ -56,6 +57,10 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
           this.props.data.refetch()
         }
       })
+    })
+
+    this.lock.on('authorization_error', authResult => {
+      console.log(authResult)
     })
 
   }
@@ -84,19 +89,18 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
   render() {
     if (this.props.data.loading) {
       return (
-        <div className='LoginAuth0'>
+        <div className='login-auth0'>
           <Button id='antd-login'>
-            <div style={{ color: '#eee', display: 'flex' }}>
+            <div className='login-auth0-loader'>
               <Loader color="#eee" size="2px"/>Loading
             </div>
           </Button>
         </div>
       )
     }
-    // console.info('props.data.user: ', this.props.data.user)
     if (this.props.data.user) {
       return (
-        <div className='LoginAuth0'>
+        <div className='login-auth0'>
           <Button id='antd-login' onClick={this.logOut}>
             Log Out
           </Button>
@@ -105,12 +109,12 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
       )
     } else {
       return (
-      <Title>
+      <div className='login-auth0'>
         <Button id='antd-login' type="primary" onClick={this.showLogin}>
           Login
           <Redirect to="/"/>
         </Button>
-      </Title>
+      </div>
       )
     }
   }
@@ -159,23 +163,14 @@ query {
 }
 `
 
-
-
-
-const mutationOptions = { name: 'createUser' }
-const queryOptions = { fetchPolicy: 'network-only' }
-
-const LoginAuth0GQL = graphql(CreateUserQuery, mutationOptions)(
-  graphql(UserQuery, queryOptions)( LoginAuth0 )
-)
-
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = ( dispatch ) => {
   return {
     updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
-    dispatch: dispatch,
   }
 }
 
-const LoginAuth0GQLRedux = connect(null, mapDispatchToProps)( LoginAuth0GQL )
-
-export default LoginAuth0GQLRedux
+export default compose(
+  graphql(UserQuery, { fetchPolicy: 'network-only' }),
+  graphql(CreateUserQuery, { name: 'createUser' }),
+  connect(null, mapDispatchToProps), // connect dispatch to redux
+)( LoginAuth0 )

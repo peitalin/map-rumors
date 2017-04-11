@@ -108,9 +108,9 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
 
 const mapStateToProps = ( state: ReduxState ) => {
   return {
-    lotPlan: state.lotPlan,
-    longitude: state.longitude,
-    latitude: state.latitude,
+    lotPlan: state.reduxReducer.lotPlan,
+    longitude: state.reduxReducer.longitude,
+    latitude: state.reduxReducer.latitude,
   }
 }
 

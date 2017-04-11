@@ -1,7 +1,6 @@
 
 
 import * as React from 'react'
-import Title from './Title'
 import { connect, MapStateToProps } from 'react-redux'
 import { ReduxState } from '../reducer'
 import { graphql, compose } from 'react-apollo'
@@ -13,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { iHouse, userGQL, mutationResponsePrediction as mutationResponse } from './interfaceDefinitions'
 import 'styles/PredictionListings.scss'
 
+import Title from './Title'
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
 import * as Popconfirm from 'antd/lib/popconfirm'
@@ -24,7 +24,6 @@ import 'antd/lib/tabs/style/css'
 const TabPane = Tabs.TabPane
 
 import * as Loader from 'halogen/PulseLoader'
-import * as ReactSwipe from 'react-swipe'
 
 
 
@@ -49,7 +48,7 @@ interface PredictionListingsProps {
 
 
 
-export class PredictionListings extends React.Component<PredictionListingsProps, any> {
+export class PredictionListings extends React.Component<any, any> {
 
   deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
@@ -78,6 +77,7 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
 
 
   render() {
+
     if (this.props.data.error) {
       return <Title><div>PredictionListings: GraphQL Errored.</div></Title>
     }
@@ -178,28 +178,26 @@ query {
 }
 `
 
-
-
-const PredictionListingsGQL = compose(
-  graphql(deletePredictionMutation, { name: 'deletePrediction', fetchPolicy: 'network-only' }),
-  graphql(userQuery, { fetchPolicy: 'network-only' })
-)( PredictionListings )
-
-
 //////// REDUX ////////
 const mapStateToProps = ( state: ReduxState ) => {
   return {
-    userGQL: state.userGQL,
-    loading: state.loading,
+    userGQL: state.reduxReducer.userGQL,
+    loading: state.reduxReducer.loading,
   }
 }
-
 const mapDispatchToProps = ( dispatch ) => {
   return {
     updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
     isLoading: (bool) => dispatch({ type: "LOADING", payload: bool }),
   }
 }
+//////// REDUX ////////
 
-export default connect(mapStateToProps, mapDispatchToProps)( PredictionListingsGQL )
+
+export default compose(
+  graphql(deletePredictionMutation, { name: 'deletePrediction', fetchPolicy: 'network-only' }),
+  graphql(userQuery, { fetchPolicy: 'network-only' }),
+  connect(mapStateToProps, mapDispatchToProps)
+)( PredictionListings )
+
 

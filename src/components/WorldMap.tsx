@@ -2,14 +2,12 @@
 import * as React from 'react'
 
 
-class WorldMap  extends React.Component<any, any> {
-
-  state = {}
+export default class WorldMap  extends React.Component<any, any> {
 
   render() {
     return (
 <svg className='worldmap' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673 343" width="538" height="274">
-  <g id='worldmap' fill="#333" fillRule="evenodd">
+  <g id='worldmap' fillRule="evenodd">
     <path d="M110 24v1h1l1-1h2v-1-1h1v-1a1 1 0 0 0-1-1v1h-1-2l-2 1v2h1zm34-2h-3v1h6v-1h-1-2zm27 13v-1h-1v1h-1l-1 1v2l2 1 1-1h3l1-1h1v-1-1h-1a1 1 0 0 1 0-1v1l-1-1h-1l-1 1h-1z" >
     </path>
     <path d="M137 20h2v1h-1l1 1h4v-1l-1-1h1l-2-1v1-1h-2l-2-1v1c0 1 0 0 0 0h-1v1h1zm-15-2h1v0h1v1h0v1h4v-1 1h3v1h1l1 1h1l1 1v-1-1l-1-1v-1h-2l-1-1h-3l-1-1-1 1h-1v-1h-2-1v1zm13 7v1h-1v-1-1l-1 1h1v1h-2 1v2h1-1l-2-2h-1v2h1v1h-2v1h2v-1l2 1 1-1v1h-1-1v1h7v-1h-1v-3h-1v-1h-1v-1a2 2 0 0 1 0-1h-1v1zm45 301v-2-1h-2c0 1 0 0 0 0v2h1l-1 1h0l1 1v0l1 1v-2zM103 27v1h1l-1 1v-1 1h-1 2l-2 1 1 1h1v-1h1v1-1 1h2l-1-1h1v-1 1h6v-1h1v1h-1l-1 1h-3v1h-1-1l1 1h4v-1h1v-1l1 1v-1h5v-1l1 1h2l1-1-1-2v-1h-1v-1 3h-1v-1h-1v-1-1l-1 1v-1h-1l-1-1v-1h-1v3h1l-1 1h1v1h-4v-1h-3v-1h-5-1zm30 22a1 1 0 0 0-1-1v-1h-1-1l-1-1-1-1s1 0 0 0v1l-2-1-1-3a4 4 0 0 1-1 0v-1l-1-1h-1-2l-1 1-1 1v-1-1l1-1h-1v-1h-1v-1 1l-1-1a1 1 0 0 1-1 1v1h-1c0-2-2-1-2-2h-1v3h-2v-1h-1v-1-2h-2l-1 1h-3v1h-1l-1 1v1h-1v1h-1v1h1v1l1-1 1 1a3 3 0 0 1-1 0h4v-1h2v1h-4v1h-2l1 1h8l1-1v1h2v1h-6v1h-4v2h1v1h4v1l1 1h6v-1h3l1-1h1l2-1 1-1h1v2h1v1l1-1 1 1h3l1-1h1-1v-1h-1v1l-1-1-1-1h2v1h2v-1h-1 2v1h1z">
@@ -33,4 +31,3 @@ class WorldMap  extends React.Component<any, any> {
 }
 
 
-export default WorldMap;
