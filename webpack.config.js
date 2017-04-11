@@ -163,30 +163,27 @@ const config = {
           }
         ]
       },
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        exclude: [
-          'node_modules',
-        ],
-        include: [
-          path.resolve(__dirname, 'node_modules/mapbox-gl/js'),
-        ],
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                'react',
-                ['es2015', { 'modules': false }]
-              ],
-              plugins: [
-                'babel-plugin-transform-flow-strip-types',
-              ]
-            }
-          }
-        ]
-      },
+      // {
+      //   test: /\.js$/,
+      //   enforce: 'pre',
+      //   exclude: [
+      //     'node_modules',
+      //   ],
+      //   use: [
+      //     {
+      //       loader: 'babel-loader',
+      //       options: {
+      //         presets: [
+      //           'react',
+      //           ['es2015', { 'modules': false }]
+      //         ],
+      //         plugins: [
+      //           'babel-plugin-transform-flow-strip-types',
+      //         ]
+      //       }
+      //     }
+      //   ]
+      // },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({

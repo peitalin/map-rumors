@@ -9,6 +9,7 @@
     "babel:watch": "babel --presets es2015 src/server.js --watch --out-file src/server-compiled.js",
     "nodemon": "nodemon src/server-compiled.js",
     "build": "rm ./dist/*bundle*; rm ./dist/*worker*; export NODE_ENV='production'; webpack --progress; export NODE_ENV='development'",
+    "ssr-server": "babel-node --presets react,es2015 src/server.tsx",
     "serve": "node --harmony-async-await ./dist/server.js",
     "start": "export NODE_ENV='production'; webpack-dev-server --hot --progress --colors; export NODE_ENV='development'",
     "dev": "webpack-dev-server --hot --progress --colors"
@@ -41,7 +42,7 @@
       "(css|less|sass|scss)$": "<rootDir>/src/__mocks__/styleMock.js"
     }
   },
-  "typings": "./index.d.ts",
+  "typings": "./node_modules/@types",
   "devDependencies": {
     "@types/auth0-lock": "^10.9.0",
     "@types/chai": "^3.4.34",
@@ -94,7 +95,7 @@
   "dependencies": {
     "antd": "^2.8.2",
     "apollo-client": "^1.0.2",
-    "auth0-lock": "^10.11.0",
+    "auth0-lock": "^10.14.0",
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
     "google-map-react": "^0.22.3",
