@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Arrow Dev Mode</title>
-        <link rel="shortcut icon" href="./favicon.ico">
-        <link rel="stylesheet" href="./styles.css" type="text/css" media="all" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arrow Dev Mode</title>
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="stylesheet" href="./styles.css" type="text/css" media="all" />
 
-        <!-- Progressive web app -->
-        <meta name="theme-color" content="#222" />
-        <link rel="manifest" href="./manifest.json" />
+    <!-- Progressive web app -->
+    <meta name="theme-color" content="#222" />
+    <link rel="manifest" href="./manifest.json" />
 
-        <!-- safari progressive web app -->
-        <link rel="apple-touch-icon" sizes="256x256" href="./icon.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <!-- safari progressive web app -->
+    <link rel="apple-touch-icon" sizes="256x256" href="./icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoEtrs7w3fIHSDvbPB7sAUw7tY7bIuAAU&libraries=places"></script>
-        <script  src="https://cdn.rawgit.com/GoogleChrome/pwacompat/v1.0.3/pwacompat.min.js"></script>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-    </head>
-    <body>
-
-        <div id="root"></div>
-        <script>
-          // if ('serviceWorker' in navigator) {
-          //   // sw.js can literally be empty, but must exist
-          //   navigator.serviceWorker.register('./sw.js');
-          // }
-        </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoEtrs7w3fIHSDvbPB7sAUw7tY7bIuAAU&libraries=places"></script>
+    <script  src="https://cdn.rawgit.com/GoogleChrome/pwacompat/v1.0.3/pwacompat.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // if ('serviceWorker' in navigator) {
+      //   // sw.js can literally be empty, but must exist
+      //   navigator.serviceWorker.register('./sw.js');
+      // }
+    </script>
 
 
-        <!-- Dependencies -->
-        <!-- Required if 'externals' is set in webpack.configjs -->
-        <!-- <script src="../node_modules/react/dist/react.js"></script> -->
-        <!-- <script src="../node_modules/react&#45;dom/dist/react&#45;dom.js"></script> -->
-        <script src="https://npmcdn.com/react@15.3.1/dist/react.min.js"></script>
-        <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
-        <!-- <script src='https://api.mapbox.com/mapbox&#45;gl&#45;js/v0.32.1/mapbox&#45;gl.js'></script> -->
-        <!-- <link href='https://api.mapbox.com/mapbox&#45;gl&#45;js/v0.32.1/mapbox&#45;gl.css' rel='stylesheet' /> -->
+    <!-- Dependencies -->
+    <!-- Required if 'externals' is set in webpack.configjs -->
+    <!-- <script src="../node_modules/react/dist/react.js"></script> -->
+    <!-- <script src="../node_modules/react&#45;dom/dist/react&#45;dom.js"></script> -->
+    <script src="https://npmcdn.com/react@15.3.1/dist/react.min.js"></script>
+    <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
+    <!-- <script src='https://api.mapbox.com/mapbox&#45;gl&#45;js/v0.32.1/mapbox&#45;gl.js'></script> -->
+    <!-- <link href='https://api.mapbox.com/mapbox&#45;gl&#45;js/v0.32.1/mapbox&#45;gl.css' rel='stylesheet' /> -->
 
-        <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script> -->
-        <!-- <script> var bbox = turf.bbox(features); </script> -->
+    <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script> -->
+    <!-- <script> var bbox = turf.bbox(features); </script> -->
 
-        <!-- Main, not needed if using html-webpack-plugin-->
-        <script type="text/javascript" src="./vendor.js"></script>
-        <script type="text/javascript" src="./bundle.js"></script>
+    <!-- Main, not needed if using html-webpack-plugin-->
+    <script type="text/javascript" src="./vendor.js"></script>
+    <script type="text/javascript" src="./bundle.js"></script>
+
+  </body>
 </html>
