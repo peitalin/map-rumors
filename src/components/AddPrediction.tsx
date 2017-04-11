@@ -163,8 +163,10 @@ const AddPredictionGQL = compose(
   graphql(linkPredictionMutation, { name: 'linkPrediction', fetchPolicy: 'network-only' })
 )( AddPrediction )
 
-const mapStateToProps = (state) => {
-  return { userGQL: state.userGQL }
+const mapStateToProps = ( state ) => {
+  return {
+    userGQL: state.reduxReducer.userGQL
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

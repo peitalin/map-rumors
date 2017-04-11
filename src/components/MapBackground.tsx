@@ -342,7 +342,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   private onDrag = (map: mapboxgl.Map, event: EventData): void => {
 
     if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
-      // laggy on mobile, so disabl
+      // laggy on mobile, so disable
       return
     }
 

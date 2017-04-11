@@ -21,34 +21,34 @@ import './index.scss'
 import { lazyLoad } from './utils/lazyLoad'
 
 //// Components
-// import Title from './components/Title'
-// import LandingPage from './components/LandingPage'
-// import LoginAuth0 from './components/LoginAuth0'
-//
-// import PredictionListings from './components/PredictionListings'
-// import PredictionStats from './components/PredictionStats'
-//
-// import MapBackground from './components/MapBackground'
-// import HouseStats from './components/HouseStats'
-// import Nav from './components/Nav'
-//
-// // import Demo from './components/DraggableGrid'
-// import Subscriptions from './components/Subscriptions'
+import Title from './components/Title'
+import LandingPage from './components/LandingPage'
+import LoginAuth0 from './components/LoginAuth0'
+
+import PredictionListings from './components/PredictionListings'
+import PredictionStats from './components/PredictionStats'
+
+import MapBackground from './components/MapBackground'
+import HouseStats from './components/HouseStats'
+import Nav from './components/Nav'
+
+// import Demo from './components/DraggableGrid'
+import Subscriptions from './components/Subscriptions'
 
 
 //////// Lazy-loading Components by Route /////////
-const Title = lazyLoad(() => System.import('./components/Title.tsx').then(module => module.default))
-const LandingPage = lazyLoad(() => System.import('./components/LandingPage.tsx').then(module => module.default))
-const LoginAuth0 = lazyLoad(() => System.import('./components/LoginAuth0.tsx').then(module => module.default))
-
-const PredictionListings = lazyLoad(() => System.import('./components/PredictionListings.tsx').then(module => module.default))
-const PredictionStats = lazyLoad(() => System.import('./components/PredictionStats.tsx').then(module => module.default))
-
-const MapBackground = lazyLoad(() => System.import('./components/MapBackground.tsx').then(module => module.default))
-const HouseStats = lazyLoad(() => System.import('./components/HouseStats.tsx').then(module => module.default))
-const Nav = lazyLoad(() => System.import('./components/Nav.tsx').then(module => module.default))
-
-const Subscriptions = lazyLoad(() => System.import('./components/Subscriptions.tsx').then(module => module.default))
+// const Title = lazyLoad(() => System.import('./components/Title.tsx').then(module => module.default))
+// const LandingPage = lazyLoad(() => System.import('./components/LandingPage.tsx').then(module => module.default))
+// const LoginAuth0 = lazyLoad(() => System.import('./components/LoginAuth0.tsx').then(module => module.default))
+//
+// const PredictionListings = lazyLoad(() => System.import('./components/PredictionListings.tsx').then(module => module.default))
+// const PredictionStats = lazyLoad(() => System.import('./components/PredictionStats.tsx').then(module => module.default))
+//
+// const MapBackground = lazyLoad(() => System.import('./components/MapBackground.tsx').then(module => module.default))
+// const HouseStats = lazyLoad(() => System.import('./components/HouseStats.tsx').then(module => module.default))
+// const Nav = lazyLoad(() => System.import('./components/Nav.tsx').then(module => module.default))
+//
+// const Subscriptions = lazyLoad(() => System.import('./components/Subscriptions.tsx').then(module => module.default))
 
 
 
@@ -87,6 +87,7 @@ const client = new ApolloClient({
   dataIdFromObject: o => o.id, // enable object ID for better cacheing
   queryDeduplication: true, // batch graphql queries
 });
+
 
 export const reduxStore = createStore(
   combineReducers({

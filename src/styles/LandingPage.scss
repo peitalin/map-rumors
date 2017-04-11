@@ -11,7 +11,7 @@
 }
 
 .landing-page-header-container {
-  height: 50vh;
+  height: 48vh;
 }
 
 .landing-page-header {
@@ -26,12 +26,27 @@
   padding-right: 10%;
   border-left: 4px solid #1BD1C1;
   margin-bottom: 8vh;
-  max-width: 600px;
+  max-width: 720px;
   h3 {
-    line-height: 2rem;
+    line-height: 1.2rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    /* adds to 2rem */
   }
 }
 
+.landing-languages {
+  height: 2vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .languages {
+    margin: 0.2rem;
+    a {
+      color: #1BD1C1;
+    }
+  }
+}
 
 .world-map-container {
   height: 50vh;
@@ -59,6 +74,11 @@
   }
 }
 
+
+
+.landing-page-subscriptions-container {
+  height: 100vh;
+}
 
 .landing-page-subscriptions {
   margin: 0% 10% 10% 10%;

@@ -6,7 +6,7 @@ export default class WorldMap  extends React.Component<any, any> {
 
   render() {
     return (
-<svg className='worldmap' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673 343" width="538" height="274">
+<svg className='worldmap' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350" width="600" height="310">
   <g id='worldmap' fillRule="evenodd">
     <path d="M110 24v1h1l1-1h2v-1-1h1v-1a1 1 0 0 0-1-1v1h-1-2l-2 1v2h1zm34-2h-3v1h6v-1h-1-2zm27 13v-1h-1v1h-1l-1 1v2l2 1 1-1h3l1-1h1v-1-1h-1a1 1 0 0 1 0-1v1l-1-1h-1l-1 1h-1z" >
     </path>

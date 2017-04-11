@@ -5,13 +5,15 @@ html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  width: initial !important;
+  height: initial !important;
 }
 
 body {
   font-family: Helvetica, sans-serif !important;
   line-height: initial !important;
   color: #222;
-	background-color: #F8F8F8 !important;
+  background-color: #F8F8F8 !important;
   padding: 1px;
   margin: 0px;
 }
