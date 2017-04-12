@@ -63,7 +63,7 @@ export default class LandingPage extends React.Component<any, any> {
           transitionAppear={true}
           transitionAppearTimeout={300}
           transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}>
+          transitionLeave={false}>
           { switchLanguageHeader(this.state.language) }
         </CSSTransitionGroup>
 
@@ -71,13 +71,7 @@ export default class LandingPage extends React.Component<any, any> {
           <WorldMap/>
         </div>
 
-        <CSSTransitionGroup
-          transitionName="landing-header-fade"
-          transitionEnterTimeout={300}
-          transitionLeave={false}>
-          { switchLanguageHeader2(this.state.language) }
-        </CSSTransitionGroup>
-
+        { switchLanguageHeader2(this.state.language) }
         <div className="landing-page-subscriptions-container">
           <div className='landing-page-subscriptions'>
             <Subscriptions landingPage={true}/>
