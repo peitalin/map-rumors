@@ -76,88 +76,43 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
     landingPage: false
   }
 
-  componentWillReceiveProps(nextProps: SubscriptionsProps) {
-    if (!nextProps.data.loading) {
-      if (this.subscription) {
-        if (nextProps.data.allPredictions === this.props.data.allPredictions) {
-          // we already have an active subscription with the right params
-          console.info("A) active subscription, no need to restart subscription")
-          return
-        } else {
-          // if the feed has changed, we need to unsubscribe before resubscribing
-          console.info("A) Unsubscribe before resubscribing")
-          this.subscription();
-        }
-      }
+  componentDidMount() {
+    this.subscription = this.props.data.subscribeToMore({
+      document: subscriptionQuery,
+      variables: null,
+      onError: (err) => console.error(err),
+      updateQuery: ( prevState, { subscriptionData } ) => {
+        let mutationType = subscriptionData.data.Prediction.mutation
+        let newPrediction = subscriptionData.data.Prediction.node
+        var nextState: SubscriptionState
 
-      console.info("B) Subscribing")
-      this.subscribeToDeleted()
-
-      this.subscription = nextProps.data.subscribeToMore({
-        // pubsub on "UPDATED" instead of "CREATED" since we need to wait
-        // for link between user -> bid -> pokemon to finish
-        document: subscriptionQuery,
-        variables: null,
-        // this is where the magic happens.
-        updateQuery: (prevState, { subscriptionData }) => {
-          // console.info("subscriptionData: ", subscriptionData)
-          var mutationType = subscriptionData.data.Prediction.mutation
-          var newPrediction = subscriptionData.data.Prediction.node
-          console.info("1)Mutation type: ", mutationType)
-          var nextState: SubscriptionState
-
-          if (mutationType === 'UPDATED') {
+        switch (mutationType) {
+          case 'CREATED': {
             nextState = {
               ...prevState,
               allPredictions: [...prevState.allPredictions, newPrediction]
             }
-            // console.info("[UPDATED]prevState: ", prevState)
-            console.info("2)[UPDATED]newState: ", nextState)
+            // console.info("[CREATED]prevState: ", prevState)
+            // console.info("2)[CREATED]newState: ", nextState)
             return nextState
           }
-
-          // if (mutationType === 'DELETED') {
-          //   nextState = {
-          //     ...prevState,
-          //     allPredictions: prevState.allPredictions.filter(p => p.id !== subscriptionData.data.Prediction.previousValues.id)
-          //   }
-          //   // console.info("[DELETED]prevState: ", prevState)
-          //   console.info("2)[DELETED]newState: ", nextState)
-          //   return nextState
-          // }
-        },
-        onError: (err) => console.error(err),
-      })
-    }
-  }
-
-
-  subscribeToDeleted = () => {
-    this.subscription = this.props.data.subscribeToMore({
-      // pubsub on "UPDATED" instead of "CREATED" since we need to wait
-      // for link between user -> bid -> pokemon to finish
-      document: subscriptionQuery,
-      variables: null,
-      // this is where the magic happens.
-      updateQuery: (prevState, { subscriptionData }) => {
-        var mutationType = subscriptionData.data.Prediction.mutation
-        var newPrediction = subscriptionData.data.Prediction.node
-        var nextState: SubscriptionState
-
-        if (mutationType === 'DELETED') {
-          nextState = {
-            ...prevState,
-            allPredictions: prevState.allPredictions.filter(p => p.id !== subscriptionData.data.Prediction.previousValues.id)
+          case 'DELETED': {
+            nextState = {
+              ...prevState,
+              allPredictions: prevState.allPredictions.filter(
+                p => p.id !== subscriptionData.data.Prediction.previousValues.id
+              )
+            }
+            // console.info("[DELETED]prevState: ", prevState)
+            // console.info("2)[DELETED]newState: ", nextState)
+            return nextState
           }
-          // console.info("[DELETED]prevState: ", prevState)
-          console.info("2)[DELETED]newState: ", nextState)
-          return nextState
+          default:
+            console.error("Subscription mutationType not implemented!")
+            return prevState
         }
-
-      },
-      onError: (err) => console.error(err),
+      }
     })
-
   }
 
   formatDollars = (dollars: number): string => {
@@ -185,7 +140,7 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
     if (this.props.data.loading) {
       return (
       <Title>
-        <div style={{ display: 'flex', flex: '1 1 auto', justifyContent: 'center' }}>
+        <div className="subscriptions-loading">
           Loading Subscriptions<Loader color="#222" size="3px" margin="2px"/>
         </div>
         <Loader color="#222" size="16px" margin="100px"/>
@@ -197,21 +152,19 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
     }
 
     if (this.props.data.allPredictions) {
+      let allPredictions = this.props.data.allPredictions.map(p => (
+        <div className='subscriptions-inner'
+          id={p.id} key={p.id}
+          onClick={() => this.gotoPredictionLocation(p.house)}
+        >
+          <div>{ p.user.emailAddress }</div>
+          <div>{ this.formatDollars(p.prediction) }</div>
+          <div>{ p.house.address }</div>
+        </div>
+      )
       return (
         <DraggableList className="subscriptions-outer">
-          {
-            this.props.data.allPredictions.map(p => {
-              return (
-                <div className='subscriptions-inner'
-                  id={p.id} key={p.id}
-                  onClick={() => this.gotoPredictionLocation(p.house)}>
-                    <div>{ p.user.emailAddress }</div>
-                    <div>{ this.formatDollars(p.prediction) }</div>
-                    <div>{ p.house.address }</div>
-                </div>
-              )
-            })
-          }
+          { allPredictions }
         </DraggableList>
       )
     } else {
@@ -226,7 +179,7 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
 
 const query = gql`
 query {
-  allPredictions {
+  allPredictions(last: 10) {
     id
     prediction
     user {
@@ -245,7 +198,7 @@ query {
 
 const subscriptionQuery = gql`
 subscription {
-  Prediction(filter: { mutation_in: [UPDATED,DELETED] }) {
+  Prediction(filter: { mutation_in: [CREATED,DELETED] }) {
     mutation
     node {
       prediction

@@ -89,7 +89,7 @@
 
 .landing-page-subscriptions {
   margin: 0% 10% 10% 10%;
-  max-width: 600px;
+  max-width: 900px;
   z-index: 1;
   border-left: 2px solid #444444;
   border-bottom: 2px solid #444444;
@@ -115,5 +115,5 @@
 }
 .landing-header-fade-leave.landing-header-fade-leave-active {
   opacity: 0.01;
-  transition: opacity 0ms ease-in;
+  transition: opacity 300ms ease-in;
 }

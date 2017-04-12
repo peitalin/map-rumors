@@ -61,9 +61,9 @@ export default class LandingPage extends React.Component<any, any> {
         <CSSTransitionGroup
           transitionName="landing-header-fade"
           transitionAppear={true}
-          transitionAppearTimeout={400}
-          transitionEnterTimeout={400}
-          transitionLeave={false}>
+          transitionAppearTimeout={300}
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}>
           { switchLanguageHeader(this.state.language) }
         </CSSTransitionGroup>
 
@@ -73,7 +73,7 @@ export default class LandingPage extends React.Component<any, any> {
 
         <CSSTransitionGroup
           transitionName="landing-header-fade"
-          transitionEnterTimeout={500}
+          transitionEnterTimeout={300}
           transitionLeave={false}>
           { switchLanguageHeader2(this.state.language) }
         </CSSTransitionGroup>

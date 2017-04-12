@@ -120,7 +120,6 @@ export default class App extends React.Component {
 
   render() {
     if(!this.state.rehydrated) {
-      console.info(enUS)
       return <Title></Title>
     }
     return (

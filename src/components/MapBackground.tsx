@@ -170,7 +170,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   }
 
   componentWillUpdate(nextProps) {
-    if (this.map && this.props.flying) {
+    let map: mapboxgl.Map = this.map
+    if (map && this.props.flying) {
       this.setState({
         gParcels: {
           ...this.state.gParcels,
@@ -191,8 +192,9 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   }
 
   componentDidUpdate(prevProps) {
-    if (this.map && this.props.flying) {
-      this.map.flyTo({
+    let map: mapboxgl.Map = this.map
+    if (map && this.props.flying) {
+      map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
         speed: 3, // make flying speed 3x fast
         curve: 1.2, // make zoom intensity 1.1x as fast

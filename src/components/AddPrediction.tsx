@@ -16,15 +16,19 @@ import { iHouse, mutationResponsePrediction as mutationResponse } from './interf
 
 interface AddPredictionProps {
   createPrediction({
-    variables: { prediction: number }
+    variables: {
+      prediction: number
+      userId: string
+      predictionId: string
+    }
   })?: void // graphql-mutation
 
-  linkPrediction({
-    variables: { userId: string, predictionId: string, houseId }
-  })?: void // graphql-mutation
-
-
-  userGQL?: userGQL // redux
+  data?: {
+    loading: boolean
+    error: any
+    House: iHouse
+  }
+  userGQL: userGQL // redux
   updateUserProfileRedux(userProfile: userGQL)?: void // redux
   isLoading(bool: boolean)?: void // redux
   dispatch(action: { type: string, payload: any })?: void // redux
@@ -42,14 +46,13 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
     prediction: 1000 * Math.round(500 + Math.random() * 500)
   }
 
-
-  updatePredictionsRedux = (newPredictionId = 'tempId'): void => {
+  private updatePredictionsRedux = (newPredictionId = 'tempId'): void => {
     let predictions: iPrediction[] = this.props.userGQL.predictions
     let House: iHouse = this.props.data.House
     let newPrediction = predictions.filter(prediction => prediction.id === 'tempId')
 
     if (newPrediction.length > 0) {
-      console.warn(`House: ${House.address} is already in the list! Updating PredictionId.`)
+      // console.info(`House: ${House.address} is already in the list! Updating PredictionId.`)
       let oldPredictions = predictions.filter(prediction => prediction.id !== 'tempId')
       let newPredictions = [
         ...oldPredictions,
@@ -57,7 +60,7 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
       ]
       this.props.updateUserProfileRedux({ ...this.props.userGQL, predictions: newPredictions })
     } else {
-      console.warn('Optimistically updating user predictions in Redux.')
+      // console.info('Optimistically updating user predictions in Redux.')
       let newPredictions = [
         ...predictions,
         { prediction: this.state.prediction, id: newPredictionId, house: House }
@@ -66,20 +69,16 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
     }
   }
 
-  createPrediction = async(prediction: number): void => {
+  private createPrediction = async(prediction: number): void => {
     this.props.isLoading(true)
     // Redux optimistic update
     this.updatePredictionsRedux()
     // GraphQL createBid
     let createPredictionResponse: mutationResponse = await this.props.createPrediction({
-      variables: { prediction: this.state.prediction }
-    })
-    // Graphl Link bid
-    let linkBidResponse: mutationResponse = await this.props.linkPrediction({
       variables: {
+        prediction: this.state.prediction
         userId: this.props.userGQL.id,
         houseId: this.props.data.House.id,
-        predictionId: createPredictionResponse.data.createPrediction.id,
       }
     })
     this.updatePredictionsRedux(createPredictionResponse.data.createPrediction.id)
@@ -106,62 +105,19 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
 
 
 const createPredictionMutation = gql`
-mutation($prediction: Float) {
-  createPrediction(prediction: $prediction) {
+mutation($prediction: Float, $userId: ID!, $houseId: ID!) {
+  createPrediction(
+    prediction: $prediction
+    userId: $userId
+    houseId: $houseId
+    linkComplete: true
+  ) {
     id
     prediction
   }
 }
 `
 
-
-const linkPredictionMutation = gql`
-mutation($userId: ID!, $predictionId: ID!, $houseId: ID!) {
-
-  addToUserPrediction(userUserId: $userId, predictionsPredictionId: $predictionId) {
-    userUser {
-      id
-      predictions {
-        id
-        prediction
-        house {
-          id
-          address
-        }
-      }
-    }
-  }
-
-  addToPredictionHouse(predictionsPredictionId: $predictionId, houseHouseId: $houseId) {
-    houseHouse {
-      id
-    }
-    predictionsPrediction {
-      id
-    }
-  }
-
-  updatePrediction(id: $predictionId, linkComplete: true) {
-    id
-    user {
-      id
-      emailAddress
-    }
-    house {
-      id
-      address
-    }
-    linkComplete
-  }
-}
-`
-
-
-
-const AddPredictionGQL = compose(
-  graphql(createPredictionMutation, { name: 'createPrediction' }),
-  graphql(linkPredictionMutation, { name: 'linkPrediction', fetchPolicy: 'network-only' })
-)( AddPrediction )
 
 const mapStateToProps = ( state ) => {
   return {
@@ -176,4 +132,8 @@ const mapDispatchToProps = (dispatch) => {
     dispatch: dispatch,
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)( AddPredictionGQL )
+
+export default compose(
+  graphql(createPredictionMutation, { name: 'createPrediction' }),
+  connect(mapStateToProps, mapDispatchToProps)
+)( AddPrediction )

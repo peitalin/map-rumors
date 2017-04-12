@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Motion, spring } from 'react-motion';
 import * as range from 'lodash/range';
+import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 
 const reinsert = (arr, from, to) => {
@@ -79,7 +80,7 @@ export default class DraggableList extends React.Component<any, any> {
   render() {
     let { mouseY, isPressed, originalPosOfLastPressed, order } = this.state
 
-    let DragDivs = this.props.children.map((child, i) => {
+    let DragDivs: Array<JSX.Element> = this.props.children.map((child, i) => {
       const style = originalPosOfLastPressed === i && isPressed
         ? { scale: spring(1.1, springConfig),
             shadow: spring(16, springConfig),
@@ -111,11 +112,16 @@ export default class DraggableList extends React.Component<any, any> {
         </Motion>
       )
 
-    })
+    });
 
     return (
       <div className={this.props.className}>
-        { DragDivs }
+        <CSSTransitionGroup
+          transitionName="subscription-draggable-fade"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}>
+          { DragDivs }
+        </CSSTransitionGroup>
       </div>
     )
   }

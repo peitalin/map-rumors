@@ -35,10 +35,12 @@ export class Nav extends React.Component<NavProps, any> {
     })
 
     return (
-      <div className='Nav Breadcrumb'>
-        <Breadcrumb>
-          { crumbs }
-        </Breadcrumb>
+      <div className='navigation-bar'>
+        <div className='Nav Breadcrumb'>
+          <Breadcrumb>
+            { crumbs }
+          </Breadcrumb>
+        </div>
       </div>
     )
   }
