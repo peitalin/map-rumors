@@ -48,13 +48,15 @@
   padding: 2%;
   transition: background-color 0.2s ease;
   transition: width 0.2s ease;
-  height: 100%;
 }
 .subscriptions-inner:hover {
   border: 1px solid #e4bFeF;
   background-color: #D4AFDF;
   color: #222;
   transition: background-color 0.2s ease;
+}
+.subscriptions-inner-expand-height {
+  height: 100%;
 }
 
 
@@ -66,38 +68,39 @@
   flex: 200px;
 }
 
-.draggable-item:hover {
-  transition: filter 0.3s ease;
-}
-
 // CSS transitions
 // 1st time appearing
+$min-height: 0px;
+$max-height: 65px;
 .subscription-draggable-fade-appear {
   opacity: 0.01;
+  height: $min-height;
 }
 .subscription-draggable-fade-appear.subscription-draggable-fade-appear-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 200ms ease-in;
+  height: $max-height;
+  transition: height 200ms ease-in;
 }
 // entering
 .subscription-draggable-fade-enter {
   opacity: 0.01;
-  width: 0%;
+  height: $min-height;
 }
 .subscription-draggable-fade-enter.subscription-draggable-fade-enter-active {
   opacity: 1;
-  width: 100%;
-  transition: opacity 500ms ease-in;
-  transition: width 500ms ease-in;
+  height: $max-height;
+  transition: opacity 200ms ease-in;
+  transition: height 200ms ease-in;
 }
 // leaving
 .subscription-draggable-fade-leave {
   opacity: 1;
-  width: 100%;
+  height: $max-height;
 }
 .subscription-draggable-fade-leave.subscription-draggable-fade-leave-active {
   opacity: 0.01;
-  transition: opacity 500ms ease-in;
-  width: 0%;
-  transition: width 500ms ease-in;
+  transition: opacity 200ms ease-in;
+  height: $min-height;
+  transition: height 200ms ease-in;
 }

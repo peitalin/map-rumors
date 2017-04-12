@@ -108,7 +108,7 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
             return nextState
           }
           default:
-            console.error("Subscription mutationType not implemented!")
+            console.error(`Subscription mutationType: ${mutationType} not implemented!`)
             return prevState
         }
       }
@@ -152,9 +152,12 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
     }
 
     if (this.props.data.allPredictions) {
+      let cssClass = this.props.landingPage
+        ? "subscriptions-inner subscriptions-inner-expand-height"
+        : "subscriptions-inner"
+
       let allPredictions = this.props.data.allPredictions.map(p => (
-        <div className='subscriptions-inner'
-          id={p.id} key={p.id}
+        <div className={cssClass} id={p.id} key={p.id}
           onClick={() => this.gotoPredictionLocation(p.house)}
         >
           <div>{ p.user.emailAddress }</div>
@@ -163,7 +166,7 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
         </div>
       )
       return (
-        <DraggableList className="subscriptions-outer">
+        <DraggableList className='subscriptions-outer'>
           { allPredictions }
         </DraggableList>
       )

@@ -22,7 +22,6 @@ interface AddPredictionProps {
       predictionId: string
     }
   })?: void // graphql-mutation
-
   data?: {
     loading: boolean
     error: any

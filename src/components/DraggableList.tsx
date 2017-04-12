@@ -118,8 +118,8 @@ export default class DraggableList extends React.Component<any, any> {
       <div className={this.props.className}>
         <CSSTransitionGroup
           transitionName="subscription-draggable-fade"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}>
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}>
           { DragDivs }
         </CSSTransitionGroup>
       </div>
