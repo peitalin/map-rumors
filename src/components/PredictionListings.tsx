@@ -3,12 +3,14 @@
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
 import { ReduxState } from '../reducer'
+import { Link } from 'react-router-dom'
+import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import * mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
-import { Link } from 'react-router-dom'
 import { iHouse, userGQL, mutationResponsePrediction as mutationResponse } from './interfaceDefinitions'
 import 'styles/PredictionListings.scss'
 
@@ -115,13 +117,13 @@ export class PredictionListings extends React.Component<any, any> {
       <div className='prediction-listings-container'>
         <div className='prediction-listings-inner'>
 
-          {/* <div className='prediction-listings-heading'> */}
-          {/*   {( */}
-          {/*     this.props.loading */}
-          {/*     ? <Loader color="#222" size="12px" margin="4px"/> */}
-          {/*     : <h1>Listings</h1> */}
-          {/*   )} */}
-          {/* </div> */}
+          <div className='prediction-listings-heading'>
+            {(
+              this.props.loading
+              ? <Loader color="#222" size="12px" margin="4px"/>
+              : undefined
+            )}
+          </div>
 
           <Tabs defaultActiveKey={this.props.userGQL.predictions[0].id}>
             { predictionTabs }

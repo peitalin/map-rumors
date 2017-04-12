@@ -15,6 +15,7 @@ import thunk from 'redux-thunk'
 import reduxReducer from './reducer'
 //// Styles
 import * as enUS from 'antd/lib/locale-provider/en_US';
+import * as ruRU from 'antd/lib/locale-provider/ru_RU';
 import * as LocaleProvider from 'antd/lib/locale-provider'
 import './index.scss'
 //// Lazyload
@@ -119,6 +120,7 @@ export default class App extends React.Component {
 
   render() {
     if(!this.state.rehydrated) {
+      console.info(enUS)
       return <Title></Title>
     }
     return (

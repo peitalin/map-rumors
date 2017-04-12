@@ -2,18 +2,18 @@
 
 
 import * as React from 'react'
-import gql from 'graphql-tag'
-import { graphql, ApolloProvider, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { ReduxState } from '../reducer'
+import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
+import gql from 'graphql-tag'
+import { graphql, ApolloProvider, withApollo } from 'react-apollo'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { iPrediction, iHouse } from './interfaceDefinitions'
-import Title from './Title'
-
-
 import '../styles/Subscriptions.scss'
+
+import Title from './Title'
 
 import * as Loader from 'halogen/PulseLoader'
 import DraggableList from './DraggableList'
