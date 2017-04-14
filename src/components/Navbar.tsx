@@ -7,16 +7,16 @@ import { Link, withRouter, Location } from 'react-router-dom'
 import * as Breadcrumb from 'antd/lib/breadcrumb'
 import 'antd/lib/breadcrumb/style/css'
 
-import 'styles/Nav.scss'
+import 'styles/Navbar.scss'
 
 
 
-interface NavProps {
+interface NavbarProps {
   location?:  Location
 }
 
 
-export class Nav extends React.Component<NavProps, any> {
+export class Navbar extends React.Component<NavbarProps, any> {
 
   static getRouterPath = (pathname: string, n: number = 0): string => {
     return (pathname === '') ? '/' : pathname.split('/').slice(0, n+1).join('/')
@@ -27,7 +27,7 @@ export class Nav extends React.Component<NavProps, any> {
     let crumbs = pathname.split('/').map((url, i) => {
       return (
         <Breadcrumb.Item key={url}>
-          <Link to={ Nav.getRouterPath(pathname, i) }>
+          <Link to={ Navbar.getRouterPath(pathname, i) }>
             { url }
           </Link>
         </Breadcrumb.Item>
@@ -47,6 +47,6 @@ export class Nav extends React.Component<NavProps, any> {
 }
 
 
-export default withRouter( Nav )
+export default withRouter( Navbar )
 
 

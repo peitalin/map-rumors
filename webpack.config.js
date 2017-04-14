@@ -43,7 +43,11 @@ var fontSrc = isProduction
 
 if (isProduction) {
   plugins = [
-    new ExtractTextPlugin({ filename: "styles.css", disable: false }),
+    new ExtractTextPlugin({
+      filename: "styles.css", // output css file with same name as the entry point.
+      allChunks: true,
+      disable: false,
+    }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -76,7 +80,10 @@ if (isProduction) {
     // enable HMR globally, do NOT use with webpack-dev-server --hot, applied twice
     new webpack.NamedModulesPlugin(),
     // prints more readable module names in the browser console on HMR updates
-    new ExtractTextPlugin({ filename: "styles.css", disable: true }), // can give css style flashes
+    new ExtractTextPlugin({
+      filename: "styles.css",
+      disable: true, // can give css style flashes
+    }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -126,8 +133,8 @@ const config = {
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
-    // "react": "React",
-    // "react-dom": "ReactDOM",
+    "react": "React",
+    "react-dom": "ReactDOM",
     // "auth0-lock": "Auth0Lock",
     // "mapbox-gl": "mapboxgl",
     // // must keep mapboxgl external if not using alias.
@@ -156,6 +163,7 @@ const config = {
         use: [
           {
             loader: 'awesome-typescript-loader',
+            // loader: 'ts-loader',
             options: {
               transpileOnly: true,
               useTranspileModule: true

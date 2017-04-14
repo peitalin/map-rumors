@@ -6,8 +6,7 @@ import { ReduxState } from '../reducer'
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
-import * as Flipcard from 'react-flipcard'
-
+import Flipcard from './FlipCard'
 import HouseStats from './HouseStats'
 import ModalMap from './ModalMap'
 
@@ -46,7 +45,6 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
 
   flipCard = () => {
     this.setState({ isFlipped: !this.state.isFlipped })
-    console.info(this.state.isFlipped)
   }
 
   randHouse = () => {

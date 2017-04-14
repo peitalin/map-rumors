@@ -5,7 +5,7 @@ import * as renderer from 'react-test-renderer'
 import { mount, shallow } from 'enzyme'
 
 import Title from '../Title'
-import * as Loader from 'halogen/DotLoader'
+import { SpinnerRectangle } from '../Spinners'
 import { HouseStats } from '../HouseStats'
 
 const MockProps = {
@@ -44,7 +44,7 @@ test('<HouseStats /> component should contain 1 <Title> on error', () => {
 
 test('<HouseStats /> component should contain 1 <Loader> on loading', () => {
   const el = shallow( <HouseStats {...{...MockProps, data: {...MockProps.data, loading: true}}} /> )
-  expect(el.find(Loader).length).toEqual(1)
+  expect(el.find(SpinnerRectangle).length).toEqual(1)
 })
 
 test('<HouseStats /> component matches snapshot', () => {

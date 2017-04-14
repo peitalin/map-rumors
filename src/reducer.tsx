@@ -3,15 +3,17 @@ import { iPokemon, userGQL } from './components/interfaceDefinitions'
 
 
 export interface ReduxState {
-  latitude: number
-  longitude: number
-  showModal: boolean
-  userGQL: userGQL
-  loading: boolean
-  flying: boolean
-  lotPlan: string
-  gData: geoData
-  allPredictions: iPrediction[]
+  reduxReducer: {
+    latitude: number
+    longitude: number
+    showModal: boolean
+    userGQL: userGQL
+    loading: boolean
+    flying: boolean
+    lotPlan: string
+    gData: geoData
+    allPredictions: iPrediction[]
+  }
 }
 
 
@@ -47,7 +49,7 @@ const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState
     case "LOADING":
       return { ...state, loading: action.payload }
 
-    case "FLYING":
+    case "UPDATE_FLYING":
       return { ...state, flying: action.payload }
 
     case "SHOW_MODAL":

@@ -3,7 +3,8 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
-import * as Loader from 'halogen/DotLoader'
+
+import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import Title from './Title'
 
 import * as Card from 'antd/lib/card'
@@ -85,78 +86,83 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
       return (
         <Title style={{ height: '200px', width: '100px' }}>
           <div onClick={this.props.flipCard}>
-            <Loader color="#08415C" size="32px" margin="100px"/>
+            <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
           </div>
         </Title>
       )
     }
+    if (this.props.data.House) {
+      let {
+        id,
+        address,
+        bedrooms,
+        bathrooms,
+        carspaces,
+        planNum,
+        lotNum,
+        lotPlan,
+        unitNum,
+        streetNum,
+        streetName,
+        streetType,
+        locality,
+      } = this.props.data.House
+      let unitStreetNum = unitNum ? `${unitNum}/${streetNum}` : `${streetNum}`
 
-    let {
-      id,
-      address,
-      bedrooms,
-      bathrooms,
-      carspaces,
-      planNum,
-      lotNum,
-      lotPlan,
-      unitNum,
-      streetNum,
-      streetName,
-      streetType,
-      locality,
-    } = this.props.data.House
-    let unitStreetNum = unitNum ? `${unitNum}/${streetNum}` : `${streetNum}`
+      return (
+        <div>
+          <div style={{ paddingBottom: '10%' }} onClick={this.props.flipCard}>
+            <Row gutter={0}>
+              <Col span={24}>
+                <h2>{ unitStreetNum }</h2>
+              </Col>
+            </Row>
+            <Row gutter={0}>
+              <Col span={24}>
+                <h2>{ streetName }</h2>
+              </Col>
+            </Row>
+            <Row gutter={0}>
+              <Col span={24}>
+                <div style={{ paddingBottom: '10%' }}><h2>{ streetType }</h2></div>
+              </Col>
+            </Row>
 
+            <Row gutter={16}>
+              <Col span={12}>Bedrooms:</Col>
+              <Col span={12}>{ bedrooms }</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Bathrooms:</Col>
+              <Col span={12}>{ bathrooms }</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Carspaces:</Col>
+              <Col span={12}>{ carspaces }</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Area:</Col>
+              <Col span={12}>{(`${this.props.houseProps.LOT_AREA} sqm`)}</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Plan No:</Col>
+              <Col span={12}>{ planNum }</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Lot No:</Col>
+              <Col span={12}>{ lotNum }</Col>
+            </Row>
+          </div>
 
-    return (
-      <div>
-        <div style={{ paddingBottom: '10%' }} onClick={this.props.flipCard}>
-          <Row gutter={0}>
-            <Col span={24}>
-              <h2>{ unitStreetNum }</h2>
-            </Col>
-          </Row>
-          <Row gutter={0}>
-            <Col span={24}>
-              <h2>{ streetName }</h2>
-            </Col>
-          </Row>
-          <Row gutter={0}>
-            <Col span={24}>
-              <div style={{ paddingBottom: '10%' }}><h2>{ streetType }</h2></div>
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={12}>Bedrooms:</Col>
-            <Col span={12}>{ bedrooms }</Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>Bathrooms:</Col>
-            <Col span={12}>{ bathrooms }</Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>Carspaces:</Col>
-            <Col span={12}>{ carspaces }</Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>Area:</Col>
-            <Col span={12}>{(`${this.props.houseProps.LOT_AREA} sqm`)}</Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>Plan No:</Col>
-            <Col span={12}>{ planNum }</Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>Lot No:</Col>
-            <Col span={12}>{ lotNum }</Col>
-          </Row>
+          <AddPrediction data={this.props.data} />
         </div>
-
-        <AddPrediction data={this.props.data} />
-      </div>
-    )
+      )
+    }
+    else if (!this.props.data.House) {
+      return (
+        <div>no HouseStats</div>
+      )
+    }
   }
 }
 

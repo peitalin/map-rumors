@@ -25,7 +25,7 @@ import * as Tabs from 'antd/lib/tabs'
 import 'antd/lib/tabs/style/css'
 const TabPane = Tabs.TabPane
 
-import * as Loader from 'halogen/PulseLoader'
+import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 
 
@@ -84,7 +84,7 @@ export class PredictionListings extends React.Component<any, any> {
       return <Title><div>PredictionListings: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
-      return <Title><Loader color="#fff" size="16px" margin="16px"/></Title>
+      return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
 
     if (this.props.userGQL.predictions.length === 0) {
@@ -120,7 +120,7 @@ export class PredictionListings extends React.Component<any, any> {
           <div className='prediction-listings-heading'>
             {(
               this.props.loading
-              ? <Loader color="#222" size="12px" margin="4px"/>
+              ? <SpinnerRectangle height='36px' width='8px' dark/>
               : undefined
             )}
           </div>

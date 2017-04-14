@@ -1,11 +1,12 @@
 
 
 export interface userGQL {
-    id?: string
-    name?: string
-    emailAddress?: string
-    bids?: iBid[]
-    predictions?: iPrediction[]
+  id?: string
+  name?: string
+  emailAddress?: string
+  bids?: iBid[]
+  predictions?: iPrediction[]
+  [key: string]?: any
 }
 
 export interface iPrediction {
@@ -13,19 +14,32 @@ export interface iPrediction {
   prediction?: number
   user?: userGQL
   house?: iHouse
+  [key: string]?: any
 }
 
-export interface iBid {
+export interface iHouse {
   id?: string
-  bid?: number
-  user?: userGQL
-  pokemon?: iPokemon
+  address?: string
+  bedrooms?: number
+  bathrooms?: number
+  carspaces?: number
+  planNum?: string
+  lotNum?: string
+  lotPlan?: string
+  unitNum?: string
+  streetNum?: string
+  streetName?: string
+  streetType?: string
+  locality?: string
+  lng: number
+  lat: number
 }
+
 
 export interface mutationResponsePrediction {
-  data?: {
-    error?: string
-    loading?: boolean
+  data: {
+    error: string
+    loading: boolean
 
     createPrediction?: iPrediction
     deletePrediction?: iPrediction
@@ -51,9 +65,9 @@ export interface mutationResponsePrediction {
 
 
 export interface mutationResponseBid {
-  data?: {
-    error?: string
-    loading?: boolean
+  data: {
+    error: string
+    loading: boolean
 
     addToUserPokemons?: {
       userUser?: userGQL
@@ -76,43 +90,6 @@ export interface mutationResponseBid {
       bidsBid: { id: string }
     }
   }
-}
-
-
-export interface iPokemon {
-  id?: string
-  name?: string
-  img?: string
-  height?: number
-  weight?: number
-  attack?: number
-  defense?: number
-  hp?: number
-  spAtk?: number
-  spDef?: number
-  speed?: number
-  skills?: string[]
-  elementalType?: string[]
-  nextEvolution?: iPokemon[]
-  prevEvolution?: iPokemon[]
-}
-
-export interface iHouse {
-  id?: string
-  address?: string
-  bedrooms?: number
-  bathrooms?: number
-  carspaces?: number
-  planNum?: string
-  lotNum?: string
-  lotPlan?: string
-  unitNum?: string
-  streetNum?: string
-  streetName?: string
-  streetType?: string
-  locality?: string
-  lng: number
-  lat: number
 }
 
 

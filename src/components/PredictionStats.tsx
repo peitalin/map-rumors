@@ -12,7 +12,7 @@ import { iPrediction } from './interfaceDefinitions'
 import { Link, Redirect } from 'react-router-dom'
 
 
-import * as Loader from 'halogen/DotLoader'
+import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
@@ -63,7 +63,7 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
       return <Title><div>PredictionStats: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
-      return <Title><Loader color="#08415C" size="32px" margin="100px"/></Title>
+      return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
 
     let {
@@ -114,7 +114,6 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
                   </div>
                 </div>
                 <div style={{flexBasis: '50%'}}>
-                  <RadarGraph data={ baseStats } />
                   <AddPrediction data={ this.props.data } />
                 </div>
               </div>
@@ -127,9 +126,6 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
             </Card>
 
             <Card title='Evolutions'>
-              {/* <Evolutions */}
-              {/*   nextEvolution={nextEvolution} */}
-              {/*   prevEvolution={prevEvolution} /> */}
             </Card>
 
           </div>

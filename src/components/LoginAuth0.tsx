@@ -8,10 +8,10 @@ import { Redirect } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
 
 import { userGQL } from './interfaceDefinitions'
-import Title from './Title'
-import * as Loader from 'halogen/PulseLoader'
-
 import 'styles/LoginAuth0.scss'
+
+import Title from './Title'
+import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -92,7 +92,8 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
         <div className='login-auth0'>
           <Button id='antd-login'>
             <div className='login-auth0-loader'>
-              <Loader color="#eee" size="2px"/>Loading
+              <SpinnerRectangle height='12px' width='4px'/>
+              Loading
             </div>
           </Button>
         </div>

@@ -16,18 +16,13 @@
   top: 1%;
   box-shadow: 0px 2px 6px #d8d8d8;
   transition: 0.2s;
-  // &:not(.searchBox__expand) {
-    animation-name: positionIt;
-    animation-duration: 1.0s;
-    animation-fill-mode: forwards;
-    animation-timing-function: cubic-bezier(1,.01,.35,1.03);
-    animation-iteration-count: 1;
-  // }
 
+  animation-name: positionIt;
+  animation-duration: 1.0s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(1,.01,.35,1.03);
+  animation-iteration-count: 1;
 
-  &__inactive {
-    transform: scale(0.5) translateY(-150px);
-  }
 
   &__destination, &__source {
     display: flex;
@@ -56,10 +51,6 @@
       font-weight: 200;
       background: #fff;
     }
-  }
-
-  &__source {
-    display: none;
   }
 
   &__expand {
@@ -125,16 +116,9 @@
     }
   }
 
-  &__offline {
-    pointer-events: none;
-  }
+
 }
 
-.searchResult {
-  position: absolute;
-  top: 0;
-  background: #fff;
-}
 
 .geosuggest {
   flex-grow: 1;

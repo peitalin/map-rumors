@@ -13,14 +13,17 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 import reduxReducer from './reducer'
-//// Styles
+//// Server-side Rendered Styles
+import 'styles/App.scss'
+import 'styles/LandingPage.scss'
+import 'styles/FooterLinks.scss'
+
+//// antd
 import * as enUS from 'antd/lib/locale-provider/en_US';
 import * as ruRU from 'antd/lib/locale-provider/ru_RU';
 import * as LocaleProvider from 'antd/lib/locale-provider'
-import './index.scss'
 //// Lazyload
 import { lazyLoad } from './utils/lazyLoad'
-
 //// Components
 import Title from './components/Title'
 import LandingPage from './components/LandingPage'
@@ -31,7 +34,7 @@ import PredictionStats from './components/PredictionStats'
 
 import MapBackground from './components/MapBackground'
 import HouseStats from './components/HouseStats'
-import Nav from './components/Nav'
+import Navbar from './components/Navbar'
 
 // import Demo from './components/DraggableGrid'
 import Subscriptions from './components/Subscriptions'
@@ -47,7 +50,7 @@ import Subscriptions from './components/Subscriptions'
 //
 // const MapBackground = lazyLoad(() => System.import('./components/MapBackground.tsx').then(module => module.default))
 // const HouseStats = lazyLoad(() => System.import('./components/HouseStats.tsx').then(module => module.default))
-// const Nav = lazyLoad(() => System.import('./components/Nav.tsx').then(module => module.default))
+// const Navbar = lazyLoad(() => System.import('./components/Navbar.tsx').then(module => module.default))
 //
 // const Subscriptions = lazyLoad(() => System.import('./components/Subscriptions.tsx').then(module => module.default))
 
@@ -131,12 +134,12 @@ export default class App extends React.Component {
               <Route path="/" component={ Login }/>
 
               <Route path="/map" component={ MapBackground }/>
-              <Route path="/map" component={ Nav }/>
+              <Route path="/map" component={ Navbar }/>
               <Route path="/map" component={ PredictionListings }/>
 
               <Route path="/map" render={() => (
                 <div className='subscriptions-container'>
-                  <Subscriptions landingPage={false}/>
+                  <Subscriptions/>
                 </div>
               )}/>
 

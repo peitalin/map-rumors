@@ -2,7 +2,7 @@
 
 
 import * as React from 'react'
-import { connect } from 'react-redux'
+import { connect, Dispatch } from 'react-redux'
 import { ReduxState } from '../reducer'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
@@ -15,7 +15,7 @@ import '../styles/Subscriptions.scss'
 
 import Title from './Title'
 
-import * as Loader from 'halogen/PulseLoader'
+import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import DraggableList from './DraggableList'
 
 import * as message from 'antd/lib/message'
@@ -24,32 +24,30 @@ import 'antd/lib/message/style/css'
 
 
 
-interface SubscriptionsProps {
-  data: SubscriptionState
-  updateLngLat(lngLat: mapboxgl.LngLat): void
-  updateFlyingStatus(flying: boolean): void
-  landingPage: boolean
+interface DispatchProps {
+  updateLngLat?(lngLat: mapboxgl.LngLat): any
+  updateFlyingStatus?(flyingStatus: boolean): any
+  updateAllPredictions?(allPredictions: iPrediction[]): any
+}
+
+interface StateProps {
+  data?: SubscriptionState
+  landingPage?: boolean | null
 }
 
 interface SubscriptionState {
   allPredictions?: iPrediction[]
-  error: any
-  loading: boolean
-  fetchMore?: (): any
-  networkStatus: number
-  refetch?: (): any
-  startPolling: (): any
-  stopPolling: (): any
-  subscribeToMore({
-    documents: any
-    variables: any
-    updateQuery: (prevState: SubscriptionState, subscriptionResponse: SubscriptionResponse) => SubscriptionState
-    onError: (err: any): void
-  }): any
-  updateQuery: (prevState: SubscriptionState, subscriptionResponse: SubscriptionResponse) => SubscriptionState
-  variables: Object
+  error?: any
+  loading?: boolean
+  subscribeToMore?(params: {
+    document?: any
+    variables?: any
+    updateQuery?(prevState: any, { subscriptionData }: SubscriptionResponse): SubscriptionState
+    onError?(err: any): void
+  }): Function
+  variables?: Object
+  [key: string]: any
 }
-
 
 interface SubscriptionResponse {
   subscriptionData?: {
@@ -59,8 +57,8 @@ interface SubscriptionResponse {
         node?: {
           prediction: number
           id: string
-          user: { id: string emailAddress: string }
-          house: { id: string address: string }
+          user: { id: string, emailAddress: string }
+          house: { id: string, address: string }
         }
         previousValues?: { id: string }
       }
@@ -69,67 +67,68 @@ interface SubscriptionResponse {
 }
 
 
+interface antdMessage {
+  info(s: string): void
+}
 
-export class Subscriptions extends React.Component<SubscriptionsProps, any> {
 
-  static defaultProps = {
-    landingPage: false
+
+export class Subscriptions extends React.Component<StateProps & DispatchProps, any> {
+
+  defaultProps = {
+    landingPage: 'false'
   }
 
   componentDidMount() {
-    this.subscription = this.props.data.subscribeToMore({
+    let subscription = this.props.data.subscribeToMore({
       document: subscriptionQuery,
-      variables: null,
-      onError: (err) => console.error(err),
+      variables: {},
       updateQuery: ( prevState, { subscriptionData } ) => {
         let mutationType = subscriptionData.data.Prediction.mutation
         let newPrediction = subscriptionData.data.Prediction.node
-        var nextState: SubscriptionState
 
         switch (mutationType) {
           case 'CREATED': {
-            nextState = {
+            return {
               ...prevState,
               allPredictions: [...prevState.allPredictions, newPrediction]
             }
-            // console.info("[CREATED]prevState: ", prevState)
-            // console.info("2)[CREATED]newState: ", nextState)
-            return nextState
           }
           case 'DELETED': {
-            nextState = {
+            return {
               ...prevState,
               allPredictions: prevState.allPredictions.filter(
-                p => p.id !== subscriptionData.data.Prediction.previousValues.id
+                (p: iPrediction) => p.id !== subscriptionData.data.Prediction.previousValues.id
               )
             }
-            // console.info("[DELETED]prevState: ", prevState)
-            // console.info("2)[DELETED]newState: ", nextState)
-            return nextState
           }
-          default:
+          default: {
             console.error(`Subscription mutationType: ${mutationType} not implemented!`)
             return prevState
+          }
         }
-      }
+      },
+      onError: (err) => console.error(err),
     })
   }
 
   formatDollars = (dollars: number): string => {
     // formats into dollars: $1,000,000
-    dollars = dollars.toString()
-    dollars = dollars.split('').reverse()
-      .map((x,i) => (i%3 == 0) ? x+',' : x)
+    let dollarStr: string = dollars.toString()
+    dollarStr = dollarStr.split('').reverse()
+      .map((s: string, i: number) => (i%3 == 0) ? s+',' : s)
       .reverse().join('').slice(0,-1)
-    return  '$' + dollars
+    return  '$' + dollarStr
   }
 
   gotoPredictionLocation = (house: iHouse): void => {
-    let lngLat: mapboxgl.LngLat = { lng: house.lng, lat: house.lat }
+    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+
     if (this.props.landingPage) {
       // no need to fly around map on landingPage
       return
     } else {
+      // var message: antdMessage
       message.info(`Going to ${house.address}`)
       this.props.updateFlyingStatus(true)
       this.props.updateLngLat(lngLat)
@@ -141,9 +140,9 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
       return (
       <Title>
         <div className="subscriptions-loading">
-          Loading Subscriptions<Loader color="#222" size="3px" margin="2px"/>
+          Loading Subscriptions
+          <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
         </div>
-        <Loader color="#222" size="16px" margin="100px"/>
       </Title>
      )
     }
@@ -156,20 +155,24 @@ export class Subscriptions extends React.Component<SubscriptionsProps, any> {
         ? "subscriptions-inner subscriptions-inner-expand-height"
         : "subscriptions-inner"
 
-      let allPredictions = this.props.data.allPredictions.map(p => (
-        <div className={cssClass} id={p.id} key={p.id}
-          onClick={() => this.gotoPredictionLocation(p.house)}
-        >
-          <div>{ p.user.emailAddress }</div>
-          <div>{ this.formatDollars(p.prediction) }</div>
-          <div>{ p.house.address }</div>
-        </div>
-      )
+      let allPredictions = this.props.data.allPredictions.map((p: iPrediction) => {
+        return (
+          <div className={cssClass} id={p.id} key={p.id}
+            onClick={() => this.gotoPredictionLocation(p.house)}
+          >
+            <div>{ p.user.emailAddress }</div>
+            <div>{ this.formatDollars(p.prediction) }</div>
+            <div>{ p.house.address }</div>
+          </div>
+        )
+      })
+
       return (
         <DraggableList className='subscriptions-outer'>
           { allPredictions }
         </DraggableList>
       )
+
     } else {
       return (
         <Title>No Predictions Currently</Title>
@@ -226,25 +229,22 @@ subscription {
 
 
 
-const mapDispatchToProps = ( dispatch ) => {
+
+const mapDispatchToProps = ( dispatch: Function ) => {
   return {
-    updateLngLat: (lngLat: mapboxgl.LngLat) => dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat })
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch({ type: 'FLYING', payload: flyingStatus })
-    updateAllPredictions: (allPredictions: iPrediction[]) => dispatch({
-      type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions)
-    })
+    updateLngLat: (lngLat: mapboxgl.LngLat): any =>
+      dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat }),
+
+    updateFlyingStatus: (flyingStatus: boolean): any =>
+      dispatch({ type: 'UPDATE_FLYING', payload: flyingStatus }),
+
+    updateAllPredictions: (allPredictions: iPrediction[]): any =>
+      dispatch({ type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions }),
   }
 }
 
-export default connect(null, mapDispatchToProps)(
-  graphql(query, { options: { fetchPolicy: 'network-only' }})( Subscriptions )
+
+export default graphql(query, { options: { fetchPolicy: 'network-only' }})(
+  connect(null, mapDispatchToProps)( Subscriptions )
 )
-
-
-
-
-
-
-
-
 

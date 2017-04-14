@@ -13,10 +13,7 @@ import { MapMouseEvent, MapEvent, EventData } from 'mapbox-gl/dist/mapbox-gl'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
 
-// GoogleMaps
-import '../styles/GeoSearchBar.scss'
-import Geosuggest from 'react-geosuggest'
-import * as classNames from 'classnames'
+
 
 
 // Components
@@ -24,6 +21,7 @@ import Title from './Title'
 import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
 import HouseStats from './HouseStats'
+import GeoSearchBar from './GeoSearchBar'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -591,56 +589,13 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           showHouseCard={this.state.showHouseCard}
         />
 
+        <GeoSearchBar map={this.map} />
 
-        <div className={classNames({
-          'searchBox': true,
-          'searchBox__expand': this.state.isSearch,
-        })}>
-          <div className="searchBox__destination" >
-            <div className="searchBox__destination__legend">
-            </div>
-
-            {/* { */}
-            {/*   this.state.isSearch && ( */}
-            {/*     <div className="searchBox__source"> */}
-            {/*       <div className="searchBox__source__legend"/> */}
-            {/*       <input className="searchBox__source__input" */}
-            {/*         type="text" placeholder="Current Location" */}
-            {/*       /> */}
-            {/*     </div> */}
-            {/*   ) */}
-            {/* } */}
-
-            <Geosuggest
-              location={new google.maps.LatLng(this.props.longitude, this.props.latitude)}
-              country='au'
-              radius="20"
-              onClick={this.gotoSearch}
-              placeholder="Where to?"
-              inputClassName="searchBox__destination__input"
-              onSuggestSelect={this.onSuggestSelect}
-            />
-
-          </div>
-        </div>
 
       </div>
     )
   }
 
-  private onSuggestSelect = (destination: gplacesDestination) => {
-    console.info("Destination: ", destination.label)
-    this.props.updateLngLat(destination.location)
-    this.setState({ isSearch: false, })
-    this.map.flyTo({
-      center: { lng: this.props.longitude, lat: this.props.latitude }
-      speed: 2
-    })
-  }
-
-  private gotoSearch = () => {
-    this.setState({ isSearch: !this.state.isSearch })
-  }
 }
 
 
@@ -662,7 +617,7 @@ const mapStateToProps = ( state: ReduxState ) => {
 const mapDispatchToProps = ( dispatch ) => {
   return {
     updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch({ type: "UPDATE_LNGLAT", payload: lnglat }),
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch({ type: "FLYING", payload: flyingStatus }),
+    updateFlyingStatus: (flyingStatus: boolean) => dispatch({ type: "UPDATE_FLYING", payload: flyingStatus }),
     updateGData: (gData: geoData) => dispatch({ type: "UPDATE_GDATA", payload: gData }),
     onZoomChange: (zoom: Array<number>) => dispatch({ type: "UPDATE_MAPBOX_ZOOM", payload: zoom }),
     toggleShowModal: () => dispatch({ type: "SHOW_MODAL", payload: true }),

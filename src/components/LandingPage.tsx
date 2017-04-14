@@ -8,8 +8,6 @@ import WorldMap from './WorldMap'
 import Subscriptions from './Subscriptions'
 import FooterLinks from './FooterLinks'
 
-import 'styles/LandingPage.scss'
-
 
 // import * as mojs from 'mo-js'
 
@@ -58,9 +56,10 @@ export default class LandingPage extends React.Component<any, any> {
       <div className='hero-container'>
         { this.languageNav() }
 
+
         <CSSTransitionGroup
           transitionName="landing-header-fade"
-          transitionAppear={true}
+          transitionAppear={false}
           transitionAppearTimeout={300}
           transitionEnterTimeout={300}
           transitionLeave={false}>
@@ -74,7 +73,7 @@ export default class LandingPage extends React.Component<any, any> {
         { switchLanguageHeader2(this.state.language) }
         <div className="landing-page-subscriptions-container">
           <div className='landing-page-subscriptions'>
-            <Subscriptions landingPage={true}/>
+            {/* <Subscriptions landingPage={true}/> */}
           </div>
           <FooterLinks/>
         </div>
