@@ -7,9 +7,9 @@ import 'styles/Spinners.scss'
 class SpinnerRectangle extends React.Component<any, any> {
 
   defaultProps = {
-    height: '24px'
-    width: '8px'
-    color: '#eee'
+    height: '24px',
+    width: '8px',
+    color: '#eee',
   }
 
   render() {

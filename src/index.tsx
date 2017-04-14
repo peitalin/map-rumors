@@ -3,34 +3,33 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import App, { reduxStore } from './app'
+import AppRoutes, { reduxStore } from './AppRoutes'
 
 
-const render = (App) => {
+const render = (AppRoutes) => {
   ReactDOM.render(
     <AppContainer>
-      <App />
+      <AppRoutes />
     </AppContainer>
     , document.getElementById('root')
   )
 }
-render(App)
+render(AppRoutes)
 
 // Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept(['./app', './reducer'], () => {
+  module.hot.accept(['./AppRoutes', './reducer'], () => {
     const nextReducer = require('./reducer').default
     reduxStore.replaceReducer(nextReducer)
-    const NewApp = require('./app').default
+    const NewApp = require('./AppRoutes').default
     render(NewApp)
   })
-  // module.hot.accept('./app', () => {
-  //   const NewApp = require('./app.tsx').default
+  // module.hot.accept('./AppRoutes', () => {
+  //   const NewApp = require('./AppRoutes.tsx').default
   //   render(NewApp)
   // })
   // module.hot.accept()
 }
-
 
 // Register the service worker if available.
 if ('serviceWorker' in navigator) {

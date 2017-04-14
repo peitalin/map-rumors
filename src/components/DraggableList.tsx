@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import { Motion, spring } from 'react-motion';
-import * as range from 'lodash/range';
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 
@@ -30,7 +29,7 @@ export default class DraggableList extends React.Component<any, any> {
     mouseY: 0,
     isPressed: false,
     originalPosOfLastPressed: 0,
-    order: range(this.props.children.length),
+		order: [...Array(this.props.children.length).keys()]
   }
 
   componentDidMount() {

@@ -9,9 +9,8 @@ import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo } from 'react-apollo'
 
-import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+// import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { iPrediction, iHouse } from './interfaceDefinitions'
-import '../styles/Subscriptions.scss'
 
 import Title from './Title'
 
@@ -21,8 +20,11 @@ import DraggableList from './DraggableList'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 
+import 'styles/Subscriptions.scss'
 
 
+
+type A = { type: string, payload: any }
 
 interface DispatchProps {
   updateLngLat?(lngLat: mapboxgl.LngLat): any
@@ -30,7 +32,9 @@ interface DispatchProps {
   updateAllPredictions?(allPredictions: iPrediction[]): any
 }
 
-interface StateProps {
+interface StateProps {}
+
+interface ReactProps {
   data?: SubscriptionState
   landingPage?: boolean | null
 }
@@ -42,7 +46,7 @@ interface SubscriptionState {
   subscribeToMore?(params: {
     document?: any
     variables?: any
-    updateQuery?(prevState: any, { subscriptionData }: SubscriptionResponse): SubscriptionState
+    updateQuery?(prevState: SubscriptionState, { subscriptionData }: SubscriptionResponse): SubscriptionState
     onError?(err: any): void
   }): Function
   variables?: Object
@@ -66,14 +70,13 @@ interface SubscriptionResponse {
   }
 }
 
-
 interface antdMessage {
   info(s: string): void
 }
 
 
 
-export class Subscriptions extends React.Component<StateProps & DispatchProps, any> {
+export class Subscriptions extends React.Component<StateProps & DispatchProps & ReactProps, any> {
 
   defaultProps = {
     landingPage: 'false'
@@ -85,7 +88,7 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps, a
       variables: {},
       updateQuery: ( prevState, { subscriptionData } ) => {
         let mutationType = subscriptionData.data.Prediction.mutation
-        let newPrediction = subscriptionData.data.Prediction.node
+        let newPrediction: iPrediction = subscriptionData.data.Prediction.node
 
         switch (mutationType) {
           case 'CREATED': {
@@ -123,12 +126,11 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps, a
 
   gotoPredictionLocation = (house: iHouse): void => {
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
-
     if (this.props.landingPage) {
       // no need to fly around map on landingPage
       return
     } else {
-      // var message: antdMessage
+      let message: antdMessage
       message.info(`Going to ${house.address}`)
       this.props.updateFlyingStatus(true)
       this.props.updateLngLat(lngLat)
@@ -230,19 +232,19 @@ subscription {
 
 
 
-const mapDispatchToProps = ( dispatch: Function ) => {
+const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
   return {
-    updateLngLat: (lngLat: mapboxgl.LngLat): any =>
-      dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat }),
-
-    updateFlyingStatus: (flyingStatus: boolean): any =>
-      dispatch({ type: 'UPDATE_FLYING', payload: flyingStatus }),
-
-    updateAllPredictions: (allPredictions: iPrediction[]): any =>
-      dispatch({ type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions }),
+    updateLngLat(lngLat) {
+      dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat })
+    },
+    updateFlyingStatus(flyingStatus) {
+      dispatch({ type: 'UPDATE_FLYING', payload: flyingStatus })
+    },
+    updateAllPredictions(allPredictions) {
+      dispatch({ type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions })
+    },
   }
 }
-
 
 export default graphql(query, { options: { fetchPolicy: 'network-only' }})(
   connect(null, mapDispatchToProps)( Subscriptions )

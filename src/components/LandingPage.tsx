@@ -29,6 +29,10 @@ import FooterLinks from './FooterLinks'
 
 export default class LandingPage extends React.Component<any, any> {
 
+  defaultProps = {
+    showSubscriptions: true
+  }
+
   state = {
     language: 'en'
   }
@@ -73,7 +77,10 @@ export default class LandingPage extends React.Component<any, any> {
         { switchLanguageHeader2(this.state.language) }
         <div className="landing-page-subscriptions-container">
           <div className='landing-page-subscriptions'>
-            {/* <Subscriptions landingPage={true}/> */}
+          {(
+            this.props.showSubscriptions
+            && <Subscriptions/>
+          )}
           </div>
           <FooterLinks/>
         </div>

@@ -16,8 +16,8 @@ onmessage = (e: MessageEvent) => {
 }
 
 onerror = (e) => {
-  console.info("worker error!")
-  console.error(e)
+  // console.info("worker error!")
+  // console.error(e)
 }
 
 

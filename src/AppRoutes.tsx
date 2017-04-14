@@ -24,6 +24,7 @@ import * as ruRU from 'antd/lib/locale-provider/ru_RU';
 import * as LocaleProvider from 'antd/lib/locale-provider'
 //// Lazyload
 import { lazyLoad } from './utils/lazyLoad'
+
 //// Components
 import Title from './components/Title'
 import LandingPage from './components/LandingPage'
@@ -107,7 +108,7 @@ export const reduxStore = createStore(
 )
 
 
-export default class App extends React.Component {
+export default class AppRoutes extends React.Component {
 
   state = { rehydrated: false }
 

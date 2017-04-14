@@ -6,15 +6,13 @@ export interface userGQL {
   emailAddress?: string
   bids?: iBid[]
   predictions?: iPrediction[]
-  [key: string]?: any
 }
 
 export interface iPrediction {
-  id?: string
   prediction?: number
+  id?: string
   user?: userGQL
   house?: iHouse
-  [key: string]?: any
 }
 
 export interface iHouse {
@@ -31,8 +29,8 @@ export interface iHouse {
   streetName?: string
   streetType?: string
   locality?: string
-  lng: number
-  lat: number
+  lng?: number
+  lat?: number
 }
 
 

@@ -24,21 +24,24 @@ import 'antd/lib/input-number/style/css'
 import { iHouse } from './interfaceDefinitions'
 import AddPrediction from './AddPrediction'
 
+import 'styles/HouseStats.scss'
+
 
 interface HouseStatsProps {
-  updateClickedAddress(address: string)?: void
+  updateClickedAddress?(address: string): void
   data?: {
     error: any
     loading: boolean
     House: iHouse
   }
   lotPlan?: string
-  updateClickedAddress()?: void
+  updateClickedAddress?(): void
   houseProps?: {
     LOT: string
     PLAN: string
     LOT_AREA: number
   }
+  flipCard: Function
 }
 
 interface HouseStatsState {
@@ -82,15 +85,44 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
     if (this.props.data.error) {
       return <Title><div onClick={this.props.flipCard}>HouseStats: GraphQL Errored.</div></Title>
     }
+
     if (this.props.data.loading) {
       return (
-        <Title style={{ height: '200px', width: '100px' }}>
-          <div onClick={this.props.flipCard}>
-            <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+        <div>
+          <div className='house-stats-heading' onClick={this.props.flipCard}>
+
+            <Row gutter={0}>
+              <Col span={24}>
+                <div className='house-stats-heading house-stats-loader'>
+                  <SpinnerRectangle height='66px' width='8px' dark/>
+                </div>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>Bedrooms:</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Bathrooms:</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Carspaces:</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Area:</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Plan No:</Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>Lot No:</Col>
+            </Row>
           </div>
-        </Title>
+          <AddPrediction data={this.props.data} />
+        </div>
       )
     }
+
     if (this.props.data.House) {
       let {
         id,
@@ -108,10 +140,10 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
         locality,
       } = this.props.data.House
       let unitStreetNum = unitNum ? `${unitNum}/${streetNum}` : `${streetNum}`
-
       return (
         <div>
-          <div style={{ paddingBottom: '10%' }} onClick={this.props.flipCard}>
+          <div className="house-stats-heading" onClick={this.props.flipCard}>
+
             <Row gutter={0}>
               <Col span={24}>
                 <h2>{ unitStreetNum }</h2>
@@ -124,7 +156,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
             </Row>
             <Row gutter={0}>
               <Col span={24}>
-                <div style={{ paddingBottom: '10%' }}><h2>{ streetType }</h2></div>
+                <div className="house-stats-heading"><h2>{ streetType }</h2></div>
               </Col>
             </Row>
 
@@ -157,8 +189,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
           <AddPrediction data={this.props.data} />
         </div>
       )
-    }
-    else if (!this.props.data.House) {
+    } else if (!this.props.data.House) {
       return (
         <div>no HouseStats</div>
       )

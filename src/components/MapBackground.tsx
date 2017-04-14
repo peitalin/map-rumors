@@ -31,8 +31,8 @@ import 'antd/lib/card/style/css'
 
 import { geoData, geoParcel, gplacesDestination, userGQL } from './interfaceDefinitions'
 
-import { isParcelNear } from '../worker'
-let MyWorker = require('worker-loader!../worker.ts')
+import { isParcelNear } from '../utils/worker'
+let MyWorker = require('worker-loader!../utils/worker.ts')
 
 
 let localData: geoData = require('../data/parkinson_parcels.json')
