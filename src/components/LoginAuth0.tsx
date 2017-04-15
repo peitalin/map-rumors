@@ -52,7 +52,8 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
 
       var promise = new Promise((resolve, reject) => {
         resolve(this.props.data.refetch())
-      }).then(res => {
+      })
+      .then(res => {
         if (this.props.data.user) {
           this.props.updateUserProfileRedux(this.props.data.user)
         } else {
@@ -60,7 +61,10 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
           this.createUser()
           this.props.data.refetch()
         }
-      }).then(res => this.setState({ redirect: true }))
+      })
+      .then(res => this.setState({ redirect: true }))
+      .catch(err => console.warn(err))
+
     })
 
     this.lock.on('authorization_error', authResult => {
@@ -157,16 +161,6 @@ query {
         lotPlan
       }
     }
-
-    bids {
-      id
-      bid
-      pokemon {
-       id
-       name
-       img
-      }
-    }
   }
 }
 `
@@ -180,6 +174,7 @@ const mapDispatchToProps = ( dispatch ) => {
 export default compose(
   connect(null, mapDispatchToProps), // connect dispatch to redux
   graphql(UserQuery, { options: { fetchPolicy: 'network-only' } }),
-  // graphql(UserQuery), // do not user fetchPolicy: network-only, won't login
+  // graphql(UserQuery),
   graphql(CreateUserQuery, { name: 'createUser' }),
 )( LoginAuth0 )
+

@@ -5,8 +5,6 @@ import * as React from 'react'
 import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
 //// Server-side Rendered Styles
 import 'styles/App.scss'
-import 'styles/LandingPage.scss'
-import 'styles/FooterLinks.scss'
 
 //// antd
 import * as enUS from 'antd/lib/locale-provider/en_US';
@@ -47,9 +45,7 @@ const Login = (): JSX.Element => {
   const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
   const domain: string = 'peitalin.au.auth0.com'
   const redirectUrl: string = '/map' // redirect to route on authentication
-  return (
-    <LoginAuth0 clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
-  )
+  return <LoginAuth0 clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
 }
 
 

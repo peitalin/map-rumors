@@ -17,6 +17,8 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 import reduxReducer from './reducer'
 
+import { SpinnerRectangle } from './components/Spinners'
+
 
 
 
@@ -40,7 +42,7 @@ class AppApollo extends React.Component<any, any> {
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
       compose(
         applyMiddleware(thunk),
-        autoRehydrate(), // redux-persist
+        // autoRehydrate(), // redux-persist: dont' user with ApolloClient.middleware
         applyMiddleware(ApolloClient.middleware()),
       )
     )
@@ -50,7 +52,7 @@ class AppApollo extends React.Component<any, any> {
     persistStore(reduxStore, {}, () => {
       this.setState({ rehydrated: true })
       console.info("Rehydrated Redux State. Re-rendering now.")
-      // console.log(reduxStore.getState())
+      console.log(reduxStore.getState())
     })
     return reduxStore
   }
@@ -80,8 +82,7 @@ class AppApollo extends React.Component<any, any> {
           req.options.headers = (req.options.headers) ? req.options.headers : {}
           req.options.headers.authorization = (localStorage.getItem('auth0IdToken'))
             ? `Bearer ${localStorage.getItem('auth0IdToken')}`
-            : undefined
-          // get the authentication token from local storage if it exists
+            : undefined // get authentication token from local storage if it exists
           next()
         },
       }
@@ -90,7 +91,6 @@ class AppApollo extends React.Component<any, any> {
       networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
       dataIdFromObject: o => o.id, // enable object ID for better cacheing
       queryDeduplication: true, // batch graphql queries
-      // initialState: { apollo: { data: JSON.parse(localStorage['reduxPersist:apollo']).data } }, // rehydrate Apollo Store
       initialState: { apollo: JSON.parse(localStorage.getItem('reduxPersist:apollo')) }, // rehydrate Apollo Store
     });
     return client
@@ -98,9 +98,9 @@ class AppApollo extends React.Component<any, any> {
 
 
   render() {
-    // if(!this.state.rehydrated) {
-    //   return <div>Rehydrating...</div>
-    // }
+    if(!this.state.rehydrated) {
+      return <div>Rehydrating<SpinnerRectangle height='16px' width='6px'/></div>
+    }
     return (
       <ApolloProvider store={ this.reduxStore } client={ this.client }>
         <AppRoutes />

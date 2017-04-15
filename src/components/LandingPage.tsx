@@ -6,6 +6,7 @@ import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import WorldMap from './WorldMap'
 import Subscriptions from './Subscriptions'
 import FooterLinks from './FooterLinks'
+import 'styles/LandingPage.scss'
 
 
 // import * as mojs from 'mo-js'

@@ -1,6 +1,7 @@
 
 
 import * as React from 'react'
+import 'styles/FooterLinks.scss'
 
 export default class FooterLinks extends React.Component<any, any> {
 
