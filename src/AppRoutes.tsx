@@ -28,7 +28,6 @@ import HouseStats from './components/HouseStats'
 import Navbar from './components/Navbar'
 
 // import Demo from './components/DraggableGrid'
-import Subscriptions from './components/Subscriptions'
 
 
 //////// Lazy-loading Components by Route /////////
@@ -42,8 +41,6 @@ import Subscriptions from './components/Subscriptions'
 // const MapBackground = lazyLoad(() => System.import('./components/MapBackground.tsx').then(module => module.default))
 // const HouseStats = lazyLoad(() => System.import('./components/HouseStats.tsx').then(module => module.default))
 // const Navbar = lazyLoad(() => System.import('./components/Navbar.tsx').then(module => module.default))
-//
-// const Subscriptions = lazyLoad(() => System.import('./components/Subscriptions.tsx').then(module => module.default))
 
 
 const Login = (): JSX.Element => {
@@ -73,12 +70,6 @@ export default class AppRoutes extends React.Component {
             <Route path="/map" component={ MapBackground }/>
             <Route path="/map" component={ Navbar }/>
             <Route path="/map" component={ PredictionListings }/>
-
-            <Route path="/map" render={() => (
-              <div className='subscriptions-container'>
-                <Subscriptions/>
-              </div>
-            )}/>
 
             {/* <Route path="/map/:lotPlan" component={ PredictionStats }/> */}
 

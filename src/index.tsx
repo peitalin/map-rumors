@@ -20,45 +20,47 @@ import reduxReducer from './reducer'
 
 
 
-const reduxStore = createStore(
-  combineReducers({
-    reduxReducer,
-    // apollo: client.reducer()
-  }),
-  undefined, // Initial Redux State, undefined since we're using redux-persist
-  compose(
-    applyMiddleware(thunk),
-    // applyMiddleware(client.middleware()),
-    autoRehydrate(), // redux-persist
-  )
-)
-
 
 class AppApollo extends React.Component<any, any> {
 
   state = { rehydrated: false }
 
   componentWillMount() {
-    this.persistReduxStore()
+    this.client = this.startApolloClient()
+    this.reduxStore = this.persistReduxStore(this.client)
     this.registerServiceWorker()
   }
 
-  persistReduxStore = () => {
+  persistReduxStore = (ApolloClient) => {
+    const reduxStore = createStore(
+      combineReducers({
+        reduxReducer,
+        apollo: ApolloClient.reducer()
+      }),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+      compose(
+        applyMiddleware(thunk),
+        autoRehydrate(), // redux-persist
+        applyMiddleware(ApolloClient.middleware()),
+      )
+    )
     // persistStore(reduxStore, {}, () => console.info("Purged redux store.")).purge()
     // this.setState({ rehydrated: true })
-    // RE-AUTHENTICATE since we will purge user profile
-    persistStore(reduxStore, { 'blacklist': [] }, () => {
+    ////// RE-AUTHENTICATE since we will purge user profile
+    persistStore(reduxStore, {}, () => {
       this.setState({ rehydrated: true })
       console.info("Rehydrated Redux State. Re-rendering now.")
+      // console.log(reduxStore.getState())
     })
+    return reduxStore
   }
 
   registerServiceWorker = () => {
     // Register the service worker if available.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Successfully registered service worker', reg))
-      .catch(err => console.warn('Error while registering service worker', err))
+      // .then(reg => console.log('Successfully registered service worker', reg))
+      // .catch(err => console.warn('Error while registering service worker', err))
     }
   }
 
@@ -88,17 +90,19 @@ class AppApollo extends React.Component<any, any> {
       networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
       dataIdFromObject: o => o.id, // enable object ID for better cacheing
       queryDeduplication: true, // batch graphql queries
+      // initialState: { apollo: { data: JSON.parse(localStorage['reduxPersist:apollo']).data } }, // rehydrate Apollo Store
+      initialState: { apollo: JSON.parse(localStorage.getItem('reduxPersist:apollo')) }, // rehydrate Apollo Store
     });
     return client
   }
 
 
   render() {
-    if(!this.state.rehydrated) {
-      return <div></div>
-    }
+    // if(!this.state.rehydrated) {
+    //   return <div>Rehydrating...</div>
+    // }
     return (
-      <ApolloProvider store={reduxStore} client={ this.startApolloClient() }>
+      <ApolloProvider store={ this.reduxStore } client={ this.client }>
         <AppRoutes />
       </ApolloProvider>
     )

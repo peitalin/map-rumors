@@ -72,7 +72,7 @@ export default class LandingPage extends React.Component<any, any> {
 
         <div className="landing-page-subscriptions-container">
           <div className='landing-page-subscriptions'>
-            <Subscriptions landingPage={false}/>
+            <Subscriptions landingPage={true}/>
           </div>
           <FooterLinks/>
         </div>
@@ -195,7 +195,6 @@ const switchLanguageHeader = (language: string): JSX.Element => {
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
         </div>
@@ -232,7 +231,9 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
           <div className='landing-page-sub-header'>
             <h3>Ставка на незарегистрированные свойства.</h3>
             <br/>
-            Lorem Ipsum боль сидеть Амет, consectetur adipiscing Элит, Tempor и жизнеспособность, так что труд и горе, некоторые важные вещи, чтобы сделать eiusmod. На протяжении многих лет я пришел, кто nostrud aliquip из нее преимущества упражнений, так что усилия по стимулированию, если школьный округ и долговечность. Хотите быть боль в cupidatat cillum была подвергнута критике в др Dolore MAGNA бежать не производит результирующую удовольствие. Excepteur cupidatat чернокожие не excepteur, успокаивающее для души, то есть, они покинули общие обязанности тех, кто виноват в ваших проблемах.
+            Lorem Ipsum боль сидеть Амет лит и жизнеспособность, так что труд и горе, некоторые важные вещи, чтобы сделать eiusmod.
+              На протяжении многих лет я пришел, кто из нее преимущества упражнений, так что усилия по стимулированию, если школьный округ и долговечность.
+              Хотите быть боль в cupidatat cillum была подвергнута критике в др Dolore MAGNA бежать не производит результирующую удовольствие.
             <h4>#Слухи+о+недвижимости / #Частные+объекты / #Межзвездная+недвижимость</h4>
           </div>
         </div>

@@ -32,6 +32,11 @@ import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 
 interface PredictionListingsProps {
+  data?: {
+    error: any
+    loading: boolean
+    user: userGQL
+  }
   userGQL?: userGQL
   loading?: boolean
   mapboxMap?: mapboxgl.Map
@@ -50,7 +55,7 @@ interface PredictionListingsProps {
 
 
 
-export class PredictionListings extends React.Component<any, any> {
+export class PredictionListings extends React.Component<PredictionListingsProps, any> {
 
   deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
@@ -87,10 +92,16 @@ export class PredictionListings extends React.Component<any, any> {
       return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
 
-    if (this.props.userGQL.predictions.length === 0) {
-      var predictionTabs = <TabPane tab={'Owned Predictions'} key={'nobid'}>None</TabPane>
+    let user = this.props.userGQL
+    if (!user) {
+      let user = this.props.data.user
+      console.warn("ReduxPersist is not running!. Predictions won't update live.")
+    }
+
+    if (user.predictions.length === 0) {
+      var predictionTabs = <TabPane tab={'Owned Predictions'} key={'nobid'}>No Predictions</TabPane>
     } else {
-      var predictionTabs = this.props.userGQL.predictions.map(p => {
+      var predictionTabs = user.predictions.map(p => {
         let unitStreetNum = p.house.unitNum
           ? `${p.house.unitNum}/${p.house.streetNum}`
           : `${p.house.streetNum}`
@@ -125,7 +136,7 @@ export class PredictionListings extends React.Component<any, any> {
             )}
           </div>
 
-          <Tabs defaultActiveKey={this.props.userGQL.predictions[0].id}>
+          <Tabs defaultActiveKey={ user.predictions[0] ? user.predictions[0].id : '1' }>
             { predictionTabs }
           </Tabs>
 

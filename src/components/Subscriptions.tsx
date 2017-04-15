@@ -71,7 +71,7 @@ interface SubscriptionResponse {
 }
 
 interface antdMessage {
-  info(s: string): void
+  info: any
 }
 
 
@@ -83,7 +83,11 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
   }
 
   componentDidMount() {
-    let subscription = this.props.data.subscribeToMore({
+    this.subscription = this.startSubscriptions()
+  }
+
+  startSubscriptions = () => {
+    return this.props.data.subscribeToMore({
       document: subscriptionQuery,
       variables: {},
       updateQuery: ( prevState, { subscriptionData } ) => {
@@ -131,7 +135,7 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
       // no need to fly around map on landingPage
       return
     } else {
-      let message: antdMessage
+      // let message: antdMessage
       message.info(`Going to ${house.address}`)
       this.props.updateFlyingStatus(true)
       this.props.updateLngLat(lngLat)
@@ -139,6 +143,9 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
   }
 
   render() {
+    if (this.props.data.error) {
+      return <div>Error in Sub Component</div>
+    }
     if (this.props.data.loading) {
       return (
       <div className="subscriptions-loading">
@@ -147,10 +154,6 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
       </div>
      )
     }
-    if (this.props.data.error) {
-      return <div>Error in Sub Component</div>
-    }
-
     if (this.props.data.allPredictions) {
       let cssClass = this.props.landingPage
         ? "subscriptions-inner subscriptions-inner-expand-height"
@@ -247,7 +250,11 @@ const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
   }
 }
 
-export default graphql(query, { options: { fetchPolicy: 'network-only' }})(
-  connect<StateProps, DispatchProps, ReactProps>(null, mapDispatchToProps)( Subscriptions )
+export default connect<StateProps, DispatchProps, ReactProps>(null, mapDispatchToProps)(
+  graphql(query)( Subscriptions )
 )
+
+
+
+
 

@@ -22,6 +22,7 @@ import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
 import HouseStats from './HouseStats'
 import GeoSearchBar from './GeoSearchBar'
+import Subscriptions from './Subscriptions'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -78,6 +79,13 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   constructor(props) {
     super(props)
+
+    let gData = {
+      ...localData,
+      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0040)
+    }
+    this.props.updateGData(gData)
+
     this.state = {
       isSearch: false,
       gParcels: {
@@ -125,22 +133,19 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
     // initial batch of land parcels
-    let gData = {
-      ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0040)
-    }
-    this.props.updateGData(gData)
   }
 
   componentDidMount() {
-    this.predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-    this.setState({
-      gPredictions: {
-        ...this.props.gData,
-        features: this.props.gData.features
-          .filter(g => this.predictionLotPlans.has(g.properties.LOTPLAN))
-      }
-    })
+    if (this.props.gData.features) {
+      this.predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
+      this.setState({
+        gPredictions: {
+          ...this.props.gData,
+          features: this.props.gData.features
+            .filter(g => this.predictionLotPlans.has(g.properties.LOTPLAN))
+        }
+      })
+    }
 
     // var MapboxClient = require('mapbox')
     // const accessToken = 'pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw'
@@ -513,7 +518,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           onDrag={throttle(this.onDrag, 24)}
           onClick={this.onClick}
           containerStyle={{
-            position: "fixed",
+            position: "absolute",
+            top: 0,
             height: "100vh",
             width: "100vw",
         }}>
@@ -591,6 +597,9 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
         <GeoSearchBar map={this.map} />
 
+        <div className='subscriptions-container'>
+          <Subscriptions/>
+        </div>
 
       </div>
     )

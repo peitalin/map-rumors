@@ -32,9 +32,12 @@ interface LoginAuth0Props {
 
 export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
 
-  constructor(props: any) {
+  constructor(props) {
     super(props)
     this.lock = new Auth0Lock(this.props.clientId, this.props.domain)
+    this.state = {
+      redirect: false
+    }
   }
 
   componentDidMount() {
@@ -45,6 +48,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
       this.lock.getProfile(idToken, (err, profile) => {
         window.localStorage.setItem('profile', JSON.stringify(profile))
       })
+      console.info("Authenticated!: ", localStorage.getItem('auth0IdToken'))
 
       var promise = new Promise((resolve, reject) => {
         resolve(this.props.data.refetch())
@@ -56,7 +60,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
           this.createUser()
           this.props.data.refetch()
         }
-      })
+      }).then(res => this.setState({ redirect: true }))
     })
 
     this.lock.on('authorization_error', authResult => {
@@ -105,7 +109,10 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
           <Button id='antd-login' onClick={this.logOut}>
             Log Out
           </Button>
-          <Redirect to={this.props.redirectOnAuth}/>
+          {(
+            this.state.redirect &&
+            <Redirect to={this.props.redirectOnAuth}/>
+          )}
         </div>
       )
     } else {
@@ -171,7 +178,8 @@ const mapDispatchToProps = ( dispatch ) => {
 }
 
 export default compose(
-  graphql(UserQuery, { fetchPolicy: 'network-only' }),
-  graphql(CreateUserQuery, { name: 'createUser' }),
   connect(null, mapDispatchToProps), // connect dispatch to redux
+  graphql(UserQuery, { options: { fetchPolicy: 'network-only' } }),
+  // graphql(UserQuery), // do not user fetchPolicy: network-only, won't login
+  graphql(CreateUserQuery, { name: 'createUser' }),
 )( LoginAuth0 )
