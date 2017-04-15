@@ -8,17 +8,28 @@
   font-size: 0.9rem;
 
   .copyright {
-    display: inline;
     left: 0;
     padding-left: 1rem;
   }
-
 }
+@media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
+  /* portrait */
+  .footer-rights.copyright {
+    display: static;
+  }
+}
+@media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
+  /* landscape */
+  .footer-rights.copyright {
+    display: inline;
+  }
+}
+
 .footer-links ul {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  padding-left: 2%;
+  padding-left: 1rem;
   margin: 1% 0 1%;
 }
 .footer-links ul li a {

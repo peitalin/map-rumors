@@ -29,7 +29,8 @@ export default class DraggableList extends React.Component<any, any> {
     mouseY: 0,
     isPressed: false,
     originalPosOfLastPressed: 0,
-		order: [...Array(this.props.children.length).keys()]
+    // order: [...(Array(this.props.children.length).keys())]
+    order: Array.from(Array(this.props.children.length), (_, i) => i)
   }
 
   componentDidMount() {

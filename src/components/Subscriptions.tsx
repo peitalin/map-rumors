@@ -12,7 +12,6 @@ import { graphql, ApolloProvider, withApollo } from 'react-apollo'
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { iPrediction, iHouse } from './interfaceDefinitions'
 
-import Title from './Title'
 
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import DraggableList from './DraggableList'
@@ -25,11 +24,12 @@ import 'styles/Subscriptions.scss'
 
 
 type A = { type: string, payload: any }
+type LngLat = { lng: number, lat: number }
 
 interface DispatchProps {
-  updateLngLat?(lngLat: mapboxgl.LngLat): any
-  updateFlyingStatus?(flyingStatus: boolean): any
-  updateAllPredictions?(allPredictions: iPrediction[]): any
+  updateLngLat?(lngLat: LngLat): Dispatch<A>
+  updateFlyingStatus?(flyingStatus: boolean): Dispatch<A>
+  updateAllPredictions?(allPredictions: iPrediction[]): Dispatch<A>
 }
 
 interface StateProps {}
@@ -125,7 +125,8 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
   }
 
   gotoPredictionLocation = (house: iHouse): void => {
-    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+    // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+    let lngLat: LngLat = { lng: house.lng, lat: house.lat }
     if (this.props.landingPage) {
       // no need to fly around map on landingPage
       return
@@ -140,16 +141,14 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
   render() {
     if (this.props.data.loading) {
       return (
-      <Title>
-        <div className="subscriptions-loading">
-          Loading Subscriptions
-          <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
-        </div>
-      </Title>
+      <div className="subscriptions-loading">
+        Loading Subscriptions
+        <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+      </div>
      )
     }
     if (this.props.data.error) {
-      return <Title><div>Error in Sub Component</div></Title>
+      return <div>Error in Sub Component</div>
     }
 
     if (this.props.data.allPredictions) {
@@ -170,14 +169,16 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
       })
 
       return (
-        <DraggableList className='subscriptions-outer'>
-          { allPredictions }
-        </DraggableList>
+        <div className="subscriptions-outer">
+          <DraggableList className='subscriptions-outer'>
+            { allPredictions }
+          </DraggableList>
+        </div>
       )
 
     } else {
       return (
-        <Title>No Predictions Currently</Title>
+        <div>No Predictions Currently</div>
       )
     }
   }
@@ -235,18 +236,18 @@ subscription {
 const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
   return {
     updateLngLat(lngLat) {
-      dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat })
+      return dispatch({ type: 'UPDATE_LNGLAT', payload: lngLat })
     },
     updateFlyingStatus(flyingStatus) {
-      dispatch({ type: 'UPDATE_FLYING', payload: flyingStatus })
+      return dispatch({ type: 'UPDATE_FLYING', payload: flyingStatus })
     },
     updateAllPredictions(allPredictions) {
-      dispatch({ type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions })
+      return dispatch({ type: 'UPDATE_ALL_PREDICTIONS', payload: allPredictions })
     },
   }
 }
 
 export default graphql(query, { options: { fetchPolicy: 'network-only' }})(
-  connect(null, mapDispatchToProps)( Subscriptions )
+  connect<StateProps, DispatchProps, ReactProps>(null, mapDispatchToProps)( Subscriptions )
 )
 

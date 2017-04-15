@@ -3,7 +3,6 @@
 import * as React from 'react'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
-import Title from './Title'
 import WorldMap from './WorldMap'
 import Subscriptions from './Subscriptions'
 import FooterLinks from './FooterLinks'
@@ -28,10 +27,6 @@ import FooterLinks from './FooterLinks'
 // })
 
 export default class LandingPage extends React.Component<any, any> {
-
-  defaultProps = {
-    showSubscriptions: true
-  }
 
   state = {
     language: 'en'
@@ -60,8 +55,7 @@ export default class LandingPage extends React.Component<any, any> {
       <div className='hero-container'>
         { this.languageNav() }
 
-
-        <CSSTransitionGroup
+         <CSSTransitionGroup
           transitionName="landing-header-fade"
           transitionAppear={false}
           transitionAppearTimeout={300}
@@ -75,12 +69,10 @@ export default class LandingPage extends React.Component<any, any> {
         </div>
 
         { switchLanguageHeader2(this.state.language) }
+
         <div className="landing-page-subscriptions-container">
           <div className='landing-page-subscriptions'>
-          {(
-            this.props.showSubscriptions
-            && <Subscriptions/>
-          )}
+            <Subscriptions landingPage={false}/>
           </div>
           <FooterLinks/>
         </div>
@@ -202,6 +194,8 @@ const switchLanguageHeader = (language: string): JSX.Element => {
             <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
         </div>
@@ -215,7 +209,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
     case 'ch': {
       return (
         <div className="landing-page-header2-container" key='ch'>
-          <div className='landing-page-header'>
+          <div className='landing-page-header2'>
             <h2>发现新上市 /</h2>
             <h2>贸易估值并赚取收益。</h2>
           </div>
@@ -231,7 +225,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
     case 'ru': {
       return (
         <div className="landing-page-header2-container" key='ru'>
-          <div className='landing-page-header'>
+          <div className='landing-page-header2'>
             <h2>Откройте для себя новые списки /</h2>
             <h2>Торговые оценки и вознаграждения.</h2>
           </div>
@@ -247,7 +241,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
     default: {
       return (
         <div className="landing-page-header2-container" key='en'>
-          <div className='landing-page-header'>
+          <div className='landing-page-header2'>
             <h2>Discover new listings /</h2>
             <h2>Trade valuations and earn rewards.</h2>
           </div>

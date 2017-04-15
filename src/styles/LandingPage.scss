@@ -1,32 +1,44 @@
 
 
-#mojs-thumbs-up:before {
-  content: "\f164";
-}
-#mojs-thumbs-up {
-}
-
 
 .hero-container {
   max-width: 1440px;
 }
 
 .landing-page-header-container {
-  height: 48vh;
+  height: 98vh;
 }
 
 .landing-page-header {
-  padding-top:  10vh;
+  padding-top: 55vh;
   margin-left: 10%;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid;
 }
+@media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
+  /* portrait */
+  .landing-page-header {
+    padding-top: 55vh;
+    margin-left: 10%;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid;
+  }
+}
+@media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
+  /* landscape */
+  .landing-page-header {
+    padding-top: 30vh;
+    margin-left: 10%;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid;
+  }
+}
+
 .landing-page-sub-header {
   margin-left: 8%;
   padding-left: calc(2% - 4px);
   padding-right: 10%;
   border-left: 4px solid #1BD1C1;
-  margin-bottom: 8vh;
   max-width: 720px;
   h3 {
     line-height: 1rem;
@@ -37,7 +49,7 @@
 }
 
 .landing-languages {
-  height: 2vh;
+  padding-top: 2vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -45,6 +57,7 @@
     margin: 0.2rem;
     a {
       color: #1BD1C1;
+      font-size: 0.8rem;
     }
   }
 }
@@ -61,35 +74,48 @@
 
   svg.worldmap {
     width: 100%;
-    transform: rotate(0deg);
-    transition: transform 0.5s ease;
+    height: 100%;
     fill: #edeeee;
   }
 }
 
 .world-map-container:hover {
   svg.worldmap {
-    width: 100%;
     transform: scale(1.02);
     transition: transform 0.5s ease;
   }
 }
-
+@media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
+  /* portrait */
+  .world-map-container {
+    height: 40vh;
+  }
+}
+@media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
+  /* landscape */
+  .world-map-container {
+    height: 60vh;
+  }
+}
 
 
 .landing-page-header2-container {
-  height: 40vh;
   padding-top: 1rem;
 }
+.landing-page-header2 {
+  padding-top: 10vh;
+  margin-left: 10%;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid;
+}
 .landing-page-subscriptions-container {
-  height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .landing-page-subscriptions {
-  margin: 0% 10% 10% 10%;
+  margin: 5% 10% 10% 10%;
   max-width: 900px;
   z-index: 1;
   border-left: 2px solid #444444;
