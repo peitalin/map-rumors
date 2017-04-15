@@ -95,7 +95,6 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
   }
 
   render() {
-    console.info("redirect login state: ", this.state.redirect)
     if (this.props.data.loading) {
       return (
         <div className='login-auth0'>
