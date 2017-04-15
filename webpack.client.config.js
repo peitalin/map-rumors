@@ -6,49 +6,21 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 
 /////////// Production environment //////////
-var isProduction = process.env.NODE_ENV === 'production';
-var buildPath = path.resolve(__dirname, 'dist');
-console.log("NODE_ENV === 'production': " + isProduction);
-if (isProduction) {
-  console.log(`Serving app out of ${buildPath}`)
-}
-
-var entry = isProduction
-  ? [path.resolve(__dirname, 'src', 'index.tsx')]
-  : [
-    'react-hot-loader/patch',
-    // activate HMR for React
-    'webpack-dev-server/client?http://localhost:3333',
-    // bundle the client for webpack-dev-server
-    // and connect to the provided endpoint
-    'webpack/hot/only-dev-server',
-    // bundle the client for hot reloading
-    // only- means to only hot reload for successful updates
-    path.resolve(__dirname, 'src', 'index.tsx')
-    // the entry point of our app
-]
-
-var sourceMap = isProduction
-  ? false
-  : 'source-map'
-
-var imgSrc = isProduction
-  ? '/dist/img/'
-  : '/src/img/'
-
-var fontSrc = isProduction
-  ? '/dist/font/'
-  : '/src/font/'
-
+var isProduction = process.env.NODE_ENV === 'production'
+console.log("\nWebpack config: webpack.client.config.js")
+console.log(`NODE_ENV: ${process.env.NODE_ENV}\n`);
 
 if (isProduction) {
   plugins = [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      ONSERVER: false,
+    }),
     new ExtractTextPlugin({
       filename: "styles.css", // output css file with same name as the entry point.
       allChunks: true,
       disable: false,
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
@@ -70,21 +42,23 @@ if (isProduction) {
         join_vars: true,
         if_return: true,
         unused: true,
-        dead_code: true
+        dead_code: true,
       }
     })
   ]
 } else {
   plugins = [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      ONSERVER: false,
+    }),
     // new webpack.HotModuleReplacementPlugin(),
     // enable HMR globally, do NOT use with webpack-dev-server --hot, applied twice
     new webpack.NamedModulesPlugin(),
-    // prints more readable module names in the browser console on HMR updates
     new ExtractTextPlugin({
       filename: "styles.css",
       disable: true, // can give css style flashes
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
@@ -96,18 +70,31 @@ if (isProduction) {
 
 
 
-
 const config = {
-  entry: entry,
+  entry: isProduction
+    ? { bundle: path.resolve(__dirname, 'src', 'index.tsx'), vendor: ['react', 'react-dom', 'mapbox-gl'] }
+    : [
+      'react-hot-loader/patch',
+      // activate HMR for React
+      'webpack-dev-server/client?http://localhost:3333',
+      // bundle the client for webpack-dev-server
+      // and connect to the provided endpoint
+      'webpack/hot/only-dev-server',
+      // bundle the client for hot reloading
+      // only- means to only hot reload for successful updates
+      path.resolve(__dirname, 'src', 'index.tsx')
+      // the entry point of our app
+  ],
+
   output: {
-    filename: "bundle.js",
-    path: buildPath,
+    filename: "bundle.js", // [name].js = bundle.js
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
     // necessary for HMR to know where to load the hot update chunks
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: sourceMap,
+  devtool: isProduction ? false : 'source-map',
   devServer: {
       port: 3333,
       hot: true,
@@ -141,7 +128,7 @@ const config = {
     // "react-mapbox-gl": 'ReactMapboxGl'
   },
 
-  // target: "node",
+  target: 'web',
   // in order to ignore built-in modules like path, fs, etc.
 
   module: {
@@ -171,27 +158,6 @@ const config = {
           }
         ]
       },
-      // {
-      //   test: /\.js$/,
-      //   enforce: 'pre',
-      //   exclude: [
-      //     'node_modules',
-      //   ],
-      //   use: [
-      //     {
-      //       loader: 'babel-loader',
-      //       options: {
-      //         presets: [
-      //           'react',
-      //           ['es2015', { 'modules': false }]
-      //         ],
-      //         plugins: [
-      //           'babel-plugin-transform-flow-strip-types',
-      //         ]
-      //       }
-      //     }
-      //   ]
-      // },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
@@ -230,7 +196,7 @@ const config = {
             loader: 'url-loader',
             options: {
               name: '[name].[ext]',
-              publicPath: imgSrc
+              publicPath: isProduction ? '/dist/img/' : '/src/img/'
             }
           }
         ],
@@ -242,7 +208,7 @@ const config = {
             loader: 'url-loader',
             options: {
               name: '[name].[ext]',
-              publicPath: fontSrc
+              publicPath: isProduction ? '/dist/font/' : '/src/font/'
             }
           }
         ]
