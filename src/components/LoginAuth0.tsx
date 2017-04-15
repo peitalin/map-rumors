@@ -48,7 +48,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
       this.lock.getProfile(idToken, (err, profile) => {
         window.localStorage.setItem('profile', JSON.stringify(profile))
       })
-      console.info("Authenticated!: ", localStorage.getItem('auth0IdToken'))
+      console.info("Authenticated!: ", window.localStorage.getItem('auth0IdToken'))
 
       var promise = new Promise((resolve, reject) => {
         resolve(this.props.data.refetch())
@@ -95,6 +95,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
   }
 
   render() {
+    console.info("redirect login state: ", this.state.redirect)
     if (this.props.data.loading) {
       return (
         <div className='login-auth0'>

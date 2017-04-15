@@ -251,7 +251,8 @@ const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
 }
 
 export default connect<StateProps, DispatchProps, ReactProps>(null, mapDispatchToProps)(
-  graphql(query)( Subscriptions )
+  // graphql(query)( Subscriptions )
+  graphql(query, { options: { fetchPolicy: "network-only" } })( Subscriptions )
 )
 
 

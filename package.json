@@ -109,6 +109,7 @@
     "graphql": "^0.9.3",
     "graphql-subscriptions": "^0.3.1",
     "graphql-tag": "^2.0.0",
+    "localforage": "^1.5.0",
     "mapbox-gl": "^0.34.0",
     "mo-js": "^0.288.1",
     "react": "^15.5.4",
