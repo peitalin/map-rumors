@@ -6,15 +6,16 @@ import { connect } from 'react-redux'
 
 import { Redirect } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
-
 import { userGQL } from './interfaceDefinitions'
-import 'styles/LoginAuth0.scss'
+import * as classNames from 'classnames'
+
 
 import Title from './Title'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
+import 'styles/LoginAuth0.scss'
 
 
 interface LoginAuth0Props {
@@ -95,23 +96,11 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
   }
 
   render() {
-    if (this.props.data.loading) {
-      return (
-        <div className='login-auth0'>
-          <Button id='antd-login'>
-            <div className='login-auth0-loader'>
-              <SpinnerRectangle height='12px' width='4px'/>
-              Loading
-            </div>
-          </Button>
-        </div>
-      )
-    }
     if (this.props.data.user) {
       return (
         <div className='login-auth0'>
           <Button id='antd-login' onClick={this.logOut}>
-            Log Out
+            <div className='login-auth0-loader login-logged-in'></div>
           </Button>
           {(
             this.state.redirect &&
@@ -121,12 +110,21 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
       )
     } else {
       return (
-      <div className='login-auth0'>
-        <Button id='antd-login' type="primary" onClick={this.showLogin}>
-          Login
-          <Redirect to="/"/>
-        </Button>
-      </div>
+        <div className='login-auth0'>
+          <Button id='antd-login' onClick={this.showLogin}>
+            <div className={classNames({
+              'login-auth0-loader': true,
+              'login-logged-out': true,
+              'login-loading': this.props.data.loading,
+            })}>
+              {(
+                this.props.data.loading
+                ? <SpinnerRectangle height='12px' width='4px'/>
+                : <Redirect to="/"/>
+              )}
+            </div>
+          </Button>
+        </div>
       )
     }
   }

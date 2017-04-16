@@ -31,7 +31,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
   state = { rehydrated: false }
 
   componentWillMount() {
-		const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
+    const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
     this.persistReduxApolloStore(GRAPHQL_PROJECT_ID)
     this.registerServiceWorker()
   }
@@ -41,7 +41,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
       uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
       batchInterval: 10
     });
-    const middleWareAuth0 = {
+    const middlewareAuth0 = {
       applyBatchMiddleware: (req, next) => {
         req.options.headers = (req.options.headers) ? req.options.headers : {}
         req.options.headers.authorization = (window.localStorage.getItem('auth0IdToken'))
@@ -50,7 +50,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
         next()
       }
     };
-    networkInterface.use([middleWareAuth0])
+    networkInterface.use([middlewareAuth0])
     const wsClient = new SubscriptionClient(
       `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
       { reconnect: true }

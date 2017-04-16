@@ -56,7 +56,7 @@ export default class LandingPage extends React.Component<any, any> {
       <div className='hero-container'>
         { this.languageNav() }
 
-         <CSSTransitionGroup
+        <CSSTransitionGroup
           transitionName="landing-header-fade"
           transitionAppear={false}
           transitionAppearTimeout={300}

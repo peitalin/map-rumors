@@ -8,8 +8,26 @@
 }
 
 .login-auth0-loader {
- color: #eee;
- display: flex;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+}
+.login-loading::after {
+  content: 'Loading';
+}
+.login-logged-in::after {
+  content: 'Log Out';
+}
+.login-logged-out::after {
+  content: 'Login';
+}
+.login-auth0-loader.login-logged-out.login-loading {
+  width: 70px;
+  transition: all 1s ease-in-out;
+}
+.login-auth0-loader.login-logged-out {
+  width: 30px;
+  transition: all 1s ease-in-out;
 }
 
 button#antd-login {
@@ -23,3 +41,43 @@ button#antd-login:hover {
   background-color: #d4afdf;
   border-color: #d4afdf;
 }
+
+
+// CSS transitions
+// 1st time appearing
+$min-width: 0px;
+$max-width: 65px;
+.login-anim-fade-appear {
+  opacity: 0.01;
+  width: $min-width;
+}
+.login-anim-fade-appear.login-anim-fade-appear-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+  width: $max-width;
+  transition: width 200ms ease-in;
+}
+// entering
+.login-anim-fade-enter {
+  opacity: 0.01;
+  width: $min-width;
+}
+.login-anim-fade-enter.login-anim-fade-enter-active {
+  opacity: 1;
+  width: $max-width;
+  transition: opacity 200ms ease-in;
+  transition: width 200ms ease-in;
+}
+// leaving
+.login-anim-fade-leave {
+  opacity: 1;
+  width: $max-width;
+}
+.login-anim-fade-leave.login-anim-fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+  width: $min-width;
+  transition: width 200ms ease-in;
+}
+
+
