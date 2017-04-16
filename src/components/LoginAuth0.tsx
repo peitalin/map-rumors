@@ -29,27 +29,32 @@ interface LoginAuth0Props {
     error?: boolean | string
     user?: userGQL
   }
+  userGQL: userGQL
+}
+interface LoginAuth0State {
+  loggedIn?: boolean
 }
 
-export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
+export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State> {
 
   constructor(props) {
     super(props)
     this.lock = new Auth0Lock(this.props.clientId, this.props.domain)
     this.state = {
-      redirect: false
+      loggedIn: false
     }
   }
 
   componentDidMount() {
 
     this.lock.on('authenticated', ({ accessToken, idToken }) => {
+
       window.localStorage.setItem('auth0IdToken', idToken)
 
       this.lock.getProfile(idToken, (err, profile) => {
         window.localStorage.setItem('profile', JSON.stringify(profile))
+        console.info("Authenticated!: ", window.localStorage.getItem('profile'))
       })
-      console.info("Authenticated!: ", window.localStorage.getItem('auth0IdToken'))
 
       var promise = new Promise((resolve, reject) => {
         resolve(this.props.data.refetch())
@@ -63,9 +68,8 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
           this.props.data.refetch()
         }
       })
-      .then(res => this.setState({ redirect: true }))
+      .then(res => this.setState({ loggedIn: true }))
       .catch(err => console.warn(err))
-
     })
 
     this.lock.on('authorization_error', authResult => {
@@ -85,51 +89,52 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, any> {
     .catch(err => console.log(err))
   }
 
-  showLogin = () => {
+  handleLogin = () => {
     this.lock.show()
   }
 
-  logOut = () => {
+  handleLogout = () => {
     window.localStorage.removeItem('auth0IdToken')
     window.localStorage.removeItem('profile')
     this.props.data.refetch()
+    this.setState({ loggedIn: false })
+    // location.reload()
   }
 
   render() {
-    if (this.props.data.user) {
+    if (this.props.data.loading || this.props.data.user) {
       return (
         <div className='login-auth0'>
-          <Button id='antd-login' onClick={this.logOut}>
-            <div className='login-auth0-loader login-logged-in'></div>
-          </Button>
-          {(
-            this.state.redirect &&
-            <Redirect to={this.props.redirectOnAuth}/>
-          )}
-        </div>
-      )
-    } else {
-      return (
-        <div className='login-auth0'>
-          <Button id='antd-login' onClick={this.showLogin}>
+          <Button id='antd-login' onClick={this.handleLogout}>
             <div className={classNames({
               'login-auth0-loader': true,
-              'login-logged-out': true,
+              'login-logged-in': !this.props.data.loading,
               'login-loading': this.props.data.loading,
             })}>
               {(
-                this.props.data.loading
-                ? <SpinnerRectangle height='12px' width='4px'/>
-                : <Redirect to="/"/>
+                this.props.data.loading &&
+                <SpinnerRectangle height='12px' width='4px'/>
+              )}
+              {(
+                this.state.loggedIn &&
+                <Redirect to={this.props.redirectOnAuth}/>
               )}
             </div>
           </Button>
         </div>
       )
+    } else {
+      return (
+      <div className='login-auth0'>
+        <Button id='antd-login' onClick={this.handleLogin}>
+          <div className='login-auth0-loader'>Login</div>
+          <Redirect to="/"/>
+        </Button>
+      </div>
+      )
     }
   }
 }
-
 
 
 
@@ -163,6 +168,11 @@ query {
 }
 `
 
+const mapStateToProps = ( state: ReduxState ): StateProps => {
+  return {
+    userGQL: state.reduxReducer.userGQL
+  }
+}
 const mapDispatchToProps = ( dispatch ) => {
   return {
     updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
@@ -170,9 +180,8 @@ const mapDispatchToProps = ( dispatch ) => {
 }
 
 export default compose(
-  connect(null, mapDispatchToProps), // connect dispatch to redux
+  connect(mapStateToProps, mapDispatchToProps),
   graphql(UserQuery, { options: { fetchPolicy: 'network-only' } }),
-  // graphql(UserQuery),
   graphql(CreateUserQuery, { name: 'createUser' }),
 )( LoginAuth0 )
 
