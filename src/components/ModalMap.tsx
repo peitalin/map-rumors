@@ -104,7 +104,6 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
   render() {
     return (
       <div>
-
         <Button type='primary' onClick={this.showModal}>Open Modal Map</Button>
 
         <Modal title='Street View' visible={this.props.showModal}
@@ -115,10 +114,9 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
           <pre/>
           <span>Latitude: {this.props.latitude}</span>
           <pre/>
-
           <DatePicker />
-
-          { this.props.showModal &&
+          {(
+            this.props.showModal &&
             <div id='modalmap' style={{ width: this.state.mapWidth, height: this.state.mapHeight }}>
               <GoogleMapReact
                 bootstrapURLKeys={{key: "AIzaSyDoEtrs7w3fIHSDvbPB7sAUw7tY7bIuAAU"}}
@@ -129,8 +127,7 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
                 defaultZoom={12} >
               </GoogleMapReact>
             </div>
-          }
-
+          )}
         </Modal>
       </div>
     )

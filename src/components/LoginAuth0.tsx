@@ -9,13 +9,13 @@ import Auth0Lock from 'auth0-lock'
 import { userGQL } from './interfaceDefinitions'
 import * as classNames from 'classnames'
 
-
 import Title from './Title'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
 import 'styles/LoginAuth0.scss'
+
 
 
 interface LoginAuth0Props {
@@ -31,9 +31,11 @@ interface LoginAuth0Props {
   }
   userGQL: userGQL
 }
+
 interface LoginAuth0State {
   loggedIn?: boolean
 }
+
 
 export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State> {
 
@@ -53,23 +55,22 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
 
       this.lock.getProfile(idToken, (err, profile) => {
         window.localStorage.setItem('profile', JSON.stringify(profile))
-        console.info("Authenticated!: ", window.localStorage.getItem('profile'))
+        // console.info("Authenticated!: ", window.localStorage.getItem('profile'))
       })
 
       var promise = new Promise((resolve, reject) => {
-        resolve(this.props.data.refetch())
-      })
-      .then(res => {
-        if (this.props.data.user) {
-          this.props.updateUserProfileRedux(this.props.data.user)
-        } else {
-          console.info("New user! Making a new GraphCool User account.")
-          this.createUser()
-          this.props.data.refetch()
-        }
-      })
-      .then(res => this.setState({ loggedIn: true }))
-      .catch(err => console.warn(err))
+          resolve(this.props.data.refetch())
+        }).then(res => {
+          if (this.props.data.user) {
+            this.props.updateUserProfileRedux(this.props.data.user)
+          } else {
+            console.info("New user! Making a new GraphCool User account.")
+            this.createUser()
+            this.props.data.refetch()
+          }
+        })
+        .then(res => this.setState({ loggedIn: true }))
+        .catch(err => console.warn(err))
     })
 
     this.lock.on('authorization_error', authResult => {

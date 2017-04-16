@@ -16,9 +16,12 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import reduxReducer from './reducer'
 //// Redux-persist
-import { getStoredState, createPersistor } from 'redux-persist'
+import { getStoredState, createPersistor, persistStore, autoRehydrate } from 'redux-persist'
 // import localforage from 'localforage'
 import { SpinnerRectangle } from './components/Spinners'
+/// Redux-offline
+import { offline } from 'redux-offline';
+import offlineConfig from 'redux-offline/lib/defaults';
 
 
 
@@ -59,14 +62,14 @@ class AppApollo extends React.Component<any, AppApolloState> {
   }
 
   persistReduxApolloStore = (GRAPHQL_PROJECT_ID) => {
-    // Redux-persist custom inject persisted state
+
     getStoredState({ storage: localforage }, (err, rehydratedState) => {
 
       const client = new ApolloClient({
         networkInterface: this.initApolloNetworkInterface(GRAPHQL_PROJECT_ID),
         dataIdFromObject: o => o.id, // enable object ID for better cacheing
         queryDeduplication: true, // batch graphql queries
-        initialState: { apollo: { data: rehydratedState.apollo.data }}, // rehydrate Apollo Store
+        initialState: { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}, // rehydrate Apollo Store
       });
 
       let reduxStore = createStore(
@@ -77,11 +80,16 @@ class AppApollo extends React.Component<any, AppApolloState> {
         rehydratedState,
         compose(
           applyMiddleware(thunk),
+          applyMiddleware(client.middleware()), // Apollo-client
           this.registerReduxDevtools(),
+          offline(offlineConfig), // Redux-offline
         )
       );
 
       const persistor = createPersistor(reduxStore, { storage: localforage })
+      persistor.rehydrate(rehydratedState)
+      // persistor.purge()
+      ////// must login again after purge to get user profile
       console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       this.reduxStore = reduxStore
       this.client = client
@@ -89,12 +97,14 @@ class AppApollo extends React.Component<any, AppApolloState> {
     })
   }
 
+
+
   registerServiceWorker = () => {
     // Register the service worker if available.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js')
-      // .then(reg => console.log('Successfully registered service worker', reg))
-      // .catch(err => console.warn('Error while registering service worker', err))
+      .then(reg => console.log('Successfully registered service worker', reg))
+      .catch(err => console.warn('Error while registering service worker', err))
     }
   }
 

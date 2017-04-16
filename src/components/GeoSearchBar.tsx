@@ -45,21 +45,18 @@ class GeoSearchBar extends React.Component<GeoSearchBarProps, GeoSearchBarProps>
 
   render() {
     return (
-      <div className={classNames({
-        'searchBox': true,
-        'searchBox__expand': this.state.isSearch,
-      })}>
+      <div className={classNames({'searchBox': true, 'searchBox__expand': this.state.isSearch })}>
         <div className="searchBox__destination" >
           <div className="searchBox__destination__legend"></div>
-          <Geosuggest
-            location={new google.maps.LatLng(this.props.longitude, this.props.latitude)}
-            country='au'
-            radius="20"
-            onClick={this.gotoSearch}
-            placeholder="Where to?"
-            inputClassName="searchBox__destination__input"
-            onSuggestSelect={this.onSuggestSelect}
-          />
+            <Geosuggest
+              location={new google.maps.LatLng(this.props.longitude, this.props.latitude)}
+              country='au'
+              radius="20"
+              onClick={this.gotoSearch}
+              placeholder="Where to?"
+              inputClassName="searchBox__destination__input"
+              onSuggestSelect={this.onSuggestSelect}
+            />
         </div>
       </div>
     )
