@@ -72,7 +72,7 @@ if (isProduction) {
 
 const config = {
   entry: isProduction
-    ? { bundle: path.resolve(__dirname, 'src', 'index.tsx'), vendor: ['react', 'react-dom', 'mapbox-gl'] }
+    ? { bundle: path.resolve(__dirname, 'src', 'index.tsx') }
     : [
       'react-hot-loader/patch',
       // activate HMR for React
@@ -109,7 +109,7 @@ const config = {
     alias: {
       // 'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl/dist/mapbox-gl.js'),
       'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl'),
-      'styles': path.resolve(__dirname, 'src/styles')
+      'styles': path.resolve(__dirname, 'src', 'styles'),
     },
     modules: [
       path.join(__dirname, "src"),

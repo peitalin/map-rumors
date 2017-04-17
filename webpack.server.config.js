@@ -19,7 +19,7 @@ const plugins = [
     ONSERVER: true,
   }),
   new ExtractTextPlugin({
-    filename: "styles.css", // output css file with same name as the entry point.
+    filename: "stylesSSR.css", // output css file with same name as the entry point.
     allChunks: true,
     disable: false,
   }),
@@ -49,7 +49,8 @@ const plugins = [
 const config = {
 
   entry: {
-    server: path.join(__dirname, 'dist', 'server.tsx')
+    // server: path.join(__dirname, 'dist', 'server.tsx')
+    serverSSR: path.join(__dirname, 'dist', 'serverSSR.tsx')
     // [name].js = server.js
   },
 
