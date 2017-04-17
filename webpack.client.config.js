@@ -88,7 +88,7 @@ const config = {
 
   output: {
     filename: "bundle.js", // [name].js = bundle.js
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     // necessary for HMR to know where to load the hot update chunks
   },

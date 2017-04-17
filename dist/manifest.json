@@ -3,7 +3,7 @@
   "name": "Arrow",
   "short_name": "Standard Listings",
   "description": "Real-time prediction market on Maps",
-  "start_url": "/index.html",
+  "start_url": "/",
   "background_color": "#D4AFDF",
   "theme_color": "#222",
   "icons": [{

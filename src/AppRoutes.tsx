@@ -4,7 +4,7 @@ import * as React from 'react'
 //// Routing
 import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
 //// Server-side Rendered Styles
-import 'styles/App.scss'
+import 'styles/AppRoutes.scss'
 
 //// antd
 import * as enUS from 'antd/lib/locale-provider/en_US';
@@ -52,10 +52,6 @@ const Login = (): JSX.Element => {
 export default class AppRoutes extends React.Component {
 
   render () {
-    // const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
-    // const domain: string = 'peitalin.au.auth0.com'
-    // const redirectUrl: string = '/map' // redirect to route on authentication
-
     return (
       <LocaleProvider locale={ enUS }>
         <HashRouter>

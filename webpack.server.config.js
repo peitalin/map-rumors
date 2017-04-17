@@ -12,9 +12,6 @@ console.log(`NODE_ENV: ${process.env.NODE_ENV}\n`);
 //////////////////////////////////////////
 const plugins = [
   new webpack.DefinePlugin({
-    // http://stackoverflow.com/a/35372706/2177568
-    // for server side code, just require, don't chunk
-    // use `if (ONSERVER) { ...` for server specific code
     'process.env.NODE_ENV': JSON.stringify('production'),
     ONSERVER: true,
   }),
@@ -22,25 +19,6 @@ const plugins = [
     filename: "stylesSSR.css", // output css file with same name as the entry point.
     allChunks: true,
     disable: false,
-  }),
-  new webpack.optimize.UglifyJsPlugin({
-    sourceMap: false,
-    minimize: true,
-    output: { comments: false },
-    compress: {
-      warnings: false,
-      screw_ie8: true,
-      conditionals: true,
-      // comparisons: false, // uglify bug: fails with mapbox
-      // https://github.com/mapbox/mapbox-gl-js/issues/4359
-      comparisons: true,
-      sequences: true,
-      evaluate: true,
-      join_vars: true,
-      if_return: true,
-      unused: true,
-      dead_code: true
-    }
   })
 ]
 
@@ -49,18 +27,17 @@ const plugins = [
 const config = {
 
   entry: {
-    // server: path.join(__dirname, 'dist', 'server.tsx')
-    serverSSR: path.join(__dirname, 'dist', 'serverSSR.tsx')
-    // [name].js = server.js
+    serverSSR: path.resolve(__dirname, 'dist', 'serverSSR.tsx')
+    // output name: serverSSR.js
   },
 
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: "[name].js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: "[name].js", // output name: serverSSR.js
     publicPath: '/',
     // necessary for HMR to know where to load the hot update chunks
     // libraryTarget: 'commonjs2'
-    // // server-side commonjs
+    //// server-side commonjs
   },
 
   // Enable sourcemaps for debugging webpack's output.
@@ -121,7 +98,7 @@ const config = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            'css-loader?sourceMap'
+            'css-loader',
           ]
         })
       },
@@ -130,9 +107,8 @@ const config = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            'css-loader?sourceMap',
-            'resolve-url-loader',
-            'sass-loader'
+            'css-loader',
+            'sass-loader',
           ]
         })
       },
@@ -141,8 +117,7 @@ const config = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            'css-loader?sourceMap',
-            'resolve-url-loader',
+            'css-loader',
             'less-loader'
           ]
         })

@@ -4,28 +4,15 @@ import * as React from 'react'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import WorldMap from './WorldMap'
-import Subscriptions from './Subscriptions'
 import FooterLinks from './FooterLinks'
-import 'styles/LandingPage.scss'
+import DraggableList from './DraggableList.tsx'
 
+import 'styles/LandingPage.scss'
+import 'styles/AppRoutes.scss'
+import 'antd/lib/button/style/css'
 
 // import * as mojs from 'mo-js'
 
-// const burst = new mojs.Burst({
-//   left: 0, top: 0,
-//   radius:   { 4: 19 },
-//   angle:    45,
-//   children: {
-//     shape: 'line',
-//     radius: 3,
-//     scale: 1,
-//     stroke: '#FD7932',
-//     strokeDasharray: '100%',
-//     strokeDashoffset: { '-100%' : '100%' },
-//     duration: 700,
-//     easing: 'quad.out',
-//   }
-// })
 
 export default class LandingPage extends React.Component<any, any> {
 
@@ -71,9 +58,18 @@ export default class LandingPage extends React.Component<any, any> {
 
         { switchLanguageHeader2(this.state.language) }
 
-        <div className="landing-page-subscriptions-container">
-          <div className='landing-page-subscriptions'>
-            <Subscriptions landingPage={true}/>
+        <div className="landing-page-listings-container">
+          <div className='landing-page-listings-flex'>
+              <img className='landing-page-listings' id="" src={require("../img/house11.svg")} />
+              <img className='landing-page-listings' id="" src={require("../img/house12.svg")} />
+              <img className='landing-page-listings' id="" src={require("../img/house13.svg")} />
+              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house14.svg")} />
+              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house15.svg")} />
+              <img className='landing-page-listings' id="" src={require("../img/house16.svg")} />
+              <img className='landing-page-listings' id="" src={require("../img/house18.svg")} />
+              <img className='landing-page-listings' id="" src={require("../img/house19.svg")} />
+              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house20.svg")} />
+              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house21.svg")} />
           </div>
           <FooterLinks/>
         </div>
@@ -89,6 +85,22 @@ export default class LandingPage extends React.Component<any, any> {
     //     y: e.pageY,
     //   }).replay()
     //   // burst animation
+    // })
+    //
+    // const burst = new mojs.Burst({
+    //   left: 0, top: 0,
+    //   radius:   { 4: 19 },
+    //   angle:    45,
+    //   children: {
+    //     shape: 'line',
+    //     radius: 3,
+    //     scale: 1,
+    //     stroke: '#FD7932',
+    //     strokeDasharray: '100%',
+    //     strokeDashoffset: { '-100%' : '100%' },
+    //     duration: 700,
+    //     easing: 'quad.out',
+    //   }
     // })
     //
     // var scaleCurve = mojs.easing.path('M0,100 L25,99.9999983 C26.2328835,75.0708847 19.7847843,0 100,0');

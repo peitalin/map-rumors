@@ -108,18 +108,80 @@
   padding-bottom: 0.5rem;
   border-bottom: 2px solid;
 }
-.landing-page-subscriptions-container {
+.landing-page-listings-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.landing-page-subscriptions {
+.landing-page-listings-flex {
   margin: 5% 10% 10% 10%;
-  max-width: 900px;
+  max-width: 650px;
   z-index: 1;
   border-left: 2px solid #444444;
-  border-bottom: 2px solid #444444;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.landing-page-listings-grid {
+  margin: 5% 10% 10% 10%;
+  max-width: 650px;
+  z-index: 1;
+  border-left: 2px solid #444444;
+  transform: rotate(-30deg);
+}
+
+.listings-grid3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+
+}
+.listings-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+$listings-width: 10rem;
+$listings-height: 15rem;
+
+.landing-page-listings {
+  border: 2px solid #ADEADE;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: $listings-width;
+  height: $listings-height;
+}
+.listings-rotated {
+  width: $listings-height;
+  height: $listings-width;
+
+}
+
+@media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
+  /* portrait */
+  $listings-width: 8rem;
+  $listings-height: 12rem;
+
+  .landing-page-listings {
+    margin: 0.2rem;
+    padding: 0.2rem;
+    width: $listings-width;
+    height: $listings-height;
+  }
+}
+@media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
+  /* landscape */
+  $listings-width: 8rem;
+  $listings-height: 12rem;
+
+  .landing-page-listings {
+    margin: 0.2rem;
+    padding: 0.2rem;
+    width: $listings-width;
+    height: $listings-height;
+  }
 }
 
 // CSS transitions

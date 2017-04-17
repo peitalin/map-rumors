@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import AppRoutes from './AppRoutes'
+import LandingPage from './components/LandingPage'
 
 
 //// Graphql
@@ -65,11 +66,12 @@ class AppApollo extends React.Component<any, AppApolloState> {
 
     getStoredState({ storage: localforage }, (err, rehydratedState) => {
 
+      const initialState = { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}
       const client = new ApolloClient({
         networkInterface: this.initApolloNetworkInterface(GRAPHQL_PROJECT_ID),
         dataIdFromObject: o => o.id, // enable object ID for better cacheing
         queryDeduplication: true, // batch graphql queries
-        initialState: { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}, // rehydrate Apollo Store
+        initialState: initialState, // rehydrate Apollo Store
       });
 
       let reduxStore = createStore(
@@ -80,15 +82,15 @@ class AppApollo extends React.Component<any, AppApolloState> {
         rehydratedState,
         compose(
           applyMiddleware(thunk),
-          applyMiddleware(client.middleware()), // Apollo-client
           this.registerReduxDevtools(),
-          offline(offlineConfig), // Redux-offline
+          // offline(offlineConfig), // Redux-offline
+          // applyMiddleware(client.middleware()), // Apollo-client: wrong state shape
         )
       );
 
       const persistor = createPersistor(reduxStore, { storage: localforage })
       persistor.rehydrate(rehydratedState)
-      // persistor.purge()
+      // persistor.purge() // only purges redux store, not apollo-client
       ////// must login again after purge to get user profile
       console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       this.reduxStore = reduxStore
@@ -118,7 +120,14 @@ class AppApollo extends React.Component<any, AppApolloState> {
 
   render() {
     if(!this.state.rehydrated) {
-      return <div>Rehydrating<SpinnerRectangle height='16px' width='6px'/></div>
+      return (
+        <div>
+          <div style={{ position: 'fixed', top: 10, left: 10 }}>
+            Rehydrating<SpinnerRectangle height='16px' width='6px'/>
+          </div>
+          <LandingPage/>
+        </div>
+      )
     }
     return (
       <ApolloProvider store={this.reduxStore} client={this.client}>
