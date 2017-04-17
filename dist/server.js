@@ -11,7 +11,7 @@ var bodyParser = require('koa-bodyparser')
 
 var koa = new Koa();
 var router = new Router()
-
+var PORT = process.env.PORT || 8080;
 
 router.get('/', async(ctx) => {
   await send(ctx, '/index.html', { root: 'dist' })
@@ -20,7 +20,7 @@ router.get('/', async(ctx) => {
 koa.use(router.routes());
 koa.use(serve(path.join(__dirname)));
 
-koa.listen(7000, () => {
-  console.log("Koa serving: ./dist/index.html at http://localhost:7000")
+koa.listen(PORT, () => {
+  console.log(`Koa serving: ./dist/index.html at http://localhost:${PORT}`)
 });
 
