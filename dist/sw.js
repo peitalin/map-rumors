@@ -16,6 +16,9 @@ var urlsToCache = [
 ];
 
 
+// Here comes the install event!
+// This only happens once, when the browser sees this
+// version of the ServiceWorker for the first time.
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -26,55 +29,41 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// The fetch event happens for the page request with the
+// ServiceWorker's scope, and any request made within that page
 self.addEventListener('fetch', (event) => {
 
-    // console.log(event.request.url);
-    const url = new URL(event.request.url)
+  // console.log(event.request.url);
+  const url = new URL(event.request.url)
 
-    if (url.origin == 'https://gravatar.com') {
-      // implement custom handlers
-      event.respondWith(handleAvatarRequest(event));
-      return;
-    }
+  // Calling event.respondWith means we're in charge
+  // of providing the response. We pass in a promise
+  // that resolves with a response object
+  if (url.origin == location.origin && url.pathname == '/') {
+    event.respondWith(caches.match('/index.html'))
+    return;
+  }
 
-    if (url.origin == location.origin && url.pathname == '/') {
-      event.respondWith(caches.match('/index.html'))
-      return;
-    }
+  alternative handler
+  event.respondWith(
+    caches.match(event.request)
+    .then(response => response || fetch(event.request))
+  );
 
-    event.respondWith(
-        caches.match(event.request)
-          .then(response => response || fetch(event.request))
-    );
 });
 
 ///// background sync
-self.addEventListener('sync', event => {
-  if (event.tag == 'send-messages') {
-    event.waitUntil(
-      getMessagesFromOutbox().then(messages => {
-        return sendMessagesToServer(messages)
-          .then(() => removeMessagesFromOutbox(messages));
-      })
-    )
-  }
-})
+// self.addEventListener('sync', event => {
+//   if (event.tag == 'send-messages') {
+//     event.waitUntil(
+//       getMessagesFromOutbox().then(messages => {
+//         return sendMessagesToServer(messages)
+//           .then(() => removeMessagesFromOutbox(messages));
+//       })
+//     )
+//   }
+// })
 
-
-
-function handleAvatarRequest(event) {
-  const networkFetch = fetch(event.request);
-  event.waitUntil(
-    networkFetch.then(response => {
-      const responseClone = response.clone();
-      caches.open('avatars')
-        .then(cache => cache.put(event.request, responseClone));
-    })
-  );
-
-  return caches.match(event.request)
-    .then(response => response || networkFetch);
-}
 
 
 
