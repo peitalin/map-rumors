@@ -113,6 +113,10 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       ...localData,
       features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0005))
     })
+    this.props.updateGeoClickedParcels({
+      ...localData,
+      features: []
+    })
 
     this.state = {
       isSearch: false,
@@ -209,17 +213,14 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       this.props.updateLotPlan(LOTPLAN)
 
       if (!features.filter(f => f.layer.id === mapboxlayers.clickedParcelsFill).length) {
-        let clickedParcel = this.props.gRadius.features
-          .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
+        let clickedParcel: Array<geoParcel> = this.props.gHover.features
+          .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN)).toJS()
         // add purple parcel, visited parcel
-        this.setState({
-          gClickedParcels: {
-            ...this.state.gClickedParcels,
-            features: [...this.state.gClickedParcels.features, ...clickedParcel]
-          }
+        this.props.updateGeoClickedParcels({
+          ...this.props.gClickedParcels,
+          features: [...this.props.gClickedParcels.features, ...clickedParcel]
         })
       }
-
       this.setState({
         houseProps: { LOT: LOT, PLAN: PLAN, LOT_AREA: LOT_AREA },
         showHouseCard: true
@@ -237,10 +238,11 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
     // requires redux-thunk to dispatch 2 actions at the same time
-    this.props.updateLngLat(event.lngLat)
+    let lngLat = event.lngLat
+    this.props.updateLngLat(lngLat)
     // var bearings = [-30, -15, 0, 15, 30]
     map.flyTo({
-      center: event.lngLat,
+      center: lngLat,
       speed: 2,
       // bearing: bearings[parseInt(Math.random()*4)],
       // pitch: parseInt(40+Math.random()*20)
@@ -294,12 +296,11 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     }
 
     // update parcels near mouse
-    this.setState({
-      gHover: {
-        ...this.props.gHover,
-        features: this.props.gData.features.filter(g => isParcelNear(g, event.lngLat.lng, event.lngLat.lat, 0.0005))
-      }
-    });
+    let lngLat: mapboxgl.LngLat = event.lngLat
+    this.props.updateGeoHover({
+      ...this.props.gHover,
+      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0005))
+    })
 
     map.getSource('gHover').setData(this.props.gHover);
     map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#aa88cc');
@@ -329,13 +330,10 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#58c')
 
     let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-    this.setState({
-      gPredictions: {
-        ...this.props.gData,
-        features: this.props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
-      }
+    this.props.updateGeoPredictions({
+      ...this.props.gData,
+      features: this.props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
     })
-
   }
 
 
