@@ -511,7 +511,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
             geoJsonSource={{ type: 'geojson', data: this.state.gRadius }}
           />
           <Layer sourceId="gRadius"
-             d={ mapboxlayers.radiusBorders }
+            id={ mapboxlayers.radiusBorders }
             type="line"
             paint={{ 'line-color': '#58c', 'line-opacity': 0.6, 'line-width': 1 }}
             before={ mapboxlayers.radiusBordersWide }
