@@ -6,6 +6,8 @@ import { render, findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox, ReduxStateParcels } from '../reducer'
 import * as throttle from 'lodash/throttle'
+import * as debounce from 'lodash/debounce'
+import * as Immutable from 'immutable'
 
 // Mapboxgl
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
@@ -34,7 +36,8 @@ import { isParcelNear } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
 
 
-let localData: geoData = require('../data/parkinson_parcels.json')
+let localDataRaw: geoData = require('../data/parkinson_parcels.json')
+let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
 
 
 interface MapBackgroundProps {
@@ -54,9 +57,9 @@ interface MapBackgroundProps {
 interface MapBackgroundState {
   isSearch: boolean
   gData: geoData
-  gParcels: geoData
-  gParcelsWide: geoData
   gRadius: geoData
+  gRadiusWide: geoData
+  gHover: geoData
   gClickedParcels: geoData
   gPredictions: geoData
   showHouseCard: boolean
@@ -65,9 +68,19 @@ interface MapBackgroundState {
     PLAN: string
     LOT_AREA: number
   }
-  data: Object
 }
 
+// Each parcel layer used on mapbox
+const mapboxlayers = {
+  radiusBorders: 'radius-borders',
+  radiusBordersWide: 'radius-borders-wide',
+  parcelFillsHover: 'parcel-fills-hover',
+  hoverFills: 'hover-fills',
+  clickedParcelsBorders: 'clicked-parcels-borders',
+  clickedParcelsFill: 'clicked-parcels-fill',
+  predictionsBorders: 'predictions-borders',
+  predictionsFill: 'predictions-fill',
+}
 
 
 
@@ -79,21 +92,23 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
     let gData = {
       ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0040)
+      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0050))
     }
     this.props.updateGData(gData)
+    console.info(this.props.gData)
+
 
     this.state = {
       isSearch: false,
-      gParcels: {
-        ...localData,
-        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0014))
-      },
-      gParcelsWide: {
-        ...localData,
-        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
-      },
       gRadius: {
+        ...localData,
+        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0020))
+      },
+      gRadiusWide: {
+        ...localData,
+        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0030, 0.0015))
+      },
+      gHover: {
         ...localData,
         features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0005))
       },
@@ -107,7 +122,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       },
       showHouseCard: false,
       houseProps: { LOT: '', PLAN: '', LOT_AREA: 0 },
-      data: {},
     }
   }
 
@@ -115,21 +129,15 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     longitude: 153.038326429,
     latitude: -27.63419925525,
     zoom: 16,
-    mapboxLayers: {
-      parcelBorders: 'parcel-borders',
-      parcelBordersWide: 'parcel-borders-wide',
-      parcelFillsHover: 'parcel-fills-hover',
-      radiusFills: 'radius-fills',
-      predictionsBorders: 'predictions-borders',
-      predictionsFill: 'predictions-fill',
-    }
-
   }
+
+  // shouldComponentUpdate() {
+  //   true
+  // }
 
   componentWillMount() {
     this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
-    // initial batch of land parcels
   }
 
   componentDidMount() {
@@ -143,7 +151,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         }
       })
     }
-
     // var MapboxClient = require('mapbox')
     // const accessToken = 'pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw'
     // var client = new MapboxClient(accessToken)
@@ -173,13 +180,13 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     let map: mapboxgl.Map = this.map
     if (map && this.props.flying) {
       this.setState({
-        gParcels: {
-          ...this.state.gParcels,
+        gRadius: {
+          ...this.state.gRadius,
           features: nextProps.gData.features
             .filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0014))
         },
-        gParcelsWide: {
-          ...this.state.gParcelsWide,
+        gRadiusWide: {
+          ...this.state.gRadiusWide,
           features: nextProps.gData.features
             .filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0020, 0.0010))
         },
@@ -199,12 +206,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         speed: 3, // make flying speed 3x fast
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
-      this.map.getSource('parcels').setData(this.state.gParcels)
-      this.map.getSource('radius').setData(this.state.gRadius)
-      this.map.setPaintProperty('radius-fills', 'fill-opacity', 0.1)
-      this.map.setPaintProperty('radius-fills', 'fill-color', '#c68')
-      this.map.setPaintProperty('parcel-borders', 'line-color', '#c68')
-      this.map.setPaintProperty('parcel-borders-wide', 'line-color', '#fff')
+      this.map.getSource('gRadius').setData(this.state.gRadius)
+      this.map.getSource('gHover').setData(this.state.gHover)
+      this.map.setPaintProperty(mapboxlayers.hoverFills, 'fill-opacity', 0.1)
+      this.map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#c68')
+      this.map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
+      this.map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
       this.props.updateFlyingStatus(false)
     }
   }
@@ -217,8 +224,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       let { LOT, PLAN, LOTPLAN, LOT_AREA, O_SHAPE_Area, O_SHAPE_Length, LOCALITY } = features[0].properties
       this.props.updateLotPlan(LOTPLAN)
 
-      if (!features.filter(f => f.layer.id === "clicked-parcels-fill").length) {
-        let clickedParcel = this.state.gParcels.features
+      if (!features.filter(f => f.layer.id === mapboxlayers.clickedParcelsFill).length) {
+        let clickedParcel = this.state.gRadius.features
           .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
         // add purple parcel, visited parcel
         this.setState({
@@ -256,34 +263,34 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     })
     // this.props.toggleShowModal(true)
 
-    let features = map.queryRenderedFeatures(event.point, { layer: ['radius-fills'] })
+    let features = map.queryRenderedFeatures(event.point, { layer: [mapboxlayers.hoverFills] })
       .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
     if (!features.length) {
       this.setState({ showHouseCard: false })
       return
     } else {
-      console.info(features)
+      console.info('features: ', features)
+      this.handleClickedParcel(features)
+      // add to visited parcels + show parcel stats
     }
-
-    this.handleClickedParcel(features)
 
     // update parcels near mouse click
     this.setState({
-      gParcels: {
-        ...this.state.gParcels,
+      gRadius: {
+        ...this.state.gRadius,
         features: this.props.gData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0014))
       },
-      gParcelsWide: {
-        ...this.state.gParcelsWide,
+      gRadiusWide: {
+        ...this.state.gRadiusWide,
         features: this.props.gData.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
       }
     })
-    map.getSource('parcels').setData(this.state.gParcels)
-    map.getSource('radius').setData(this.state.gRadius)
-    map.setPaintProperty('radius-fills', 'fill-opacity', 0.1)
-    map.setPaintProperty('radius-fills', 'fill-color', '#c68')
-    map.setPaintProperty('parcel-borders', 'line-color', '#c68')
-    map.setPaintProperty('parcel-borders-wide', 'line-color', '#fff')
+    map.getSource('gRadius').setData(this.state.gRadius)
+    map.getSource('gHover').setData(this.state.gHover)
+    map.setPaintProperty(mapboxlayers.hoverFills, 'fill-opacity', 0.1)
+    map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#c68')
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
 
   }
 
@@ -291,7 +298,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   private onMouseMove = (map: mapboxgl.Map, event: MapMouseEvent): void => {
 
     // hover highlight
-    let [feature] = map.queryRenderedFeatures(event.point, { layers: ['radius-fills'] })
+    let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxlayers.hoverFills] })
     // destructure list to get first feature
     if (feature) {
       let hoverFilterOptions = [
@@ -299,35 +306,21 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         ["==", "LOT", feature.properties.LOT],
         ["==", "PLAN", feature.properties.PLAN],
       ]
-      map.setFilter("parcel-fills-hover", hoverFilterOptions)
+      map.setFilter(mapboxlayers.parcelFillsHover, hoverFilterOptions)
     } else {
-      map.setFilter("parcel-fills-hover", ["==", "LOT", ""])
+      map.setFilter(mapboxlayers.parcelFillsHover, ["==", "LOT", ""])
     }
-
-
-    // if (feature) {
-    //   let hoverFilterOptionsRadius = [
-    //     'all',
-    //     ["==", "LOT", feature.properties.LOT],
-    //     ["==", "PLAN", feature.properties.PLAN],
-    //   ]
-    //   map.setFilter("parcel-fills-hover", hoverFilterOptionsRadius)
-    // } else {
-    //   map.setFilter("parcel-fills-hover", ["==", "LOT", ""])
-    // }
 
     // update parcels near mouse
     this.setState({
-      gRadius: {
-        ...this.state.gRadius,
+      gHover: {
+        ...this.state.gHover,
         features: this.props.gData.features.filter(g => isParcelNear(g, event.lngLat.lng, event.lngLat.lat, 0.0005))
       }
     });
 
-    map.getSource('radius').setData(this.state.gRadius);
-    map.setPaintProperty('radius-fills', 'fill-color', '#aa88cc');
-    // map.setPaintProperty('radius-fills', 'fill-opacity', 0.1);
-
+    map.getSource('gHover').setData(this.state.gHover);
+    map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#aa88cc');
   }
 
 
@@ -341,22 +334,23 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     let lngLat: mapboxgl.LngLat = map.getCenter()
     this.props.updateLngLat(lngLat)
 
+
     this.setState({
-      gParcels: {
-        ...this.state.gParcels,
+      gRadius: {
+        ...this.state.gRadius,
         features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0014))
       }
     })
 
     this.setState({
-      gParcelsWide: {
-        ...this.state.gParcelsWide,
+      gRadiusWide: {
+        ...this.state.gRadiusWide,
         features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
       }
     })
 
-    map.setPaintProperty('parcel-borders-wide', 'line-color', '#aa88cc')
-    map.setPaintProperty('parcel-borders', 'line-color', '#58c')
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#aa88cc')
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#58c')
 
     let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
     this.setState({
@@ -389,24 +383,27 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     }
     // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
     map.on("mouseout", () => {
-        map.setFilter("parcel-fills-hover", ["==", "LOT", ""])
+        map.setFilter(mapboxlayers.parcelFillsHover, ["==", "LOT", ""])
     });
 
     // offload radius calculations to worker
     map.on('drag', throttle((event) => {
       this.worker.postMessage({
-        features: localData.features,
+        features: localDataRaw.features,
         longitude: this.props.longitude,
         latitude: this.props.latitude,
-        radiusMax: 0.0040,
+        radiusMax: 0.0050,
       })
       this.worker.onmessage = (m) => {
         this.props.updateGData({
           ...this.props.gData,
-          features: m.data
+          features: Immutable.List(m.data)
         })
       }
-    }, 300))
+    }, 1000))
+    // IMPLEMENT a "APPROX CURRENT LOCATION" reducer
+    // checks current location, compares to see if you have moved outside radius,
+    // then updates position if you are more than a radius away from previous location.k
 
     map.setStyle({
       ...map.getStyle(),
@@ -456,25 +453,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       'source-layer': 'brisbane_suburbs-9nr08i'
     });
 
-    // let parkinsonParcels = map.getLayer('parkinson-parcels')
-    // console.info(map.getSource('parkinson-parcels'))
-    // console.info(parkinsonParcels)
-
-    // this.setState({
-    //   gParcels: {
-    //     ...parkinsonParcels,
-    //     features: parkinsonParcels.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0014))
-    //   },
-    //   gParcelsWide: {
-    //     ...parkinsonParcels,
-    //     features: parkinsonParcels.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0018))
-    //   },
-    //   gRadius: {
-    //     ...parkinsonParcels,
-    //     features: parkinsonParcels.features.filter(x => isParcelNear(x, this.props.longitude, this.props.latitude, 0.0005))
-    //   },
-    // })
-
     map.addLayer({
       id: 'traffic',
       type: 'line',
@@ -502,7 +480,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           onStyleLoad={this.onMapStyleLoad}
           onZoom={throttle(this.onZoom, 48)}
           onMouseMove={throttle(this.onMouseMove, 48)}
-          onDrag={throttle(this.onDrag, 24)}
+          onDrag={debounce(this.onDrag, 32)}
           onClick={this.onClick}
           containerStyle={{
             position: "absolute",
@@ -512,62 +490,70 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         }}>
 
 
-          <Source id="radius"
+          <Source id="gHover"
             onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.state.gRadius }}
+            geoJsonSource={{ type: 'geojson', data: this.state.gHover }}
           />
-          <Layer id='radius-fills' sourceId="radius"
+          <Layer sourceId="gHover"
+            id={ mapboxlayers.hoverFills }
             type="fill"
             paint={{ 'fill-color': '#aa88cc', 'fill-opacity': 0.1 }}
           />
-
-          <Source id="parcels"
-            onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.state.gParcels }}
-          />
-          <Layer id="parcel-borders" sourceId="parcels"
-            type="line"
-            paint={{ 'line-color': '#58c', 'line-opacity': 0.6, 'line-width': 1 }}
-            before={"parcel-borders-wide"}
-          />
-          <Layer id="parcel-fills-hover" sourceId="parcels"
+          <Layer sourceId="gHover"
+            id={ mapboxlayers.parcelFillsHover }
             type="fill"
             paint={{ 'fill-color': '#68c', 'fill-opacity': 0.3 }}
             layerOptions={{ 'filter': ['==', 'name', ''], 'min-zoom': 17 }}
           />
 
-          <Source id="parcels-wide"
+          <Source id="gRadius"
             onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.state.gParcelsWide }}
+            geoJsonSource={{ type: 'geojson', data: this.state.gRadius }}
           />
-          <Layer id="parcel-borders-wide" sourceId="parcels-wide"
+          <Layer sourceId="gRadius"
+             d={ mapboxlayers.radiusBorders }
+            type="line"
+            paint={{ 'line-color': '#58c', 'line-opacity': 0.6, 'line-width': 1 }}
+            before={ mapboxlayers.radiusBordersWide }
+          />
+
+          <Source id="gRadiusWide"
+            onSourceAdded={(source) => (source)}
+            geoJsonSource={{ type: 'geojson', data: this.state.gRadiusWide }}
+          />
+          <Layer sourceId="gRadiusWide"
+            id={ mapboxlayers.radiusBordersWide }
             type="line"
             paint={{ 'line-color': '#aa88cc', 'line-opacity': 0.3, 'line-width': 1 }}
           />
 
 
-          <Source id="clickedParcels"
+          <Source id="gClickedParcels"
             onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.state.gClickedParcels }}
           />
-          <Layer id="clicked-parcels-line" sourceId="clickedParcels"
+          <Layer sourceId="gClickedParcels"
+            id={ mapboxlayers.clickedParcelsBorders }
             type="line"
             paint={{ 'line-color': '#a49', 'line-opacity': 0.7, 'line-width': 1 }}
           />
-          <Layer id="clicked-parcels-fill" sourceId="clickedParcels"
+          <Layer sourceId="gClickedParcels"
+            id={ mapboxlayers.clickedParcelsFill }
             type="fill"
             paint={{ 'fill-color': '#a49', 'fill-opacity': 0.3 }}
           />
 
-          <Source id="predictions"
+          <Source id="gPredictions"
             onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.state.gPredictions }}
           />
-          <Layer id="predictions-borders" sourceId="predictions"
+          <Layer sourceId="gPredictions"
+            id={ mapboxlayers.predictionsBorders }
             type="line"
             paint={{ 'line-color': '#eee', 'line-opacity': 0.6, 'line-width': 1 }}
           />
-          <Layer id="predictions-fill" sourceId="predictions"
+          <Layer sourceId="gPredictions"
+            id={ mapboxlayers.predictionsFill }
             type="fill"
             paint={{ 'fill-color': '#eee', 'fill-opacity': 0.3 }}
           />
@@ -599,7 +585,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
 
-const mapStateToProps = ( state: ReduxState): ReduxStateMapbox|ReduxStateParcels => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox|ReduxStateParcels => {
   return {
     // reduxMapbox
     latitude: state.reduxMapbox.latitude,

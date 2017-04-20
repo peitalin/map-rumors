@@ -1,6 +1,8 @@
 
 
 import { userGQL, geoData } from './components/interfaceDefinitions'
+import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import * as I from 'immutable'
 
 
 ///// Grand Redux State Shape ////////
@@ -69,6 +71,7 @@ const initialReduxStateUser: ReduxStateUser = {
     predictions: [],
   },
   updatingPredictions: false,
+  approxLocation: mapboxgl.LngLat,
 }
 export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, action): ReduxStateUser => {
 
@@ -77,7 +80,10 @@ export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, 
       return { ...state, userGQL: action.payload }
 
     case "UPDATING_PREDICTIONS":
-      return { ...state, loading: action.payload }
+      return { ...state, updatingPredictions: action.payload }
+
+    case "UPDATE_APPROX_LOCATION":
+      return { ...state, approxLocation: action.payload }
 
     default:
       return state
@@ -96,9 +102,9 @@ export interface ReduxStateParcels {
 }
 const initialReduxStateParcels = {
   gData:            { features: [] },
-  gParcels:         { features: [] },
-  gParcelsWide:     { features: [] },
   gRadius:          { features: [] },
+  gRadiusWide:      { features: [] },
+  gHover:           { features: [] },
   gClickedParcels:  { features: [] },
   gPredictions:     { features: [] }
 }

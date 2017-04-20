@@ -10,6 +10,7 @@ onmessage = (e: MessageEvent) => {
   // radiusMax: get parcels inside this radius
   // radiusMin: filter pracels inside this radius
   if (features) {
+    // can't pass immutable objects into web workers. not serializable.
     let newFeatures = features.filter(g => isParcelNear(g, longitude, latitude, radiusMax, radiusMin))
     postMessage(newFeatures)
   }
@@ -20,6 +21,17 @@ onerror = (e) => {
   // console.error(e)
 }
 
+
+// export const isParcelNear = (
+//   geoJsonFeature: geoParcel,
+//   longitude: number,
+//   latitude: number,
+//   radiusMax: number,
+//   radiusMin: number) => {
+//   let lngCenter = geoJsonFeature.properties.lngCenter
+//   let latCenter = geoJsonFeature.properties.latCenter
+//   return (abs(abs(lngCenter) - abs(longitude)) < 0.002) && (abs(abs(latCenter) - abs(latitude)) < 0.002)
+// }
 
 export const isParcelNear = (
   geoJsonFeature: geoParcel,
@@ -35,9 +47,10 @@ export const isParcelNear = (
 
 
 
+
 interface MessageEvent {
   isTrusted: boolean
-  data: any
+  data: Object
   origin: string
   lastEventId: string
   source: any
