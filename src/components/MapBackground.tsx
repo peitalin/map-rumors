@@ -155,7 +155,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     // })
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: MapBackgroundProps) {
     if ((this.props.longitude !== nextProps.longitude) && (this.props.latitude !== nextProps.latitude)) {
       // update parcels near home which you flew to
       this.props.updateGeoData({
@@ -165,28 +165,28 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.map
     if (map && this.props.flying && this.props.userGQL.predictions) {
 
       let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
 
       this.props.updateGeoPredictions({
-        ...this.props.gPredictions,
+        ...nextProps.gPredictions,
         features: nextProps.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
       })
       this.props.updateGeoRadius({
-        ...this.props.gRadius,
-        features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0015))
+        ...nextProps.gRadius,
+        features: nextProps.gData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0015))
       })
       this.props.updateGeoRadiusWide({
-        ...this.props.gRadiusWide,
-        features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
+        ...nextProps.gRadiusWide,
+        features: nextProps.gData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0020, 0.0010))
       })
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.map
     if (map && this.props.flying) {
       map.flyTo({
@@ -238,7 +238,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
     // requires redux-thunk to dispatch 2 actions at the same time
-    let lngLat = event.lngLat
+    let lngLat: mapboxgl.LngLat = event.lngLat
     this.props.updateLngLat(lngLat)
     // var bearings = [-30, -15, 0, 15, 30]
     map.flyTo({
@@ -625,9 +625,6 @@ const mapDispatchToProps = ( dispatch ) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)( MapBackground )
+export default connect(mapStateToProps, mapDispatchToProps)( MapBackground )
 
 
