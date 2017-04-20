@@ -29,7 +29,7 @@ export default class DraggableList extends React.Component<any, any> {
     mouseY: 0,
     isPressed: false,
     originalPosOfLastPressed: 0,
-    // order: [...(Array(this.props.children.length).keys())]
+    // order: [...Array(this.props.children.length).keys()]
     order: Array.from(Array(this.props.children.length), (_, i) => i)
   }
 
@@ -82,18 +82,21 @@ export default class DraggableList extends React.Component<any, any> {
     let { mouseY, isPressed, originalPosOfLastPressed, order } = this.state
 
     let DragDivs: Array<JSX.Element> = this.props.children.map((child, i) => {
-      const style = originalPosOfLastPressed === i && isPressed
-        ? { scale: spring(1.1, springConfig),
-            shadow: spring(16, springConfig),
-            y: mouseY,
-          }
-        : { scale: spring(1, springConfig),
-            shadow: spring(1, springConfig),
-            y: spring(order.indexOf(i) * rowSpacing, springConfig),
-          }
-
+      if (originalPosOfLastPressed === i && isPressed) {
+        let style = {
+          scale: spring(1.1, springConfig),
+          shadow: spring(16, springConfig),
+          y: mouseY,
+        }
+      } else {
+        let style = {
+          scale: spring(1, springConfig),
+          shadow: spring(1, springConfig),
+          y: spring(order.indexOf(i) * rowSpacing, springConfig),
+        }
+      }
       const dragDiv = ({ scale, shadow, y }) => (
-        <div className='draggable-item'
+        <div className={this.props.itemClassName}
           onMouseDown={this.handleMouseDown.bind(null, i, y)}
           onTouchStart={this.handleTouchStart.bind(null, i, y)}
           style={{
@@ -106,13 +109,11 @@ export default class DraggableList extends React.Component<any, any> {
           { child }
         </div>
       )
-
       return (
         <Motion style={style} key={i}>
           { dragDiv }
         </Motion>
       )
-
     });
 
     return (

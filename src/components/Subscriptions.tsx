@@ -173,7 +173,7 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
 
       return (
         <div className="subscriptions-outer">
-          <DraggableList className='subscriptions-outer'>
+          <DraggableList className='subscriptions-outer' itemClassName={'draggable-item'}>
             { allPredictions }
           </DraggableList>
         </div>

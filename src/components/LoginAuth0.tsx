@@ -3,15 +3,14 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { userGQL } from './interfaceDefinitions'
 
 import { Redirect } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
-import { userGQL } from './interfaceDefinitions'
-import * as classNames from 'classnames'
 
 import Title from './Title'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
-
+import * as classNames from 'classnames'
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
 import 'styles/LoginAuth0.scss'
@@ -29,7 +28,6 @@ interface LoginAuth0Props {
     error?: boolean | string
     user?: userGQL
   }
-  userGQL: userGQL
 }
 
 interface LoginAuth0State {
@@ -41,7 +39,15 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
 
   constructor(props) {
     super(props)
-    this.lock = new Auth0Lock(this.props.clientId, this.props.domain)
+    var options = {
+      theme: {
+        logo: 'https://www.graphicsprings.com/filestorage/stencils/fc5a36a632a652df8b83be045b1c833b.svg',
+        primaryColor: '#83E4E5',
+        foregroundColor: "#222222"
+        // socialButtonStyle: 'small',
+      }
+    };
+    this.lock = new Auth0Lock(this.props.clientId, this.props.domain, options)
     this.state = {
       loggedIn: false
     }
@@ -169,20 +175,17 @@ query {
 }
 `
 
-const mapStateToProps = ( state: ReduxState ): StateProps => {
-  return {
-    userGQL: state.reduxReducer.userGQL
-  }
-}
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
+    updateUserProfileRedux: (userProfile: userGQL) => dispatch(
+      { type: "USER_GQL", payload: userProfile }
+    )
   }
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   graphql(UserQuery, { options: { fetchPolicy: 'network-only' } }),
   graphql(CreateUserQuery, { name: 'createUser' }),
+  connect(undefined, mapDispatchToProps),
 )( LoginAuth0 )
 

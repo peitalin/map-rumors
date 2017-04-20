@@ -1,39 +1,33 @@
 
-import { iPokemon, userGQL } from './components/interfaceDefinitions'
+
+import { userGQL, geoData } from './components/interfaceDefinitions'
 
 
+///// Grand Redux State Shape ////////
 export interface ReduxState {
-  reduxReducer: {
-    latitude: number
-    longitude: number
-    showModal: boolean
-    userGQL: userGQL
-    loading: boolean
-    flying: boolean
-    lotPlan: string
-    gData: geoData
-    allPredictions: iPrediction[]
-  }
+  reduxMapbox: ReduxStateMapbox
+  reduxParcels: ReduxStateParcels
+  reduxUser: ReduxStateUser
 }
 
-
-const initialReduxState = {
+////// Mapbox state reducer //////////
+export interface ReduxStateMapbox {
+  longitude: number
+  latitude: number
+  showModal: boolean
+  flying: boolean
+  mapboxZoom: number[]
+  lotPlan: string
+}
+const initialReduxStateMapbox: ReduxStateMapbox = {
   longitude: 153.038326429,
   latitude: -27.63419925525,
   showModal: false,
-  userGQL: {
-    bids: [],
-    predictions: [],
-  },
-  loading: false,
   flying: false,
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
   lotPlan: '',
-  gData: {},
-  allPredictions: [],
 }
-
-const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState => {
+export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMapbox, action): ReduxStateMapbox => {
 
   switch ( action.type ) {
     case "UPDATE_LNGLAT":
@@ -45,9 +39,6 @@ const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState
 
     case "UPDATE_MAPBOX_ZOOM":
       return { ...state, mapboxZoom: action.payload }
-
-    case "LOADING":
-      return { ...state, loading: action.payload }
 
     case "UPDATE_FLYING":
       return { ...state, flying: action.payload }
@@ -61,6 +52,59 @@ const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState
     case "UPDATE_LOTPLAN":
       return { ...state, lotPlan: action.payload }
 
+    default:
+      return state
+  }
+}
+
+
+////// Mapbox state reducer //////////
+export interface ReduxStateUser {
+  userGQL: userGQL
+  updatingPredictions: boolean
+}
+const initialReduxStateUser: ReduxStateUser = {
+  userGQL: {
+    bids: [],
+    predictions: [],
+  },
+  updatingPredictions: false,
+}
+export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, action): ReduxStateUser => {
+
+  switch ( action.type ) {
+    case "USER_GQL":
+      return { ...state, userGQL: action.payload }
+
+    case "UPDATING_PREDICTIONS":
+      return { ...state, loading: action.payload }
+
+    default:
+      return state
+  }
+}
+
+
+//////// geojson parcels /////////
+export interface ReduxStateParcels {
+  gData: geoData
+  gParcels: geoData
+  gParcelsWide: geoData
+  gRadius: geoData
+  gClickedParcels: geoData
+  gPredictions: geoData
+}
+const initialReduxStateParcels = {
+  gData:            { features: [] },
+  gParcels:         { features: [] },
+  gParcelsWide:     { features: [] },
+  gRadius:          { features: [] },
+  gClickedParcels:  { features: [] },
+  gPredictions:     { features: [] }
+}
+export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action): ReduxStateParcels => {
+
+  switch ( action.type ) {
     case "UPDATE_GDATA":
       return { ...state, gData: action.payload }
 
@@ -71,5 +115,3 @@ const reduxReducer = (state: ReduxState = initialReduxState, action): ReduxState
       return state
   }
 }
-
-export default reduxReducer

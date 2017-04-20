@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { ReduxState } from '../reducer'
+import { ReduxState, ReduxStateMapbox } from '../reducer'
 
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
@@ -104,11 +104,11 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
   }
 }
 
-const mapStateToProps = ( state: ReduxState ) => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox => {
   return {
-    lotPlan: state.reduxReducer.lotPlan,
-    longitude: state.reduxReducer.longitude,
-    latitude: state.reduxReducer.latitude,
+    lotPlan: state.reduxMapbox.lotPlan,
+    longitude: state.reduxMapbox.longitude,
+    latitude: state.reduxMapbox.latitude,
   }
 }
 

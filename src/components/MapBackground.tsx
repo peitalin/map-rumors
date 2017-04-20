@@ -4,7 +4,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { render, findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { ReduxState } from '../reducer'
+import { ReduxState, ReduxStateMapbox, ReduxStateParcels } from '../reducer'
 import * as throttle from 'lodash/throttle'
 
 // Mapboxgl
@@ -12,8 +12,6 @@ import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { MapMouseEvent, MapEvent, EventData } from 'mapbox-gl/dist/mapbox-gl'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
-
-
 
 
 // Components
@@ -43,11 +41,11 @@ interface MapBackgroundProps {
   longitude: number
   latitude: number
   mapboxZoom: Array<number>
-  updateLngLat(lnglat: mapboxgl.LngLat)?: void
-  updateFlyingStatus(flying: boolean)?: void
-  onZoomChange(zoom)?: void
-  toggleShowModal()?: void
-  updateLotPlan()?: void
+  updateLngLat?(lnglat: mapboxgl.LngLat): void
+  updateFlyingStatus?(flying: boolean): void
+  onZoomChange?(zoom): void
+  toggleShowModal?(): void
+  updateLotPlan?(): void
   userGQL: userGQL
   gData: geoData
   updateGData()?: void
@@ -69,7 +67,6 @@ interface MapBackgroundState {
   }
   data: Object
 }
-
 
 
 
@@ -241,18 +238,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       //   .setLngLat(map.unproject({ x: 10, y: window.innerHeight/2 }))
       //   .setDOMContent( document.getElementById('housecard1') )
       //   .addTo(map);
-
       // anchor options: 'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', and 'bottom-right'
 
-      // let popUp2 = new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
-      //   .setLngLat(map.unproject({ x: 50, y: window.innerHeight/1.5 }))
-      //   .setDOMContent( document.getElementById('housecard2') )
-      //   .addTo(map);
-      //
-      // let popUp3 = new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
-      //   .setLngLat(map.unproject({ x: 100, y: window.innerHeight/2 }))
-      //   .setDOMContent( document.getElementById('housecard3') )
-      //   .addTo(map);
     }
 
   }
@@ -612,33 +599,46 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
 
-const mapStateToProps = ( state: ReduxState ) => {
+const mapStateToProps = ( state: ReduxState): ReduxStateMapbox|ReduxStateParcels => {
   return {
-    latitude: state.reduxReducer.latitude,
-    longitude: state.reduxReducer.longitude,
-    mapboxZoom: state.reduxReducer.mapboxZoom,
-    userGQL: state.reduxReducer.userGQL,
-    flying: state.reduxReducer.flying,
-    gData: state.reduxReducer.gData,
+    // reduxMapbox
+    latitude: state.reduxMapbox.latitude,
+    longitude: state.reduxMapbox.longitude,
+    mapboxZoom: state.reduxMapbox.mapboxZoom,
+    userGQL: state.reduxMapbox.userGQL,
+    flying: state.reduxMapbox.flying,
+    // reduxParcels
+    gData: state.reduxParcels.gData,
   }
 }
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch({ type: "UPDATE_LNGLAT", payload: lnglat }),
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch({ type: "UPDATE_FLYING", payload: flyingStatus }),
-    updateGData: (gData: geoData) => dispatch({ type: "UPDATE_GDATA", payload: gData }),
-    onZoomChange: (zoom: Array<number>) => dispatch({ type: "UPDATE_MAPBOX_ZOOM", payload: zoom }),
-    toggleShowModal: () => dispatch({ type: "SHOW_MODAL", payload: true }),
-    updateLotPlan: (lotPlan: string) => dispatch({ type: "UPDATE_LOTPLAN", payload: lotPlan }),
+    updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch(
+      { type: "UPDATE_LNGLAT", payload: lnglat }
+    ),
+    updateFlyingStatus: (flyingStatus: boolean) => dispatch(
+      { type: "UPDATE_FLYING", payload: flyingStatus }
+    ),
+    updateGData: (gData: geoData) => dispatch(
+      { type: "UPDATE_GDATA", payload: gData }
+    ),
+    onZoomChange: (zoom: Array<number>) => dispatch(
+      { type: "UPDATE_MAPBOX_ZOOM", payload: zoom }
+    ),
+    toggleShowModal: (showModal: boolean) => dispatch(
+      { type: "SHOW_MODAL", payload: showModal }
+    ),
+    updateLotPlan: (lotPlan: string) => dispatch(
+      { type: "UPDATE_LOTPLAN", payload: lotPlan }
+    ),
     dispatch: dispatch,
   }
 }
 
-const MapBackgroundRedux = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MapBackground)
+)( MapBackground )
 
-export default MapBackgroundRedux
 

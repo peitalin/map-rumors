@@ -5,7 +5,8 @@ import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
-import DraggableList from './DraggableList.tsx'
+import DraggableList from './DraggableList'
+import ImgSVG from './ImgSVG'
 
 import 'styles/LandingPage.scss'
 import 'styles/AppRoutes.scss'
@@ -60,20 +61,34 @@ export default class LandingPage extends React.Component<any, any> {
 
         <div className="landing-page-listings-container">
           <div className='landing-page-listings-flex'>
-              <img className='landing-page-listings' id="" src={require("../img/house11.svg")} />
-              <img className='landing-page-listings' id="" src={require("../img/house12.svg")} />
-              <img className='landing-page-listings' id="" src={require("../img/house13.svg")} />
-              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house14.svg")} />
-              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house15.svg")} />
-              <img className='landing-page-listings' id="" src={require("../img/house16.svg")} />
-              <img className='landing-page-listings' id="" src={require("../img/house18.svg")} />
-              <img className='landing-page-listings' id="" src={require("../img/house19.svg")} />
-              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house20.svg")} />
-              <img className='landing-page-listings listings-rotated' id="" src={require("../img/house21.svg")} />
+            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+              <ImgSVG className='landing-page-listings' src={require('../img/house11.svg')} />
+              <ImgSVG className='landing-page-listings' src={require("../img/house12.svg")} />
+              <ImgSVG className='landing-page-listings' src={require("../img/house13.svg")} />
+            </DraggableList>
           </div>
-          <FooterLinks/>
+          <div className='landing-page-listings-flex'>
+            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+              <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house14.svg")} />
+              <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house15.svg")} />
+            </DraggableList>
+          </div>
+          <div className='landing-page-listings-flex'>
+            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+              <ImgSVG className='landing-page-listings' src={require("../img/house16.svg")} />
+              <ImgSVG className='landing-page-listings' src={require("../img/house18.svg")} />
+              <ImgSVG className='landing-page-listings' src={require("../img/house19.svg")} />
+            </DraggableList>
+          </div>
+          <div className='landing-page-listings-flex'>
+            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+              <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house20.svg")} />
+              <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house21.svg")} />
+            </DraggableList>
+          </div>
         </div>
 
+        <FooterLinks/>
       </div>
     )
   }

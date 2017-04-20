@@ -61,8 +61,22 @@ a:hover {
   z-index: 0;
 }
 
-
 // end antd
+.auth0-lock-close-button {
+  opacity: 0.3;
+}
+.auth0-lock-header-bg-blur {
+  background-image: none !important;
+}
+.auth0-lock-header-logo {
+  height: 72px;
+}
+.auth0-lock-header-welcome {
+  margin-top: 20px;
+}
+.auth0-lock-name {
+  display: none !important;
+}
 
 .mapboxgl-map {
   position: 'absolute';

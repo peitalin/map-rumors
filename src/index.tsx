@@ -15,14 +15,14 @@ import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-trans
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import reduxReducer from './reducer'
+import { reduxReducerMapbox, reduxReducerParcels, reduxReducerUser } from './reducer'
 //// Redux-persist
 import { getStoredState, createPersistor, persistStore, autoRehydrate } from 'redux-persist'
 // import localforage from 'localforage'
 import { SpinnerRectangle } from './components/Spinners'
 /// Redux-offline
-import { offline } from 'redux-offline';
-import offlineConfig from 'redux-offline/lib/defaults';
+// import { offline } from 'redux-offline';
+// import offlineConfig from 'redux-offline/lib/defaults';
 
 
 
@@ -37,7 +37,6 @@ class AppApollo extends React.Component<any, AppApolloState> {
   componentWillMount() {
     const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
     this.persistReduxApolloStore(GRAPHQL_PROJECT_ID)
-    this.registerServiceWorker()
   }
 
   initApolloNetworkInterface = (GRAPHQL_PROJECT_ID) => {
@@ -76,7 +75,9 @@ class AppApollo extends React.Component<any, AppApolloState> {
 
       let reduxStore = createStore(
         combineReducers({
-          reduxReducer,
+          reduxMapbox: reduxReducerMapbox,
+          reduxParcels: reduxReducerParcels,
+          reduxUser: reduxReducerUser,
           apollo: client.reducer()
         }),
         rehydratedState,
@@ -90,24 +91,13 @@ class AppApollo extends React.Component<any, AppApolloState> {
 
       const persistor = createPersistor(reduxStore, { storage: localforage })
       persistor.rehydrate(rehydratedState)
-      // persistor.purge() // only purges redux store, not apollo-client
+      // persistor.purge([ 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
       ////// must login again after purge to get user profile
       console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       this.reduxStore = reduxStore
       this.client = client
       this.setState({ rehydrated: true })
     })
-  }
-
-
-
-  registerServiceWorker = () => {
-    // Register the service worker if available.
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Successfully registered service worker', reg))
-      .catch(err => console.warn('Error while registering service worker', err))
-    }
   }
 
   registerReduxDevtools = () => {
@@ -148,6 +138,13 @@ const render = (AppRoutes) => {
   )
 }
 render(AppRoutes)
+
+// ReactDOM.render(
+//     <AppRoutes />
+//   , document.getElementById('root')
+// )
+
+
 
 // Hot Module Replacement API
 if (module.hot) {

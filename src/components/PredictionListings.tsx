@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { ReduxState } from '../reducer'
+import { ReduxState, ReduxStateUser } from '../reducer'
 import { Link } from 'react-router-dom'
-import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -49,7 +48,7 @@ interface PredictionListingsProps {
     variables: { userId: string, houseId: string }
   })?: void // graph-ql mutation
   updateUserProfileRedux(userProfile: userGQL)?: void // redux
-  isLoading(bool: boolean)?: void // redux
+  isUpdatingPredictions(bool: boolean)?: void // redux
   dispatch(action: { type: string, payload: any })?: void // redux
 }
 
@@ -59,7 +58,7 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
 
   deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
-    this.props.isLoading(true)
+    this.props.isUpdatingPredictions(true)
 
     this.props.updateUserProfileRedux({
       ...this.props.userGQL,
@@ -70,7 +69,7 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
     let deletePredictionResponse = await this.props.deletePrediction({
       variables: { predictionId: predictionId }
     })
-    this.props.isLoading(false)
+    this.props.isUpdatingPredictions(false)
   }
 
   formatPrediction = (prediction: number): string => {
@@ -130,7 +129,7 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
 
           <div className='prediction-listings-heading'>
             {(
-              this.props.loading
+              this.props.data.loading
               ? <SpinnerRectangle height='36px' width='8px' dark/>
               : undefined
             )}
@@ -192,16 +191,20 @@ query {
 `
 
 //////// REDUX ////////
-const mapStateToProps = ( state: ReduxState ) => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
   return {
-    userGQL: state.reduxReducer.userGQL,
-    loading: state.reduxReducer.loading,
+    userGQL: state.reduxUser.userGQL,
+    updatingPredictions: state.reduxUser.updatingPredictions,
   }
 }
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
-    isLoading: (bool) => dispatch({ type: "LOADING", payload: bool }),
+    updateUserProfileRedux: (userProfile) => dispatch(
+      { type: "USER_GQL", payload: userProfile }
+    ),
+    isUpdatingPredictions: (bool) => dispatch(
+      { type: "UPDATING_PREDICTIONS", payload: bool }
+    ),
   }
 }
 //////// REDUX ////////

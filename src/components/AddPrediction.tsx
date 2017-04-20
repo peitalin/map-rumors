@@ -1,8 +1,9 @@
 
 import * as React from 'react'
-import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
+import { connect } from 'react-redux'
+import { ReduxState, ReduxStateUser } from '../reducer'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -15,22 +16,22 @@ import { iHouse, mutationResponsePrediction as mutationResponse } from './interf
 
 
 interface AddPredictionProps {
-  createPrediction({
+  createPrediction?({
     variables: {
       prediction: number
       userId: string
       predictionId: string
     }
-  })?: void // graphql-mutation
+  }): void // graphql-mutation
   data?: {
     loading: boolean
     error: any
     House: iHouse
   }
   userGQL: userGQL // redux
-  updateUserProfileRedux(userProfile: userGQL)?: void // redux
-  isLoading(bool: boolean)?: void // redux
-  dispatch(action: { type: string, payload: any })?: void // redux
+  updateUserProfileRedux?(userProfile: userGQL): void // redux
+  isLoading?(bool: boolean): void // redux
+  dispatch?(action: { type: string, payload: any }): void // redux
 }
 
 
@@ -118,16 +119,20 @@ mutation($prediction: Float, $userId: ID!, $houseId: ID!) {
 `
 
 
-const mapStateToProps = ( state ) => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
   return {
-    userGQL: state.reduxReducer.userGQL
+    userGQL: state.reduxUser.userGQL
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile) => dispatch({ type: "USER_GQL", payload: userProfile }),
-    isLoading: (bool) => dispatch({ type: "LOADING", payload: bool }),
+    updateUserProfileRedux: (userProfile) => dispatch(
+      { type: "USER_GQL", payload: userProfile }
+    ),
+    isLoading: (bool) => dispatch(
+      { type: "LOADING", payload: bool }
+    ),
     dispatch: dispatch,
   }
 }
@@ -136,3 +141,4 @@ export default compose(
   graphql(createPredictionMutation, { name: 'createPrediction' }),
   connect(mapStateToProps, mapDispatchToProps)
 )( AddPrediction )
+

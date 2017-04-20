@@ -112,35 +112,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 5% 10% 10% 10%;
 }
 
 .landing-page-listings-flex {
-  margin: 5% 10% 10% 10%;
   max-width: 650px;
   z-index: 1;
   border-left: 2px solid #444444;
   display: flex;
   flex-wrap: wrap;
-}
-
-.landing-page-listings-grid {
-  margin: 5% 10% 10% 10%;
-  max-width: 650px;
-  z-index: 1;
-  border-left: 2px solid #444444;
-  transform: rotate(-30deg);
-}
-
-.listings-grid3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-
-}
-.listings-grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
 }
 
 $listings-width: 10rem;
@@ -183,6 +163,14 @@ $listings-height: 15rem;
     height: $listings-height;
   }
 }
+
+// draggable items
+.landing-page-draggable-item {
+  transition: filter 0.3s ease;
+  overflow: hidden;
+}
+
+
 
 // CSS transitions
 .landing-header-fade-appear {
