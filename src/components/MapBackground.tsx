@@ -69,13 +69,6 @@ interface MapBackgroundProps {
 
 interface MapBackgroundState {
   isSearch: boolean
-  gData: geoData
-  gRadius: geoData
-  gRadiusWide: geoData
-  gHover: geoData
-  gClickedParcels: geoData
-  gPredictions: geoData
-  gAllPredictions: geoData
   showHouseCard: boolean
   houseProps: {
     LOT: string
@@ -123,18 +116,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
     this.state = {
       isSearch: false,
-      gHover: {
-        ...localData,
-        features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0005))
-      },
-      gClickedParcels: {
-        ...localData,
-        features: []
-      },
-      gPredictions: {
-        ...localData,
-        features: []
-      },
       showHouseCard: false,
       houseProps: { LOT: '', PLAN: '', LOT_AREA: 0 },
     }
@@ -525,7 +506,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
           <Source id="gClickedParcels"
             onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.state.gClickedParcels }}
+            geoJsonSource={{ type: 'geojson', data: this.props.gClickedParcels }}
           />
           <Layer sourceId="gClickedParcels"
             id={ mapboxlayers.clickedParcelsBorders }
@@ -540,7 +521,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
           <Source id="gPredictions"
             onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.state.gPredictions }}
+            geoJsonSource={{ type: 'geojson', data: this.props.gPredictions }}
           />
           <Layer sourceId="gPredictions"
             id={ mapboxlayers.predictionsBorders }
@@ -572,7 +553,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       </div>
     )
   }
-
 }
 
 
