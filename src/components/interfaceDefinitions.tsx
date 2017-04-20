@@ -1,5 +1,5 @@
 
-import * as I from 'immutable'
+import * as Immutable from 'immutable'
 
 
 export interface userGQL {
@@ -98,8 +98,7 @@ export interface mutationResponseBid {
 export interface geoData {
   type?: string
   crs?: Object
-  // features?: geoParcel[]
-  features?: I.List<geoParcel>
+  features?: Immutable.List<geoParcel> | Array<geoParcel>
 }
 
 export interface geoParcel {

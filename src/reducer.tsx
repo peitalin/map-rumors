@@ -62,8 +62,8 @@ export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMa
 
 ////// Mapbox state reducer //////////
 export interface ReduxStateUser {
-  userGQL: userGQL
-  updatingPredictions: boolean
+  userGQL?: userGQL
+  updatingPredictions?: boolean
 }
 const initialReduxStateUser: ReduxStateUser = {
   userGQL: {
@@ -93,12 +93,13 @@ export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, 
 
 //////// geojson parcels /////////
 export interface ReduxStateParcels {
-  gData: geoData
-  gParcels: geoData
-  gParcelsWide: geoData
-  gRadius: geoData
-  gClickedParcels: geoData
-  gPredictions: geoData
+  gData?: geoData
+  gRadius?: geoData
+  gRadiusWide?: geoData
+  gHover?: geoData
+  gClickedParcels?: geoData
+  gPredictions?: geoData
+  gAllPredictions?: geoData
 }
 const initialReduxStateParcels = {
   gData:            { features: [] },
@@ -111,11 +112,26 @@ const initialReduxStateParcels = {
 export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action): ReduxStateParcels => {
 
   switch ( action.type ) {
-    case "UPDATE_GDATA":
+    case "UPDATE_GEODATA":
       return { ...state, gData: action.payload }
 
-    case "UPDATE_ALL_PREDICTIONS":
-      return { ...state, allPredictions: action.payload }
+    case "UPDATE_GEORADIUS":
+      return { ...state, gRadius: action.payload }
+
+    case "UPDATE_GEORADIUS_WIDE":
+      return { ...state, gRadiusWide: action.payload }
+
+    case "UPDATE_GEOHOVER":
+      return { ...state, gHover: action.payload }
+
+    case "UPDATE_GEOCLICKED_PARCELS":
+      return { ...state, gClickedParcels: action.payload }
+
+    case "UPDATE_GEOPREDICTIONS":
+      return { ...state, gPredictions: action.payload }
+
+    case "UPDATE_GEOALL_PREDICTIONS":
+      return { ...state, gAllPredictions: action.payload }
 
     default:
       return state
