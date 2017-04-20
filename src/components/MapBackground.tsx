@@ -480,7 +480,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           onStyleLoad={this.onMapStyleLoad}
           onZoom={throttle(this.onZoom, 48)}
           onMouseMove={throttle(this.onMouseMove, 48)}
-          onDrag={debounce(this.onDrag, 32)}
+          onDrag={throttle(this.onDrag, 32)}
           onClick={this.onClick}
           containerStyle={{
             position: "absolute",
