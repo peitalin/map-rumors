@@ -3,13 +3,11 @@
 import * as React from 'react'
 //// Routing
 import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
-//// Server-side Rendered Styles
-import 'styles/AppRoutes.scss'
 
 //// antd
-import * as enUS from 'antd/lib/locale-provider/en_US';
-import * as ruRU from 'antd/lib/locale-provider/ru_RU';
-import * as LocaleProvider from 'antd/lib/locale-provider'
+// import * as enUS from 'antd/lib/locale-provider/en_US';
+// import * as ruRU from 'antd/lib/locale-provider/ru_RU';
+// import * as LocaleProvider from 'antd/lib/locale-provider'
 //// Lazyload
 import { lazyLoad } from './utils/lazyLoad'
 
@@ -21,11 +19,9 @@ import LoginAuth0 from './components/LoginAuth0'
 import PredictionListings from './components/PredictionListings'
 import PredictionStats from './components/PredictionStats'
 
-import MapBackground from './components/MapBackground'
+import MapSubscriptions from './components/MapSubscriptions'
 import HouseStats from './components/HouseStats'
 import Navbar from './components/Navbar'
-
-// import Demo from './components/DraggableGrid'
 
 
 //////// Lazy-loading Components by Route /////////
@@ -53,21 +49,18 @@ export default class AppRoutes extends React.Component {
 
   render () {
     return (
-      <LocaleProvider locale={ enUS }>
-        <HashRouter>
-          <div>
-            <Route exact path="/" component={ LandingPage }/>
-            <Route path="/" component={ Login }/>
+      <HashRouter>
+        <div>
+          <Route exact path="/" component={ LandingPage }/>
+          <Route path="/" component={ Login }/>
 
-            <Route path="/map" component={ MapBackground }/>
-            <Route path="/map" component={ Navbar }/>
-            <Route path="/map" component={ PredictionListings }/>
+          <Route path="/map" component={ MapSubscriptions }/>
+          <Route path="/map" component={ Navbar }/>
+          <Route path="/map" component={ PredictionListings }/>
 
-            {/* <Route path="/map/:lotPlan" component={ PredictionStats }/> */}
-
-          </div>
-        </HashRouter>
-      </LocaleProvider>
+          <Route path="/map/:id" component={ PredictionStats }/>
+        </div>
+      </HashRouter>
     )
   }
 }

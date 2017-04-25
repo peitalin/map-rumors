@@ -2,7 +2,7 @@
 import GoogleMapReact from 'google-map-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { ReduxState } from '../reducer'
+import { ReduxState, ReduxStateMapbox } from '../reducer'
 
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
@@ -25,12 +25,10 @@ interface ModalMapProps {
   latitude: number
   showModal: boolean
 }
-
 interface ModalMapState {
   mapWidth: string | number
   mapHeight: string | number
 }
-
 
 
 export class ModalMap extends React.Component<ModalMapProps, any> {
@@ -137,25 +135,23 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
 
 
 
-const mapStateToProps = ( state: ReduxState ) => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox => {
   return {
-    showModal: state.showModal
+    showModal: state.reduxMapbox.showModal
   }
 }
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    toggleShowModal: (bool: boolean) => dispatch({ type: "SHOW_MODAL", payload: bool })
+    toggleShowModal: (bool: boolean) => dispatch(
+      { type: "SHOW_MODAL", payload: bool }
+    )
   }
 }
 
 
-const ModalMapRedux = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalMap)
+export default connect(mapStateToProps, mapDispatchToProps)( ModalMap )
 
-export default ModalMapRedux
 
 
 

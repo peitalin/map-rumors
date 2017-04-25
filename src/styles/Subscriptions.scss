@@ -31,7 +31,10 @@
 }
 
 .subscriptions-outer {
+  height: 66vh;
+  overflow-y: scroll;
   background-color: rgba(222,222,222, 0.2);
+
   span {
     display: flex;
     flex-wrap: wrap;

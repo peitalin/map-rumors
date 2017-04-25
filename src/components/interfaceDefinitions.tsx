@@ -18,21 +18,28 @@ export interface iPrediction {
 }
 
 export interface iHouse {
-  id?: string
+  area?: number
   address?: string
   bedrooms?: number
   bathrooms?: number
   carspaces?: number
-  planNum?: string
-  lotNum?: string
-  lotPlan?: string
-  unitNum?: string
-  streetNum?: string
-  streetName?: string
-  streetType?: string
-  locality?: string
+  county?: string
+  geojsonparcel: geoParcel
+  lastSalePrice?: number
   lng?: number
   lat?: number
+  locality?: string
+  lotNum?: string
+  lotPlan?: string
+  id?: string
+  planNum?: string
+  predictions?: iPrediction[]
+  saleDate?: any
+  streetName?: string
+  streetNum?: string
+  streetNumSuffix?: string
+  streetType?: string
+  unitNum?: string
 }
 
 
@@ -102,6 +109,12 @@ export interface geoData {
 }
 
 export interface geoParcel {
+  city?: string
+  house?: iHouse
+  lngCenter: number
+  latCenter: number
+  locality: string
+  lotPlan: string
   type?: string
   properties?: {
     LOT?: string

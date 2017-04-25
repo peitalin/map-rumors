@@ -6,11 +6,10 @@ import * as renderer from 'react-test-renderer'
 import { mount, shallow } from 'enzyme'
 
 import { HouseCard } from '../HouseCard'
+import Flipcard from '../FlipCard'
 
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
-
-import * as Flipcard from 'react-flipcard'
 
 
 

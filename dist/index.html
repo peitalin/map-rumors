@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Arrow Dev Mode</title>
+    <title>Armada Dev Mode</title>
     <link rel="shortcut icon" href="./favicon.ico">
 
     <!-- Progressive web app -->
     <meta name="theme-color" content="#222" />
     <link rel="manifest" href="./manifest.json" />
-    <script  src="https://cdn.rawgit.com/GoogleChrome/pwacompat/v1.0.3/pwacompat.min.js"></script>
-    <link rel="stylesheet" href="./styles.css" type="text/css"/>
+    <script async src="https://cdn.rawgit.com/GoogleChrome/pwacompat/v1.0.3/pwacompat.min.js"></script>
+    <!-- <link rel="stylesheet" href="./styles.css" type="text/css"/> -->
   </head>
 
   <body>
-    <div id="root"></div>
+    <div style='overflow-x: hidden;'>
+      <div id="root"></div>
+    </div>
+
     <script>
       var CACHE_NAME = 'pwa-cache-v1';
       var urlsToCache = [
@@ -46,12 +49,15 @@
     <!-- Dependencies -->
     <!-- Required if 'externals' is set in webpack.configjs -->
     <script src="./localforage.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react&#45;dom.min.js"></script> -->
 
     <!-- Main, not needed if using html-webpack-plugin-->
     <script type="text/javascript" src="./vendor.js"></script>
     <script type="text/javascript" src="./bundle.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoEtrs7w3fIHSDvbPB7sAUw7tY7bIuAAU&libraries=places"></script>
+    <link rel="stylesheet" href="./overrides.css" type="text/css"/>
   </body>
 </html>

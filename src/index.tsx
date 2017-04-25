@@ -4,7 +4,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import AppRoutes from './AppRoutes'
-import LandingPage from './components/LandingPage'
 
 
 //// Graphql
@@ -36,10 +35,11 @@ class AppApollo extends React.Component<any, AppApolloState> {
 
   componentWillMount() {
     const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
-    this.persistReduxApolloStore(GRAPHQL_PROJECT_ID)
+    this.initApolloNetworkInterface(GRAPHQL_PROJECT_ID)
+    this.persistReduxStore()
   }
 
-  initApolloNetworkInterface = (GRAPHQL_PROJECT_ID) => {
+  private initApolloNetworkInterface = async(GRAPHQL_PROJECT_ID) => {
     const networkInterface = createBatchingNetworkInterface({
       uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
       batchInterval: 10
@@ -58,44 +58,40 @@ class AppApollo extends React.Component<any, AppApolloState> {
       `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
       { reconnect: true }
     );
-    return addGraphQLSubscriptions(networkInterface, wsClient)
+
+    this.apolloClient = new ApolloClient({
+      networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
+      dataIdFromObject: o => o.id, // enable object ID for better cacheing
+      queryDeduplication: true, // batch graphql queries
+      // reduxRootSelector: state => state.apollo,
+      // initialState: res,
+    })
   }
 
-  persistReduxApolloStore = (GRAPHQL_PROJECT_ID) => {
+  private persistReduxStore = (GRAPHQL_PROJECT_ID) => {
 
     getStoredState({ storage: localforage }, (err, rehydratedState) => {
-
-      const initialState = { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}
-      const client = new ApolloClient({
-        networkInterface: this.initApolloNetworkInterface(GRAPHQL_PROJECT_ID),
-        dataIdFromObject: o => o.id, // enable object ID for better cacheing
-        queryDeduplication: true, // batch graphql queries
-        initialState: initialState, // rehydrate Apollo Store
-      });
-
+      // const initialState = { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}
       let reduxStore = createStore(
         combineReducers({
           reduxMapbox: reduxReducerMapbox,
           reduxParcels: reduxReducerParcels,
           reduxUser: reduxReducerUser,
-          apollo: client.reducer()
+          apollo: this.apolloClient.reducer(),
         }),
         rehydratedState,
         compose(
-          applyMiddleware(thunk),
           this.registerReduxDevtools(),
+          // applyMiddleware(thunk),
           // offline(offlineConfig), // Redux-offline
-          // applyMiddleware(client.middleware()), // Apollo-client: wrong state shape
+          // applyMiddleware(this.apolloClient.middleware()), // Apollo-client: wrong state shape
         )
       );
-
       const persistor = createPersistor(reduxStore, { storage: localforage })
-      persistor.rehydrate(rehydratedState)
-      // persistor.purge([ 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
+      // persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
       ////// must login again after purge to get user profile
       console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       this.reduxStore = reduxStore
-      this.client = client
       this.setState({ rehydrated: true })
     })
   }
@@ -112,15 +108,14 @@ class AppApollo extends React.Component<any, AppApolloState> {
     if(!this.state.rehydrated) {
       return (
         <div>
-          <div style={{ position: 'fixed', top: 10, left: 10 }}>
-            Rehydrating<SpinnerRectangle height='16px' width='6px'/>
+          <div style={{ position: 'fixed', top: 10, right: 10 }}>
+            <SpinnerRectangle height='23px' width='6px'/>Rehydrating
           </div>
-          <LandingPage/>
         </div>
       )
     }
     return (
-      <ApolloProvider store={this.reduxStore} client={this.client}>
+      <ApolloProvider store={this.reduxStore} client={this.apolloClient}>
         <AppRoutes />
       </ApolloProvider>
     )
@@ -139,10 +134,6 @@ const render = (AppRoutes) => {
 }
 render(AppRoutes)
 
-// ReactDOM.render(
-//     <AppRoutes />
-//   , document.getElementById('root')
-// )
 
 
 

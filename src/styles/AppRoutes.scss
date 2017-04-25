@@ -5,16 +5,16 @@ html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  width: initial !important;
-  height: initial !important;
+  width: initial;
+  height: initial;
 }
 
 body {
-  font-family: Helvetica, sans-serif !important;
-  line-height: initial !important;
+  font-family: Helvetica, sans-serif;
+  line-height: initial;
   color: #222;
-  background-color: #F8F8F8 !important;
-  padding: 1px;
+  background-color: #222;
+  padding: 0px;
   margin: 0px;
 }
 
@@ -23,8 +23,8 @@ body {
 }
 
 h1 {
-  font-size: 3.5rem !important;
-  font-weight: 500 !important;
+  font-size: 3.5rem;
+  font-weight: 500;
   color: #565A5C;
 }
 
@@ -38,10 +38,6 @@ h3 {
   font-size: 1.2rem !important;
 }
 
-
-.auth0-lock-badge-bottom {
-  opacity: 0;
-}
 
 // antd override
 ::selection {
@@ -60,8 +56,9 @@ a:hover {
 .ant-select-show-search {
   z-index: 0;
 }
-
 // end antd
+
+// auth0 begin
 .auth0-lock-close-button {
   opacity: 0.3;
 }
@@ -74,9 +71,14 @@ a:hover {
 .auth0-lock-header-welcome {
   margin-top: 20px;
 }
+.auth0-lock-badge-bottom {
+  opacity: 0;
+}
 .auth0-lock-name {
   display: none !important;
 }
+// auth0 end
+
 
 .mapboxgl-map {
   position: 'absolute';

@@ -1,12 +1,66 @@
 
 
+// $primary-color: #F8BD7F;
+$primary-color: #1BD1C1;
+
 
 .hero-container {
+  background-color: #f8f8f8;
   max-width: 1440px;
+  -webkit-animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
+  animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
+.hero-container .landing-page-header-container .landing-page-header {
+
+  div:first-child {
+    -webkit-animation: slideAnim 1s cubic-bezier(0.7,0,0.3,1) both;
+    animation: slideAnim 1s cubic-bezier(0.7,0,0.3,1) both;
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+  }
+
+  div:nth-child(2) {
+    -webkit-animation: slideAnim 0.9s cubic-bezier(0.7,0,0.3,1) both;
+    animation: slideAnim 0.9s cubic-bezier(0.7,0,0.3,1) both;
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+  }
+
+  div:nth-child(3) {
+    -webkit-animation: slideAnim 0.8s cubic-bezier(0.7,0,0.3,1) both;
+    animation: slideAnim 0.8s cubic-bezier(0.7,0,0.3,1) both;
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+  }
+}
+
+.background-color-slider {
+  background-color: #37505C;
+  position: absolute;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  -webkit-animation: slideAnim 0.8s cubic-bezier(0.7,0,0.3,1) both;
+  animation: slideAnim 0.8s cubic-bezier(0.7,0,0.3,1) both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+@keyframes slideAnim {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-70%,0,0);
+    transform: translate3d(-70%,0,0);
+  }
+}
+
+
+
 .landing-page-header-container {
-  height: 98vh;
+  height: 95vh;
+  // offset 4vh for language bar
 }
 
 .landing-page-header {
@@ -38,7 +92,7 @@
   margin-left: 8%;
   padding-left: calc(2% - 4px);
   padding-right: 10%;
-  border-left: 4px solid #1BD1C1;
+  border-left: 4px solid $primary-color;
   max-width: 720px;
   h3 {
     line-height: 1rem;
@@ -53,12 +107,23 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: calc(100vh - 95vh);
+  animation: fadeInLanguages 1s cubic-bezier(0.6,0,0.4,1);
+  animation-delay: 0.5s;
+
   .languages {
     margin: 0.2rem;
     a {
-      color: #1BD1C1;
+      color: $primary-color;
       font-size: 0.8rem;
     }
+  }
+}
+
+@keyframes fadeInLanguages {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -50px, 0);
   }
 }
 

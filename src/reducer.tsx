@@ -10,6 +10,7 @@ export interface ReduxState {
   reduxMapbox: ReduxStateMapbox
   reduxParcels: ReduxStateParcels
   reduxUser: ReduxStateUser
+  apollo: Object
 }
 
 ////// Mapbox state reducer //////////
@@ -107,7 +108,8 @@ const initialReduxStateParcels = {
   gRadiusWide:      { features: [] },
   gHover:           { features: [] },
   gClickedParcels:  { features: [] },
-  gPredictions:     { features: [] }
+  gPredictions:     { features: [] },
+  gAllPredictions:  { features: [] },
 }
 export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action): ReduxStateParcels => {
 

@@ -1,7 +1,6 @@
 
 
 import * as React from 'react'
-import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
@@ -10,7 +9,6 @@ import ImgSVG from './ImgSVG'
 
 import 'styles/LandingPage.scss'
 import 'styles/AppRoutes.scss'
-import 'antd/lib/button/style/css'
 
 // import * as mojs from 'mo-js'
 
@@ -41,54 +39,41 @@ export default class LandingPage extends React.Component<any, any> {
 
   render() {
     return (
-      <div className='hero-container'>
-        { this.languageNav() }
-
-        <CSSTransitionGroup
-          transitionName="landing-header-fade"
-          transitionAppear={false}
-          transitionAppearTimeout={300}
-          transitionEnterTimeout={300}
-          transitionLeave={false}>
+      <div>
+        <div className='background-color-slider'></div>
+        <div className='hero-container'>
+          <div> { this.languageNav() } </div>
           { switchLanguageHeader(this.state.language) }
-        </CSSTransitionGroup>
 
-        <div className='world-map-container'>
-          <WorldMap/>
-        </div>
+          <div className='world-map-container'>
+            <WorldMap/>
+          </div>
 
-        { switchLanguageHeader2(this.state.language) }
+          { switchLanguageHeader2(this.state.language) }
 
-        <div className="landing-page-listings-container">
-          <div className='landing-page-listings-flex'>
-            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+          <div className="landing-page-listings-container">
+            <div className='landing-page-listings-flex'>
               <ImgSVG className='landing-page-listings' src={require('../img/house11.svg')} />
               <ImgSVG className='landing-page-listings' src={require("../img/house12.svg")} />
               <ImgSVG className='landing-page-listings' src={require("../img/house13.svg")} />
-            </DraggableList>
-          </div>
-          <div className='landing-page-listings-flex'>
-            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+            </div>
+            <div className='landing-page-listings-flex'>
               <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house14.svg")} />
               <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house15.svg")} />
-            </DraggableList>
-          </div>
-          <div className='landing-page-listings-flex'>
-            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+            </div>
+            <div className='landing-page-listings-flex'>
               <ImgSVG className='landing-page-listings' src={require("../img/house16.svg")} />
               <ImgSVG className='landing-page-listings' src={require("../img/house18.svg")} />
               <ImgSVG className='landing-page-listings' src={require("../img/house19.svg")} />
-            </DraggableList>
-          </div>
-          <div className='landing-page-listings-flex'>
-            <DraggableList className='subscriptions-outer' itemClassName='landing-page-draggable-item'>
+            </div>
+            <div className='landing-page-listings-flex'>
               <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house20.svg")} />
               <ImgSVG className='landing-page-listings listings-rotated' src={require("../img/house21.svg")} />
-            </DraggableList>
+            </div>
           </div>
-        </div>
 
-        <FooterLinks/>
+          <FooterLinks/>
+        </div>
       </div>
     )
   }
@@ -177,9 +162,9 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ch'>
           <div className='landing-page-header'>
-            <h1>Hayek</h1>
-            <h2>实时市场 /</h2>
-            <h2>房地产投标和估值。</h2>
+            <div> <h1>Hayek</h1> </div>
+            <div> <h2>实时市场 /</h2> </div>
+            <div> <h2>房地产投标和估值。</h2> </div>
           </div>
           <div className='landing-page-sub-header'>
             <h3>在地图上放置和分享实时预测。</h3>
@@ -195,9 +180,9 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ru'>
           <div className='landing-page-header'>
-            <h1>Hayek</h1>
-            <h2>Рынок в реальном времени для /</h2>
-            <h2>Ставки и оценки недвижимости.</h2>
+            <div> <h1>Hayek</h1> </div>
+            <div> <h2>Рынок в реальном времени для /</h2> </div>
+            <div> <h2>Ставки и оценки недвижимости.</h2> </div>
           </div>
           <div className='landing-page-sub-header'>
             <h3>Место и доля предсказаний в реальном времени на карте.</h3>
@@ -213,9 +198,9 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='en'>
           <div className='landing-page-header'>
-            <h1>Hayek</h1>
-            <h2>A real-time market for /</h2>
-            <h2>Real-estate bids and valuations.</h2>
+            <div> <h1>Hayek</h1> </div>
+            <div> <h2>A real-time market for /</h2> </div>
+            <div> <h2>Real-estate bids and valuations.</h2> </div>
           </div>
           <div className='landing-page-sub-header'>
             <h3>Place and share real-time predictions on the map.</h3>
@@ -235,7 +220,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
   switch (language) {
     case 'ch': {
       return (
-        <div className="landing-page-header2-container" key='ch'>
+        <div className="landing-page-header2-container">
           <div className='landing-page-header2'>
             <h2>发现新上市 /</h2>
             <h2>贸易估值并赚取收益。</h2>
@@ -251,7 +236,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
     }
     case 'ru': {
       return (
-        <div className="landing-page-header2-container" key='ru'>
+        <div className="landing-page-header2-container">
           <div className='landing-page-header2'>
             <h2>Откройте для себя новые списки /</h2>
             <h2>Торговые оценки и вознаграждения.</h2>
@@ -269,7 +254,7 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
     }
     default: {
       return (
-        <div className="landing-page-header2-container" key='en'>
+        <div className="landing-page-header2-container">
           <div className='landing-page-header2'>
             <h2>Discover new listings /</h2>
             <h2>Trade valuations and earn rewards.</h2>

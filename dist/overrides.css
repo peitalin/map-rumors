@@ -1,0 +1,131 @@
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
+
+/* this file overrides external library css declarations
+ * the biggest offender is antd
+ *
+ * */
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: initial;
+  height: initial;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  line-height: initial;
+  background-color: #222;
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden
+}
+
+/* react root element */
+#root {
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 500;
+  color: #565A5C;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #AAADAD;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+
+// antd override
+::selection {
+  background: #222;
+}
+
+a:hover {
+  color: #D4AFDF;
+}
+
+.ant-select {
+  display: block;
+  width: 100%;
+}
+
+.ant-select-show-search {
+  z-index: 0;
+}
+// end antd
+
+// auth0 begin
+.auth0-lock-close-button {
+  opacity: 0.3;
+}
+.auth0-lock-header-bg-blur {
+  background-image: none;
+}
+.auth0-lock-header-logo {
+  height: 72px;
+}
+.auth0-lock-header-welcome {
+  margin-top: 20px;
+}
+.auth0-lock-badge-bottom {
+  opacity: 0;
+}
+.auth0-lock-name {
+  display: none;
+}
+// auth0 end
+
+
+.mapboxgl-map {
+  position: 'absolute';
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.mapboxgl-popup {
+  max-width: 320px;
+  font: 12px/20px Raleway, Futura, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+.mapboxgl-popup-tip {
+  border: none;
+}
+
+.mapboxgl-popup-content {
+  /* background: #fff; */
+  /* border-radius: 3px; */
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
+  /* padding: 5px 5px 5px; */
+  padding: 0px 0px 0px 0px;
+  background: none;
+  box-shadow: none;
+}
+
+.mapboxgl-popup-close-button {
+  border: 0px;
+  background: #fff;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+.mapboxgl-ctrl-top-right.mapboxgl-ctrl-top-right {
+  // doubling up specificity
+  top: 5vh;
+}
+.mapboxgl-ctrl-icon.mapboxgl-ctrl-compass {
+  display: none;
+}
+
+

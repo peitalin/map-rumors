@@ -20,10 +20,9 @@ import * as Popconfirm from 'antd/lib/popconfirm'
 import 'antd/lib/popconfirm/style/css'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
-import * as Tabs from 'antd/lib/tabs'
-import 'antd/lib/tabs/style/css'
-const TabPane = Tabs.TabPane
 
+
+import PredictionCarousel from './PredictionCarousel'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 
@@ -81,67 +80,74 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
     return  '$' + prediction
   }
 
+  randomImage = () => {
+    let imgNum = Math.floor(1 + Math.random() * 19)
+    return `https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/${imgNum}.jpg`
+  }
 
   render() {
-
     if (this.props.data.error) {
       return <Title><div>PredictionListings: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
       return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
-
-    let user = this.props.userGQL
-    if (!user) {
+    if (this.props.data.user) {
       let user = this.props.data.user
-      console.warn("ReduxPersist is not running!. Predictions won't update live.")
-    }
 
-    if (user.predictions.length === 0) {
-      var predictionTabs = <TabPane tab={'Owned Predictions'} key={'nobid'}>No Predictions</TabPane>
-    } else {
-      var predictionTabs = user.predictions.map(p => {
-        let unitStreetNum = p.house.unitNum
-          ? `${p.house.unitNum}/${p.house.streetNum}`
-          : `${p.house.streetNum}`
-        return (
-          <TabPane tab={`${unitStreetNum} ${p.house.streetName} ${p.house.streetType}`} key={p.id}>
-            <Link to={`/map/pokemon`} className="link">
-              { p.house.lotPlan }
-            </Link>
-            <div> { this.formatPrediction(p.prediction) } </div>
+      if (user.predictions.length === 0) {
+        var predictionListings = <Title>No Predictions</Title>
+      } else {
+        var predictionListings = user.predictions.map(p => {
+          let unitStreetNum = p.house.unitNum
+            ? `${p.house.unitNum}/${p.house.streetNum}`
+            : `${p.house.streetNum}`
+          return (
+            <div className="tile" key={p.id}>
+              <div className="tile__media">
+                <img className="tile__img" src={this.randomImage()}/>
+              </div>
+              <div className="tile__details">
+                <div className="tile__title">
+                  <p>{(`${unitStreetNum} ${p.house.streetName} ${p.house.streetType}`)}</p>
+                  <p>
+                    <Link to={`/map/${p.id}`} className="link">
+                      { p.house.lotPlan }
+                    </Link>
+                  </p>
+                  {(
+                    <Popconfirm className='child'
+                      title={`Delete prediction for ${p.house.address}?`}
+                      onConfirm={() => this.deletePrediction({ predictionId: p.id })}
+                      onCancel={() => console.log(`Kept ${p.house.address}.`)}
+                      okText="Yes" cancelText="No">
+                      <a href="#">Delete</a>
+                    </Popconfirm>
+                  )}
+                </div>
+              </div>
+            </div>
+          )
+        })
+      }
 
-            <Popconfirm className='child'
-              title={`Delete prediction for ${p.house.address}?`}
-              onConfirm={() => this.deletePrediction({ predictionId: p.id })}
-              onCancel={() => console.log(`Kept ${p.house.address}.`)}
-              okText="Yes" cancelText="No">
-              <a href="#">Delete</a>
-            </Popconfirm>
-          </TabPane>
-        )
-      })
-    }
-
-    return (
-      <div className='prediction-listings-container'>
-        <div className='prediction-listings-inner'>
-
-          <div className='prediction-listings-heading'>
-            {(
-              this.props.data.loading
-              ? <SpinnerRectangle height='36px' width='8px' dark/>
-              : undefined
-            )}
+      return (
+        <div className='prediction-listings-container'>
+          <div className='prediction-listings-inner'>
+            <div className='prediction-listings-heading'>
+              {(
+                this.props.data.loading
+                ? <SpinnerRectangle height='36px' width='8px' dark/>
+                : undefined
+              )}
+            </div>
+            <PredictionCarousel>
+              { predictionListings }
+            </PredictionCarousel>
           </div>
-
-          <Tabs defaultActiveKey={ user.predictions[0] ? user.predictions[0].id : '1' }>
-            { predictionTabs }
-          </Tabs>
-
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
@@ -174,16 +180,6 @@ query {
         streetName
         streetType
         lotPlan
-      }
-    }
-
-    bids {
-      id
-      bid
-      pokemon {
-       id
-       name
-       img
       }
     }
   }

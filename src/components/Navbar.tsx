@@ -22,6 +22,20 @@ export class Navbar extends React.Component<NavbarProps, any> {
     return (pathname === '') ? '/' : pathname.split('/').slice(0, n+1).join('/')
   }
 
+  componentDidMount() {
+    let d = document.getElementById('nav-bar')
+    window.addEventListener('scroll', this.onScroll)
+  }
+  componentWillUnmount() {
+    let d = document.getElementById('nav-bar')
+    d.removeEventListener('scroll', this.onScroll)
+  }
+
+  onScroll = (event) => {
+    console.info(event)
+  }
+
+
   render() {
     let { pathname } = this.props.location
     let crumbs = pathname.split('/').map((url, i) => {
@@ -35,7 +49,7 @@ export class Navbar extends React.Component<NavbarProps, any> {
     })
 
     return (
-      <div className='navigation-bar'>
+      <div id="nav-bar" className='navigation-bar'>
         <div className='Nav Breadcrumb'>
           <Breadcrumb>
             { crumbs }
