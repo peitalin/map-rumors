@@ -64,7 +64,7 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
 
   render() {
     return (
-      <PredictionCarousel className="prediction-carousel">
+      <PredictionCarousel className='prediction__carousel'>
         { this.props.data.allPredictions.map((p: iPrediction) =>
           <div className='tile' key={p.id} onClick={() => this.gotoPredictionLocation(p.house)}>
             <div className="tile__media">

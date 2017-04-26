@@ -9,9 +9,9 @@ $growFactor: 1.2; // 1.3 times the original size
 $moveLeft: -($tileWidth * ($growFactor - 1) / 2);
 $moveRight: $tileWidth * ($growFactor - 1);
 
-.prediction-carousel {
+.prediction__carousel {
   position: absolute;
-  bottom: 155px;
+  bottom: 0px;
 }
 
 .carousel__container {

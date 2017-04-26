@@ -5,9 +5,9 @@ import * as React from 'react'
 import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
 
 //// antd
-// import * as enUS from 'antd/lib/locale-provider/en_US';
+import * as enUS from 'antd/lib/locale-provider/en_US';
 // import * as ruRU from 'antd/lib/locale-provider/ru_RU';
-// import * as LocaleProvider from 'antd/lib/locale-provider'
+import * as LocaleProvider from 'antd/lib/locale-provider'
 //// Lazyload
 import { lazyLoad } from './utils/lazyLoad'
 
@@ -22,6 +22,8 @@ import PredictionStats from './components/PredictionStats'
 import MapSubscriptions from './components/MapSubscriptions'
 import HouseStats from './components/HouseStats'
 import Navbar from './components/Navbar'
+
+import Demo from './components/DraggableGrid'
 
 
 //////// Lazy-loading Components by Route /////////
@@ -49,18 +51,21 @@ export default class AppRoutes extends React.Component {
 
   render () {
     return (
-      <HashRouter>
-        <div>
-          <Route exact path="/" component={ LandingPage }/>
-          <Route path="/" component={ Login }/>
+      <LocaleProvider locale={enUS}>
+        <HashRouter>
+          <div>
+            <Route exact path="/" component={ LandingPage }/>
+            <Route path="/" component={ Login }/>
+            <Route path="/" component={ Navbar }/>
 
-          <Route path="/map" component={ MapSubscriptions }/>
-          <Route path="/map" component={ Navbar }/>
-          <Route path="/map" component={ PredictionListings }/>
+            <Route path="/map" component={ MapSubscriptions }/>
+            <Route path="/map/predictionlistings" component={ PredictionListings }/>
+            <Route path="/map/:id" component={ PredictionStats }/>
 
-          <Route path="/map/:id" component={ PredictionStats }/>
-        </div>
-      </HashRouter>
+            <Route path="/profile" component={ Demo }/>
+          </div>
+        </HashRouter>
+      </LocaleProvider>
     )
   }
 }

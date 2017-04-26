@@ -126,7 +126,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     })
 
     let gAllPredictions: geoData = {
-      type: "FeatureCollection"
+      ...localData,
       features: this.props.data.allPredictions.map((p: iPrediction) => ({
         type: p.house.geojsonparcel.type,
         geometry: p.house.geojsonparcel.geometry,
@@ -437,7 +437,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     return (
       <div className="MapBackground">
 
-        <ReactMapboxGl style="mapbox://styles/mapbox/dark-v9"
+        <ReactMapboxGl style="mapbox://styles/mapbox/light-v9"
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}

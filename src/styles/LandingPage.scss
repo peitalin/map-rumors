@@ -237,6 +237,16 @@ $listings-height: 15rem;
 
 
 
+.draggable-outer {
+  background-color: rgba(222,222,222, 0.2);
+
+  span {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 // CSS transitions
 .landing-header-fade-appear {
   opacity: 0.01;

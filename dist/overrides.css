@@ -1,9 +1,5 @@
 // @import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
 
-/* this file overrides external library css declarations
- * the biggest offender is antd
- *
- * */
 
 html {
   -webkit-box-sizing: border-box;
@@ -16,13 +12,12 @@ html {
 body {
   font-family: Helvetica, sans-serif;
   line-height: initial;
+  color: #222;
   background-color: #222;
-  padding: 0px;
+  padding: 1px;
   margin: 0px;
-  overflow-x: hidden
 }
 
-/* react root element */
 #root {
   overflow-x: hidden;
 }
@@ -128,4 +123,8 @@ a:hover {
   display: none;
 }
 
+.ReactFlipCard {
+  position: absolute;
+  top: 0px;
+}
 
