@@ -111,7 +111,7 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
                 <div className="tile__title">
                   <p>{(`${unitStreetNum} ${p.house.streetName} ${p.house.streetType}`)}</p>
                   <p>
-                    <Link to={`/map/${p.id}`} className="link">
+                    <Link to={`/map/predictionlistings/${p.id}`} className="router-link">
                       { p.house.lotPlan }
                     </Link>
                   </p>

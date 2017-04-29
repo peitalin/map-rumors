@@ -9,8 +9,6 @@ import ImgSVG from './ImgSVG'
 
 import 'styles/LandingPage.scss'
 
-// import * as mojs from 'mo-js'
-
 
 export default class LandingPage extends React.Component<any, any> {
 
@@ -18,18 +16,15 @@ export default class LandingPage extends React.Component<any, any> {
     language: 'en'
   }
 
-  setLanguage = (language: string): void => {
-    this.setState({ language: language })
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props === nextProps) {
-      return false
-    }
-    if (this.state === nextState) {
+    if ((this.state === nextState) && (this.props === nextProps)) {
       return false
     }
     return true
+  }
+
+  setLanguage = (language: string): void => {
+    this.setState({ language: language })
   }
 
   languageNav = (): JSX.Element => {

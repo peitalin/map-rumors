@@ -58,7 +58,6 @@ interface MapBackgroundProps {
   gData: geoData
   gRadius: geoData
   gRadiusWide: geoData
-  gHover: geoData
   gClickedParcels: geoData
   gPredictions: geoData
   gAllPredictions: geoData
@@ -66,7 +65,6 @@ interface MapBackgroundProps {
   updateGeoData?(): void
   updateGeoRadius?(gRadius: geoData): void
   updateGeoRadiusWide?(gRadiusWide: geoData): void
-  updateGeoHover?(gHover: geoData): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
   updateGeoPredictions?(gPredictions: geoData): void
   updateGeoAllPredictions?(gAllPredictions: geoData): void
@@ -86,8 +84,6 @@ interface MapBackgroundState {
 const mapboxlayers = {
   radiusBorders: 'radius-borders',
   radiusBordersWide: 'radius-borders-wide',
-  hoverFillsRadius: 'hover-fills-radius',
-  hoverFills: 'hover-fills',
   clickedParcelsBorders: 'clicked-parcels-borders',
   clickedParcelsFill: 'clicked-parcels-fill',
   predictionsBorders: 'predictions-borders',
@@ -116,15 +112,10 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       ...localData,
       features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
     })
-    this.props.updateGeoHover({
-      ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0005))
-    })
     this.props.updateGeoClickedParcels({
       ...localData,
       features: []
     })
-
     let gAllPredictions: geoData = {
       ...localData,
       features: this.props.data.allPredictions.map((p: iPrediction) => ({
@@ -231,9 +222,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
       this.map.getSource('gRadius').setData(this.props.gRadius)
-      this.map.getSource('gHover').setData(this.props.gHover)
-      this.map.setPaintProperty(mapboxlayers.hoverFills, 'fill-opacity', 0.1)
-      this.map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#c68')
       this.map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
       this.map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
       this.props.updateFlyingStatus(false)
@@ -269,7 +257,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       // anchor options: 'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', and 'bottom-right'
 
     }
-
   }
 
   private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
@@ -284,7 +271,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       // pitch: parseInt(40+Math.random()*20)
     })
 
-    let features = map.queryRenderedFeatures(event.point, { layer: [mapboxlayers.hoverFills] })
+    let features = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
       .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
     if (!features.length) {
       this.setState({ showHouseCard: false })
@@ -305,18 +292,14 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
     })
     map.getSource('gRadius').setData(this.props.gRadius)
-    map.getSource('gHover').setData(this.props.gHover)
-    map.setPaintProperty(mapboxlayers.hoverFills, 'fill-opacity', 0.1)
-    map.setPaintProperty(mapboxlayers.hoverFills, 'fill-color', '#c68')
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
-
   }
 
 
   private onMouseMove = (map: mapboxgl.Map, event: MapMouseEvent): void => {
-    // hover highlight
-    let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxlayers.hoverFills] })
+    //// hover highlight
+    let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxHostedLayers.parkinsonParcelsFill.id] })
     // destructure list to get first feature
     if (feature) {
       let hoverFilterOptions = [
@@ -324,18 +307,10 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         ["==", "LOT", feature.properties.LOT],
         ["==", "PLAN", feature.properties.PLAN],
       ]
-      map.setFilter(mapboxlayers.hoverFillsRadius, hoverFilterOptions)
+      map.setFilter(mapboxHostedLayers.parkinsonParcelsHover.id, hoverFilterOptions)
     } else {
-      map.setFilter(mapboxlayers.hoverFillsRadius, ["==", "LOT", ""])
+      map.setFilter(mapboxHostedLayers.parkinsonParcelsHover.id, ["==", "LOT", ""])
     }
-
-    // update parcels near mouse
-    let lngLat: mapboxgl.LngLat = event.lngLat
-    this.props.updateGeoHover({
-      ...this.props.gHover,
-      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0004)
-    })
-    map.getSource('gHover').setData(this.props.gHover);
   }
 
 
@@ -416,7 +391,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     }
     // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
     map.on("mouseout", () => {
-        map.setFilter(mapboxlayers.hoverFillsRadius, ["==", "LOT", ""])
+        map.setFilter(mapboxHostedLayers.parkinsonParcelsHover.id, ["==", "LOT", ""])
     });
 
 
@@ -425,6 +400,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       transition: { duration: 500, delay: 0 }
     })
     map.addLayer(mapboxHostedLayers.parkinsonParcels)
+    map.addLayer(mapboxHostedLayers.parkinsonParcelsFill)
+    map.addLayer(mapboxHostedLayers.parkinsonParcelsHover)
     map.addLayer(mapboxHostedLayers.threeDBuildings)
     map.addLayer(mapboxHostedLayers.brisbaneSuburbs)
     map.addLayer(mapboxHostedLayers.traffic)
@@ -437,7 +414,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     return (
       <div className="MapBackground">
 
-        <ReactMapboxGl style="mapbox://styles/mapbox/light-v9"
+        <ReactMapboxGl style="mapbox://styles/mapbox/dark-v9"
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}
@@ -455,23 +432,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
             height: "100vh",
             width: "100vw",
         }}>
-
-
-          <Source id="gHover"
-            onSourceAdded={(source) => (source)}
-            geoJsonSource={{ type: 'geojson', data: this.props.gHover }}
-          />
-          <Layer sourceId="gHover"
-            id={ mapboxlayers.hoverFills }
-            type="fill"
-            paint={{ 'fill-color': '#aa88cc', 'fill-opacity': 0.1 }}
-          />
-          <Layer sourceId="gHover"
-            id={ mapboxlayers.hoverFillsRadius }
-            type="fill"
-            paint={{ 'fill-color': '#68c', 'fill-opacity': 0.2 }}
-            layerOptions={{ 'filter': ['==', 'name', ''], 'min-zoom': 17 }}
-          />
 
           <Source id="gRadius"
             onSourceAdded={(source) => (source)}

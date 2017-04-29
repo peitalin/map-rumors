@@ -28,7 +28,7 @@ var styles = {
     top: '36px'
   },
   bmBurgerBars: {
-    background: '#F8BD7F'
+    background: '#444'
   },
   bmCrossButton: {
     height: '24px',
@@ -90,9 +90,10 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
             </Breadcrumb>
           </div>
           <Link className="menu-item" to='/'>Home</Link>
-          <Link className="menu-item" to='/map'>Map</Link>
+          <Link className="menu-item" to='/map/localpredictions'>Local Predictions</Link>
           <Link className="menu-item" to='/map/predictionlistings'>My Predictions</Link>
           <Link className="menu-item" to='/profile'>Profile</Link>
+          <Link className="menu-item" to='/test'>Test</Link>
           <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
         </Menu>
       </div>

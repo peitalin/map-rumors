@@ -8,6 +8,7 @@ export const mapboxHostedLayers = {
         url: 'mapbox://peitalin.dah4s0rb'
       },
       paint: { 'line-opacity': 1, 'line-color': '#222' },
+      layout: {},
       'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
     },
 
@@ -19,6 +20,20 @@ export const mapboxHostedLayers = {
         url: 'mapbox://peitalin.dah4s0rb'
       },
       paint: { 'fill-opacity': 0, 'fill-color': '#222' },
+      layout: {},
+      'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
+    },
+
+    parkinsonParcelsHover: {
+      id: 'parkinson-parcels-hover',
+      type: 'fill',
+      source: {
+        type: 'vector',
+        url: 'mapbox://peitalin.dah4s0rb'
+      },
+      paint: { 'fill-opacity': 0.2, 'fill-color': '#aef' },
+      layout: {},
+      filter:['==', 'name', ''],
       'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
     },
 

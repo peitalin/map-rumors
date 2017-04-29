@@ -56,12 +56,7 @@ export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMa
       return { ...state, lotPlan: action.payload }
 
     default: {
-      if (action.type.startsWith('@@')) {
-        return state
-      } else {
-        console.error("Dispatched unmatched action!: ", action)
-        return state
-      }
+      return state
     }
   }
 }
@@ -93,12 +88,7 @@ export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, 
       return { ...state, approxLocation: action.payload }
 
     default: {
-      if (action.type.startsWith('@@')) {
-        return state
-      } else {
-        console.error("Dispatched unmatched action!: ", action)
-        return state
-      }
+      return state
     }
   }
 }
@@ -148,12 +138,7 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
       return { ...state, gAllPredictions: action.payload }
 
     default: {
-      if (action.type.startsWith('@@')) {
-        return state
-      } else {
-        console.error("Dispatched unmatched action!: ", action)
-        return state
-      }
+      return state
     }
   }
 }

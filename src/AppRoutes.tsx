@@ -24,6 +24,8 @@ import HouseStats from './components/HouseStats'
 import Navbar from './components/Navbar'
 
 import Demo from './components/DraggableGrid'
+import CardExpander from './components/CardExpander'
+
 
 
 //////// Lazy-loading Components by Route /////////
@@ -62,6 +64,7 @@ export default class AppRoutes extends React.Component {
             <Route path="/map/predictionlistings" component={ PredictionListings }/>
             <Route path="/map/:id" component={ PredictionStats }/>
 
+            <Route path="/test" component={ CardExpander }/>
             <Route path="/profile" component={ Demo }/>
           </div>
         </HashRouter>
