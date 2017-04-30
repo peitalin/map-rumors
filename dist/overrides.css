@@ -12,7 +12,6 @@ html {
 body {
   font-family: Helvetica, sans-serif;
   line-height: initial;
-  color: #222;
   background-color: #222;
   padding: 1px;
   margin: 0px;
@@ -116,8 +115,8 @@ a:hover {
 }
 
 .mapboxgl-ctrl-top-right.mapboxgl-ctrl-top-right {
-  // doubling up specificity
-  top: 5vh;
+  top: 50px;
+  /* doubling up specificity */
 }
 .mapboxgl-ctrl-icon.mapboxgl-ctrl-compass {
   display: none;

@@ -123,7 +123,10 @@ const config = {
 
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
-  externals: {
+  externals: isProduction ? {
+    "react": "React",
+    "react-dom": "ReactDOM",
+  }: {
     // "react": "React",
     // "react-dom": "ReactDOM",
     // "auth0-lock": "Auth0Lock",
