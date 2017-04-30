@@ -42,6 +42,12 @@ export interface iHouse {
   unitNum?: string
 }
 
+export interface iLocalPrediction {
+  prediction: number
+  user: userGQL
+  house: iHouse
+}
+
 
 export interface mutationResponsePrediction {
   data: {
@@ -69,37 +75,6 @@ export interface mutationResponsePrediction {
 
   }
 }
-
-
-export interface mutationResponseBid {
-  data: {
-    error: string
-    loading: boolean
-
-    addToUserPokemons?: {
-      userUser?: userGQL
-    }
-
-    removeFromUserPokemons?: {
-      userUser?: userGQL
-    }
-
-    createBid?: iBid
-    deleteBid?: iBid
-
-    addToBidsPokemon?: {
-      userUser: userGQL
-      bidsBid: { id: string }
-    }
-
-    addToUserBids?: {
-      userUser: userGQL
-      bidsBid: { id: string }
-    }
-  }
-}
-
-
 
 
 export interface geoData {

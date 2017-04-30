@@ -64,6 +64,8 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
         // console.info("Authenticated!: ", window.localStorage.getItem('profile'))
       })
 
+      this.setState({ loggedIn: true })
+
       var promise = new Promise((resolve, reject) => {
           resolve(this.props.data.refetch())
         }).then(res => {
@@ -74,9 +76,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
             this.createUser()
             this.props.data.refetch()
           }
-        })
-        .then(res => this.setState({ loggedIn: true }))
-        .catch(err => console.warn(err))
+        }).catch(err => console.warn(err))
     })
 
     this.lock.on('authorization_error', authResult => {

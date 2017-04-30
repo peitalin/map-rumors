@@ -2,7 +2,9 @@
 
 import * as React from 'react'
 //// Routing
-import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, NavLink } from 'react-router-dom'
+import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+
 
 //// antd
 import * as enUS from 'antd/lib/locale-provider/en_US';
@@ -13,15 +15,15 @@ import { lazyLoad } from './utils/lazyLoad'
 
 //// Components
 import Title from './components/Title'
+import 'styles/AppRoutes.scss'
 import LandingPage from './components/LandingPage'
 import LoginAuth0 from './components/LoginAuth0'
-
-import PredictionListings from './components/PredictionListings'
-import PredictionStats from './components/PredictionStats'
+import Navbar from './components/Navbar'
 
 import MapSubscriptions from './components/MapSubscriptions'
-import HouseStats from './components/HouseStats'
-import Navbar from './components/Navbar'
+import LocalPredictions from './components/LocalPredictions'
+import PredictionListings from './components/PredictionListings'
+import PredictionStats from './components/PredictionStats'
 
 import Demo from './components/DraggableGrid'
 import CardExpander from './components/CardExpander'
@@ -44,9 +46,23 @@ import CardExpander from './components/CardExpander'
 const Login = (): JSX.Element => {
   const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
   const domain: string = 'peitalin.au.auth0.com'
-  const redirectUrl: string = '/map' // redirect to route on authentication
+  const redirectUrl: string = '/map/localpredictions' // redirect to route on authentication
   return <LoginAuth0 clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
 }
+
+const RouterFader = (WrappedComponent) => {
+    const TransitionedComponent = (props) => (
+      <CSSTransitionGroup
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnterTimeout={600}
+        transitionLeaveTimeout={200}
+        transitionName="router-fade">
+        <WrappedComponent {...props} />
+      </CSSTransitionGroup>
+    );
+    return TransitionedComponent;
+};
 
 
 export default class AppRoutes extends React.Component {
@@ -56,16 +72,17 @@ export default class AppRoutes extends React.Component {
       <LocaleProvider locale={enUS}>
         <HashRouter>
           <div>
-            <Route exact path="/" component={ LandingPage }/>
-            <Route path="/" component={ Login }/>
-            <Route path="/" component={ Navbar }/>
+            <Route path="/" component={ RouterFader(Login) } />
+            <Route path="/" component={ RouterFader(Navbar) } />
+            <Route exact path="/" component={ RouterFader(LandingPage) } />
 
-            <Route path="/map" component={ MapSubscriptions }/>
-            <Route path="/map/predictionlistings" component={ PredictionListings }/>
-            <Route path="/map/:id" component={ PredictionStats }/>
+            <Route path="/map" component={ RouterFader(MapSubscriptions) } />
+            <Route path="/map/localpredictions" component={ RouterFader(LocalPredictions) } />
+            <Route path="/map/predictionlistings" component={ RouterFader(PredictionListings) } />
+            <Route path="/map/predictionlistings/:id" component={ RouterFader(PredictionStats) } />
 
-            <Route path="/test" component={ CardExpander }/>
-            <Route path="/profile" component={ Demo }/>
+            <Route path="/test" component={ RouterFader(CardExpander) } />
+            <Route path="/profile" component={ RouterFader(Demo) } />
           </div>
         </HashRouter>
       </LocaleProvider>

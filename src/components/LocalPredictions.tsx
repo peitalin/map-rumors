@@ -11,7 +11,6 @@ import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
 
-
 import { SpinnerRectangle } from './Spinners'
 import PredictionCarousel from './PredictionCarousel'
 
@@ -46,15 +45,10 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
   gotoPredictionLocation = (house: iHouse): void => {
     // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     let lngLat: LngLat = { lng: house.lng, lat: house.lat }
-    if (this.props.landingPage) {
-      // no need to fly around map on landingPage
-      return
-    } else {
-      // let message: antdMessage
-      message.info(`Going to ${house.address}`)
-      this.props.updateFlyingStatus(true)
-      this.props.updateLngLat(lngLat)
-    }
+    // let message: antdMessage
+    message.info(`Going to ${house.address}`)
+    this.props.updateFlyingStatus(true)
+    this.props.updateLngLat(lngLat)
   }
 
   randomImage = (): void => {
@@ -63,24 +57,39 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
   }
 
   render() {
-    return (
-      <PredictionCarousel className='prediction__carousel'>
-        { this.props.data.allPredictions.map((p: iPrediction) =>
-          <div className='tile' key={p.id} onClick={() => this.gotoPredictionLocation(p.house)}>
-            <div className="tile__media">
-              <img className="tile__img" src={this.randomImage()}/>
-            </div>
-            <div className="tile__details">
-              <div className="tile__title">
-                <div>{ p.user.emailAddress }</div>
-                <div>{ this.formatDollars(p.prediction) }</div>
-                <div>{ p.house.address }</div>
+    if (this.props.localPredictions) {
+      return (
+        <PredictionCarousel className='prediction__carousel'>
+          {
+            this.props.localPredictions.map((p: iPrediction) =>
+              <div className='tile' key={p.id} onClick={() => this.gotoPredictionLocation(p.house)}>
+                <div className="tile__media">
+                  <img className="tile__img" src={this.randomImage()}/>
+                </div>
+                <div className="tile__details">
+                  <div className="tile__title">
+                    <div>{ p.user.emailAddress }</div>
+                    <div>{ this.formatDollars(p.prediction) }</div>
+                    <div>{ p.house.address }</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-      </PredictionCarousel>
-    )
+            )
+          }
+        </PredictionCarousel>
+      )
+    } else {
+      return (
+        <div>No Local Predictions</div>
+      )
+    }
+  }
+}
+
+
+const mapStateToProps = ( state: ReduxState ): ReduxStateParcels => {
+  return {
+    localPredictions: state.reduxMapbox.localPredictions
   }
 }
 
@@ -95,7 +104,7 @@ const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
   }
 }
 
-export default connect<StateProps, DispatchProps, ReactProps>(undefined, mapDispatchToProps)( LocalPredictions )
+export default connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)( LocalPredictions )
 
 
 

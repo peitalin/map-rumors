@@ -147,6 +147,10 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
           </div>
         </div>
       )
+    } else {
+      return (
+        <div>No User</div>
+      )
     }
   }
 }

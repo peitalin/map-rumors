@@ -43,8 +43,9 @@ const styles = {
     width: '190px',
     height: '320px',
     position: 'fixed',
-    right: 5,
-    zIndex: 4
+    top: '120px',
+    right: '120px',
+    zIndex: 4,
   }
 }
 

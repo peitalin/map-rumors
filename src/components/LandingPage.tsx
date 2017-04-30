@@ -6,6 +6,7 @@ import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
 import DraggableList from './DraggableList'
 import ImgSVG from './ImgSVG'
+import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import 'styles/LandingPage.scss'
 
@@ -47,7 +48,14 @@ export default class LandingPage extends React.Component<any, any> {
         <div className='background-color-slider'></div>
         <div className='hero-container'>
           <div> { this.languageNav() } </div>
-          { switchLanguageHeader(this.state.language) }
+
+          <CSSTransitionGroup
+            transitionName="router-fade"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+          >
+            { switchLanguageHeader(this.state.language) }
+          </CSSTransitionGroup>
 
           <div className='world-map-container'>
             <WorldMap/>

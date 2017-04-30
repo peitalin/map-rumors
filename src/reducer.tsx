@@ -1,6 +1,6 @@
 
 
-import { userGQL, geoData } from './components/interfaceDefinitions'
+import { userGQL, geoData, iLocalPrediction } from './components/interfaceDefinitions'
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import * as I from 'immutable'
 
@@ -21,7 +21,9 @@ export interface ReduxStateMapbox {
   flying: boolean
   mapboxZoom: number[]
   lotPlan: string
+  localPredictions: Array<iLocalPrediction>
 }
+
 const initialReduxStateMapbox: ReduxStateMapbox = {
   longitude: 153.038326429,
   latitude: -27.63419925525,
@@ -29,7 +31,9 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   flying: false,
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
   lotPlan: '',
+  localPredictions: [],
 }
+
 export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMapbox, action): ReduxStateMapbox => {
 
   switch ( action.type ) {
@@ -55,6 +59,9 @@ export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMa
     case "UPDATE_LOTPLAN":
       return { ...state, lotPlan: action.payload }
 
+    case "UPDATE_LOCAL_PREDICTIONS":
+      return { ...state, localPredictions: action.payload }
+
     default: {
       return state
     }
@@ -67,6 +74,7 @@ export interface ReduxStateUser {
   userGQL?: userGQL
   updatingPredictions?: boolean
 }
+
 const initialReduxStateUser: ReduxStateUser = {
   userGQL: {
     bids: [],
@@ -75,6 +83,7 @@ const initialReduxStateUser: ReduxStateUser = {
   updatingPredictions: false,
   approxLocation: mapboxgl.LngLat,
 }
+
 export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, action): ReduxStateUser => {
 
   switch ( action.type ) {
@@ -104,6 +113,7 @@ export interface ReduxStateParcels {
   gPredictions?: geoData
   gAllPredictions?: geoData
 }
+
 const initialReduxStateParcels = {
   gData:            { features: [] },
   gRadius:          { features: [] },
@@ -113,6 +123,7 @@ const initialReduxStateParcels = {
   gPredictions:     { features: [] },
   gAllPredictions:  { features: [] },
 }
+
 export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action): ReduxStateParcels => {
 
   switch ( action.type ) {

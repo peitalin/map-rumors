@@ -9,19 +9,19 @@ $primary-color: #1BD1C1;
   max-width: 1440px;
   -webkit-animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
   animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
-  -webkit-animation-delay: 0.2s;
-  animation-delay: 0.2s;
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
 .hero-container .landing-page-header-container .landing-page-header {
 
   h1 {
-    background-color: #444;
-    color: transparent;
-    text-shadow: 0px 2px 3px rgba(255,255,255,0.3);
-    -webkit-background-clip: text;
-       -moz-background-clip: text;
-            background-clip: text;
+    // background-color: #444;
+    // color: transparent;
+    // text-shadow: 0px 2px 3px rgba(255,255,255,0.3);
+    // -webkit-background-clip: text;
+    //    -moz-background-clip: text;
+    //         background-clip: text;
   }
 
   div:first-child {
@@ -48,6 +48,7 @@ $primary-color: #1BD1C1;
 
 .background-color-slider {
   background-color: #37505C;
+  // background-color: #1BD1C1;
   position: absolute;
   z-index: -1;
   width: 100vw;

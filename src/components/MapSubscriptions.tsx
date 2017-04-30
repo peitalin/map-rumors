@@ -132,17 +132,16 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
     }
     if (this.props.data.loading) {
       return (
-      <div className="subscriptions-loading">
-        Loading MapSubscriptions
-        <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
-      </div>
-     )
+        <div className="subscriptions-loading">
+          Loading MapSubscriptions
+          <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+        </div>
+      )
     }
     if (this.props.data.allPredictions) {
       return (
         <div className="MapSubscriptions">
           <MapBackground data={this.props.data}/>
-          <LocalPredictions data={this.props.data}/>
         </div>
       )
     }
@@ -246,7 +245,7 @@ const queryOptions = {
       variables: {
         emailAddress: ownProps.userGQL.emailAddress
       },
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     })
   }
 }

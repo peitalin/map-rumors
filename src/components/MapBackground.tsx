@@ -116,6 +116,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       ...localData,
       features: []
     })
+    this.props.updateLocalPredictions(this.props.data.allPredictions)
+
     let gAllPredictions: geoData = {
       ...localData,
       features: this.props.data.allPredictions.map((p: iPrediction) => ({
@@ -559,6 +561,10 @@ const mapDispatchToProps = ( dispatch ) => {
     ),
     updateLotPlan: (lotPlan: string) => dispatch(
       { type: "UPDATE_LOTPLAN", payload: lotPlan }
+    ),
+    updateLocalPredictions: (localPredictions: iLocalPrediction[]) => dispatch(
+      { type: "UPDATE_LOCAL_PREDICTIONS", payload: localPredictions }
+      // circle of parcels (unseen) to filter as user moves on the map
     ),
     updateGeoData: (gData: geoData) => dispatch(
       { type: "UPDATE_GEODATA", payload: gData }
