@@ -10,7 +10,8 @@ import * as enUS from 'antd/lib/locale-provider/en_US';
 // import * as ruRU from 'antd/lib/locale-provider/ru_RU';
 import * as LocaleProvider from 'antd/lib/locale-provider'
 //// Lazyload
-import { lazyLoad } from './utils/lazyLoad'
+// import { lazyLoad } from './utils/lazyLoad'
+import { asyncComponent } from 'react-async-component';
 
 //// Components
 // import Title from './components/Title'
@@ -22,24 +23,23 @@ import { lazyLoad } from './utils/lazyLoad'
 // import LocalPredictions from './components/LocalPredictions'
 // import PredictionListings from './components/PredictionListings'
 // import PredictionStats from './components/PredictionStats'
-
+//
 // import DraggableGrid from './components/DraggableGrid'
 // import CardExpander from './components/CardExpander'
 
-
 //////// Lazy-loading Components by Route /////////
-const Title = lazyLoad(() => System.import('./components/Title.tsx').then(module => module.default))
-const LandingPage = lazyLoad(() => System.import('./components/LandingPage.tsx').then(module => module.default))
-const LoginAuth0 = lazyLoad(() => System.import('./components/LoginAuth0.tsx').then(module => module.default))
-const Navbar = lazyLoad(() => System.import('./components/Navbar.tsx').then(module => module.default))
+const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
+const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
+const LoginAuth0 = asyncComponent({ resolve: () => System.import('./components/LoginAuth0.tsx') })
+const Navbar = asyncComponent({ resolve: () => System.import('./components/Navbar.tsx') })
 
-const MapSubscriptions = lazyLoad(() => System.import('./components/MapSubscriptions.tsx').then(module => module.default))
-const LocalPredictions = lazyLoad(() => System.import('./components/LocalPredictions.tsx').then(module => module.default))
-const PredictionListings = lazyLoad(() => System.import('./components/PredictionListings.tsx').then(module => module.default))
-const PredictionStats = lazyLoad(() => System.import('./components/PredictionStats.tsx').then(module => module.default))
+const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
+const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
+const PredictionListings = asyncComponent({ resolve: () => System.import('./components/PredictionListings.tsx') })
+const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
 
-const DraggableGrid = lazyLoad(() => System.import('./components/DraggableGrid.tsx').then(module => module.default))
-const CardExpander = lazyLoad(() => System.import('./components/CardExpander.tsx').then(module => module.default))
+const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
+const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
 
 
 

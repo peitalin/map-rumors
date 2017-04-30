@@ -386,6 +386,9 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
 
+    map.scrollZoom.disable()
+    map.addControl(new mapboxgl.NavigationControl(), );
+
     if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
       // disable zoom on mobile, UX issues with native browser zoom
       map.scrollZoom.disable()
