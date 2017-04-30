@@ -17,7 +17,7 @@
         "jsx": "react"
     },
     "files": [
-        "./src/utils/*.d.ts"
+        "./src/typings/*.d.ts"
     ],
     "include": [
         "./src/**/*"

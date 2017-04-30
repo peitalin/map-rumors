@@ -10,7 +10,7 @@
         "no-var-keyword": true,
         "one-line": [true, "check-open-brace", "check-whitespace"],
         "quotemark": [false, "double"],
-        "semicolon": false,
+        "semicolon": [false],
         "triple-equals": [true, "allow-null-check"],
         "typedef-whitespace": [true, {
             "call-signature": "nospace",

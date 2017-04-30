@@ -12,11 +12,19 @@
 .subscriptions-container:hover {
 }
 
-.subscriptions-loading {
-  font-size: 2rem;
+.map__subscriptions {
+  width: 100%;
+  height: 100%;
+  top: 30vh;
+}
+
+.map__subscriptions--loading {
+  color: #aaa;
+  font-size: 1.2rem;
   display: flex;
-  flex: 1 1 auto;
-  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
 }
 
 @media screen and (min-aspect-ratio: 9/16) and (max-width: 600px) {

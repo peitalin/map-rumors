@@ -19,7 +19,7 @@ import LocalPredictions from './LocalPredictions'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 
-import 'styles/Subscriptions.scss'
+import 'styles/MapSubscriptions.scss'
 
 
 
@@ -132,15 +132,17 @@ export class Subscriptions extends React.Component<StateProps & DispatchProps & 
     }
     if (this.props.data.loading) {
       return (
-        <div className="subscriptions-loading">
-          Loading MapSubscriptions
-          <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+        <div className="map__subscriptions">
+          <div className="map__subscriptions--loading">
+            Loading Map Subscriptions
+            <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+          </div>
         </div>
       )
     }
     if (this.props.data.allPredictions) {
       return (
-        <div className="MapSubscriptions">
+        <div className="map__subscriptions">
           <MapBackground data={this.props.data}/>
         </div>
       )

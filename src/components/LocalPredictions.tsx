@@ -17,7 +17,6 @@ import PredictionCarousel from './PredictionCarousel'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 
-import 'styles/Subscriptions.scss'
 
 
 

@@ -88,7 +88,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
         )
       );
       const persistor = createPersistor(reduxStore, { storage: localforage })
-      // persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
+      // persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels', 'reduxReducer' ]) // only purges redux store, not apollo-client
       ////// must login again after purge to get user profile
       console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       this.reduxStore = reduxStore

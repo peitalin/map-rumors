@@ -132,6 +132,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       isSearch: false,
       showHouseCard: false,
       houseProps: { LOT: '', PLAN: '', LOT_AREA: 0 },
+      mapStyle: '',
     }
   }
 
@@ -143,6 +144,11 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
+
+    if (this.map) {
+      this.map.addControl(new mapboxgl.NavigationControl())
+    }
+
     if (this.props.gData.features && this.props.userGQL.predictions) {
 
       let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
@@ -381,29 +387,26 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
   private onMapStyleLoad = (map: mapboxgl.Map, event: EventData): void => {
-
     this.map = map
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
-
     map.scrollZoom.disable()
-    map.addControl(new mapboxgl.NavigationControl(), );
 
-    if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
-      // disable zoom on mobile, UX issues with native browser zoom
-      map.scrollZoom.disable()
-      map.addControl(new mapboxgl.NavigationControl(), );
-    }
-    // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
+    // if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
+    //   // disable zoom on mobile, UX issues with native browser zoom
+    //   map.scrollZoom.disable()
+    //   map.addControl(new mapboxgl.NavigationControl())
+    // }
+
     map.on("mouseout", () => {
-        map.setFilter(mapboxHostedLayers.parkinsonParcelsHover.id, ["==", "LOT", ""])
-    });
-
-
-    map.setStyle({
-      ...map.getStyle(),
-      transition: { duration: 500, delay: 0 }
+      // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
+      map.setFilter(mapboxHostedLayers.parkinsonParcelsHover.id, ["==", "LOT", ""])
     })
+
+    // map.setStyle({
+    //   ...map.getStyle(),
+    //   transition: { duration: 500, delay: 0 }
+    // })
     map.addLayer(mapboxHostedLayers.parkinsonParcels)
     map.addLayer(mapboxHostedLayers.parkinsonParcelsFill)
     map.addLayer(mapboxHostedLayers.parkinsonParcelsHover)
@@ -413,6 +416,15 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   }
 
+  switchStyle = () => {
+    if (this.state.mapStyle !== 'dark') {
+      this.map.setStyle('mapbox://styles/mapbox/dark-v9');
+      this.setState({ mapStyle: 'dark' })
+    } else {
+      this.map.setStyle('mapbox://styles/mapbox/light-v9');
+      this.setState({ mapStyle: 'light' })
+    }
+  }
 
 
   render() {
@@ -518,6 +530,9 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
         <GeoSearchBar map={this.map} />
 
+        <button style={{ position: 'fixed', top: 10, left: 10 }} onClick={this.switchStyle}>
+          Style
+        </button>
 
       </div>
     )

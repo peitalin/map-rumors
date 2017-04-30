@@ -3,6 +3,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const Visualizer = require('webpack-visualizer-plugin');
 
 
 /////////// Production environment //////////
@@ -44,6 +45,9 @@ if (isProduction) {
         unused: true,
         dead_code: true,
       }
+    }),
+    new Visualizer({
+      filename: './webpack_statistics.html'
     })
   ]
 } else {
@@ -120,8 +124,8 @@ const config = {
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
-    "react": "React",
-    "react-dom": "ReactDOM",
+    // "react": "React",
+    // "react-dom": "ReactDOM",
     // "auth0-lock": "Auth0Lock",
     // "mapbox-gl": "mapboxgl",
     // // must keep mapboxgl external if not using alias.
