@@ -16,6 +16,7 @@ import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
 import { mapboxHostedLayers } from '../utils/mapboxHostedLayers'
 
+import 'styles/MapBackground.scss'
 
 // Components
 import Title from './Title'
@@ -92,6 +93,17 @@ const mapboxlayers = {
   allPredictionsBorders: 'all-predictions-borders',
   allPredictionsFill: 'all-predictions-fill',
 }
+const mapboxlayerColors = {
+  radiusBorders: '#58c',
+  radiusBordersWide: '#aa88cc',
+  clickedParcelsBorders: '#37505C',
+  clickedParcelsFill: '#B8B3E9',
+  predictionsBorders: '#eee',
+  predictionsFill: '#eee',
+  allPredictionsBorders: '#D17B88',
+  allPredictionsFill: '#D17B88',
+}
+
 
 
 
@@ -227,7 +239,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       })
       this.map.getSource('gRadius').setData(this.props.gRadius)
       this.map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
-      this.map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
+      this.map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#eee')
       this.props.updateFlyingStatus(false)
     }
   }
@@ -296,8 +308,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
     })
     map.getSource('gRadius').setData(this.props.gRadius)
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#fff')
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
   }
 
 
@@ -319,8 +331,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
   private onDragStart = (map: mapboxgl.Map, event: EventData): void => {
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.4)
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.4)
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.3)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.3)
   }
 
   private onDrag = (map: mapboxgl.Map, event: EventData): void => {
@@ -328,6 +340,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     this.props.updateLngLat(lngLat)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#aa88cc')
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#58c')
+
 
     // update geojson parcel set in background worker
     this.worker.postMessage({
@@ -367,8 +380,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
     })
 
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#58c')
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#aa88cc')
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.8)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.8)
 
@@ -426,7 +439,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   render() {
     return (
-      <div className="MapBackground">
+      <div className="Mapbox__MapBackground">
 
         <ReactMapboxGl style={`mapbox://styles/mapbox/${this.state.mapStyle}-v9`}
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
@@ -454,7 +467,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gRadius"
             id={ mapboxlayers.radiusBorders }
             type="line"
-            paint={{ 'line-color': '#58c', 'line-opacity': 0.8, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.radiusBorders, 'line-opacity': 0.8, 'line-width': 1 }}
             before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
@@ -465,7 +478,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gRadiusWide"
             id={ mapboxlayers.radiusBordersWide }
             type="line"
-            paint={{ 'line-color': '#aa88cc', 'line-opacity': 0.8, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.radiusBordersWide, 'line-opacity': 0.8, 'line-width': 1 }}
             before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
@@ -477,12 +490,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gClickedParcels"
             id={ mapboxlayers.clickedParcelsBorders }
             type="line"
-            paint={{ 'line-color': '#a49', 'line-opacity': 0.7, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.clickedParcelsFill, 'line-opacity': 0.7, 'line-width': 1 }}
           />
           <Layer sourceId="gClickedParcels"
             id={ mapboxlayers.clickedParcelsFill }
             type="fill"
-            paint={{ 'fill-color': '#a49', 'fill-opacity': 0.3 }}
+            paint={{ 'fill-color': mapboxlayerColors.clickedParcelsFill, 'fill-opacity': 0.3 }}
           />
 
           <Source id="gPredictions"
@@ -492,12 +505,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gPredictions"
             id={ mapboxlayers.predictionsBorders }
             type="line"
-            paint={{ 'line-color': '#eee', 'line-opacity': 0.6, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.predictionsBorders, 'line-opacity': 0.6, 'line-width': 1 }}
           />
           <Layer sourceId="gPredictions"
             id={ mapboxlayers.predictionsFill }
             type="fill"
-            paint={{ 'fill-color': '#eee', 'fill-opacity': 0.3 }}
+            paint={{ 'fill-color': mapboxlayerColors.predictionsFill, 'fill-opacity': 0.3 }}
           />
 
 
@@ -508,12 +521,12 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gAllPredictions"
             id={ mapboxlayers.allPredictionsBorders }
             type="line"
-            paint={{ 'line-color': '#75F4F4', 'line-opacity': 0.4, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.allPredictionsBorders, 'line-opacity': 0.4, 'line-width': 1 }}
           />
           <Layer sourceId="gAllPredictions"
             id={ mapboxlayers.allPredictionsFill }
             type="fill"
-            paint={{ 'fill-color': '#75F4F4', 'fill-opacity': 0.2 }}
+            paint={{ 'fill-color': mapboxlayerColors.allPredictionsFill, 'fill-opacity': 0.2 }}
           />
 
         </ReactMapboxGl>
@@ -527,10 +540,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
         />
 
         <GeoSearchBar map={this.map} />
-
-        <button style={{ position: 'fixed', top: 10, left: 10 }} onClick={this.switchStyle}>
-          Style
-        </button>
 
       </div>
     )

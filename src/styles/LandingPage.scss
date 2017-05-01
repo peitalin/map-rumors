@@ -1,7 +1,9 @@
 
 
-// $primary-color: #F8BD7F;
-$primary-color: #1BD1C1;
+$primary-color: #96616B;
+// $primary-color: #1BD1C1;
+// $slider-color: #F8BD7F;
+$slider-color: #96616B;
 
 
 .hero-container {
@@ -9,20 +11,11 @@ $primary-color: #1BD1C1;
   max-width: 1440px;
   -webkit-animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
   animation: slideAnim 1s cubic-bezier(0.7,0,0.2,1) both;
-  -webkit-animation-delay: 0.1s;
-  animation-delay: 0.1s;
+  -webkit-animation-delay: 0.15s;
+  animation-delay: 0.15s;
 }
 
 .hero-container .landing-page-header-container .landing-page-header {
-
-  h1 {
-    // background-color: #444;
-    // color: transparent;
-    // text-shadow: 0px 2px 3px rgba(255,255,255,0.3);
-    // -webkit-background-clip: text;
-    //    -moz-background-clip: text;
-    //         background-clip: text;
-  }
 
   div:first-child {
     -webkit-animation: slideAnim 1s cubic-bezier(0.7,0,0.3,1) both;
@@ -47,8 +40,7 @@ $primary-color: #1BD1C1;
 }
 
 .background-color-slider {
-  background-color: #37505C;
-  // background-color: #1BD1C1;
+  background-color: $slider-color;
   position: absolute;
   z-index: -1;
   width: 100vw;
@@ -60,9 +52,9 @@ $primary-color: #1BD1C1;
 }
 @keyframes slideAnim {
   from {
-    opacity: 0;
-    -webkit-transform: translate3d(-70%,0,0);
-    transform: translate3d(-70%,0,0);
+    opacity: 1;
+    -webkit-transform: translate3d(-80%,0,0);
+    transform: translate3d(-80%,0,0);
   }
 }
 
@@ -126,6 +118,9 @@ $primary-color: #1BD1C1;
     a {
       color: $primary-color;
       font-size: 0.8rem;
+    }
+    a:hover {
+      color: #D4AFDF;
     }
   }
 }
@@ -203,7 +198,7 @@ $listings-width: 10rem;
 $listings-height: 15rem;
 
 .landing-page-listings {
-  border: 2px solid #ADEADE;
+  border: 2px solid lighten($primary-color, 20%);
   margin: 0.5rem;
   padding: 0.5rem;
   width: $listings-width;

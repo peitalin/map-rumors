@@ -15,13 +15,13 @@ const MockData = {
   }
 }
 
-test('<MapSubscriptions/> component matches snapshot', () => {
-  beforeEach(() => {
-    MapSub.propTypes = {
-      loading: jest.fn()
-    }
-    const elR = renderer.create( <MapSubscriptions data={MockData.data}/> )
-    expect(elR.toJSON()).toMatchSnapshot()
-  })
-})
-
+// test('<MapSubscriptions/> component matches snapshot', () => {
+//   beforeEach(() => {
+//     MapSub.propTypes = {
+//       loading: jest.fn()
+//     }
+//     const elR = renderer.create( <MapSubscriptions data={MockData.data}/> )
+//     expect(elR.toJSON()).toMatchSnapshot()
+//   })
+// })
+//

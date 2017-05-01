@@ -11,10 +11,10 @@ import Auth0Lock from 'auth0-lock'
 import Title from './Title'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import * as classNames from 'classnames'
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
 import 'styles/LoginAuth0.scss'
 
+import * as Button from 'antd/lib/button'
+import 'antd/lib/button/style/css'
 
 
 interface LoginAuth0Props {

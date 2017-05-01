@@ -1,0 +1,21 @@
+
+
+@keyframes fadeMap {
+  from {
+    opacity: 1;
+  }
+}
+
+.fadeMap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #222;
+  width: 50vw;
+  height: 50vh;
+  opacity: 0;
+  -webkit-animation: fadeMap 1s cubic-bezier(0.7,0,0.3,1) both;
+  animation: fadeMap 1s cubic-bezier(0.7,0,0.3,1) both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}

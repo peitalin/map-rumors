@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import * mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
 import { iHouse, userGQL, mutationResponsePrediction as mutationResponse } from './interfaceDefinitions'
 import 'styles/PredictionListings.scss'
@@ -23,35 +23,36 @@ import 'antd/lib/message/style/css'
 
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
-import { SpinnerRectangle, SpinnerDots } from './Spinners'
+import { SpinnerRectangle } from './Spinners'
 
 
 
-interface PredictionListingsProps {
+
+interface ReactProps {
   data?: {
     error: any
     loading: boolean
     user: userGQL
+    allPredictions: iPrediction[]
   }
-  userGQL?: userGQL
-  loading?: boolean
-  mapboxMap?: mapboxgl.Map
-  longitude?: number
-  latitude?: number
   deletePrediction({
     variables: { predictionId: string }
   })?: void // graph-ql mutation
-  removePredictionFromUserGQL({
-    variables: { userId: string, houseId: string }
-  })?: void // graph-ql mutation
+}
+interface DispatchProps {
+  updateLngLat?(lngLat: any): Dispatch<{ type: string, payload: any }>
+  updateFlyingStatus?(flyingStatus: boolean): Dispatch<{ type: string, payload: any }>
   updateUserProfileRedux(userProfile: userGQL)?: void // redux
   isUpdatingPredictions(bool: boolean)?: void // redux
-  dispatch(action: { type: string, payload: any })?: void // redux
+}
+interface StateProps {
+  userGQL?: userGQL
+  updatingPredictions?: boolean
 }
 
 
 
-export class PredictionListings extends React.Component<PredictionListingsProps, any> {
+export class PredictionListings extends React.Component<DispatchProps & StateProps & ReactProps, any> {
 
   deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
@@ -67,6 +68,15 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
       variables: { predictionId: predictionId }
     })
     this.props.isUpdatingPredictions(false)
+  }
+
+  gotoPredictionLocation = (house: iHouse): void => {
+    // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+    let lngLat: LngLat = { lng: house.lng, lat: house.lat }
+    // let message: antdMessage
+    console.info(`Going to ${house.address}`)
+    this.props.updateFlyingStatus(true)
+    this.props.updateLngLat(lngLat)
   }
 
   render() {
@@ -165,6 +175,8 @@ query {
         streetName
         streetType
         lotPlan
+        lng
+        lat
       }
     }
   }
@@ -186,6 +198,12 @@ const mapDispatchToProps = ( dispatch ) => {
     isUpdatingPredictions: (bool) => dispatch(
       { type: "UPDATING_PREDICTIONS", payload: bool }
     ),
+    updateLngLat: (lngLat) => dispatch(
+      { type: 'UPDATE_LNGLAT', payload: lngLat }
+    ),
+    updateFlyingStatus: (flyingStatus: boolean) => dispatch(
+      { type: 'UPDATE_FLYING', payload: flyingStatus }
+    ),
   }
 }
 //////// REDUX ////////
@@ -194,7 +212,7 @@ const mapDispatchToProps = ( dispatch ) => {
 export default compose(
   graphql(deletePredictionMutation, { name: 'deletePrediction', fetchPolicy: 'network-only' }),
   graphql(userQuery, { fetchPolicy: 'network-only' }),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)
 )( PredictionListings )
 
 

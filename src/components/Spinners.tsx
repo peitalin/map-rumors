@@ -3,8 +3,13 @@ import * as React from 'react'
 import 'styles/Spinners.scss'
 
 
+interface SpinnerRectangleProps {
+  height: string | number
+  width: string | number
+  color: string
+}
 
-class SpinnerRectangle extends React.Component<any, any> {
+class SpinnerRectangle extends React.Component<SpinnerRectangleProps, any> {
 
   defaultProps = {
     height: '24px',
@@ -38,8 +43,11 @@ class SpinnerRectangle extends React.Component<any, any> {
   }
 }
 
+interface SpinnerDotsProps {
+  size: string | number
+}
 
-class SpinnerDots extends React.Component<any, any> {
+class SpinnerDots extends React.Component<SpinnerDotsProps, any> {
 
   defaultProps = {
     size: '24px'

@@ -10,7 +10,7 @@ exports[`<CarouselTile /> component matches snapshot 1`] = `
   >
     <img
       className="tile__img"
-      src="https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/7.jpg"
+      src="https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/2.jpg"
     />
   </div>
   <div

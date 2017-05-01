@@ -1,6 +1,5 @@
 
 
-
 import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
@@ -9,12 +8,14 @@ import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
+import { iPrediction, iHouse, iLocalPrediction, userGQL, geoData } from './interfaceDefinitions'
 
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
 import Price from './Price'
+
+import 'styles/LocalPredictions.scss'
 
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
@@ -22,13 +23,20 @@ import 'antd/lib/message/style/css'
 
 
 
+interface DispatchProps {
+  updateLngLat?(lngLat: any): Dispatch<{ type: string, payload: any }>
+  updateFlyingStatus?(flyingStatus: boolean): Dispatch<{ type: string, payload: any }>
+}
+interface StateProps {
+  localPredictions: iLocalPrediction
+}
 interface ReactProps {
   data: {
     allPredictions: iPrediction[]
   }
 }
 
-export class LocalPredictions extends React.Component<ReactProps, any> {
+export class LocalPredictions extends React.Component<DispatchProps & StateProps & ReactProps, any> {
 
   shouldComponentUpdate(nextProps: ReactProps, nextState) {
     return true
@@ -38,7 +46,7 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
     // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     let lngLat: LngLat = { lng: house.lng, lat: house.lat }
     // let message: antdMessage
-    message.info(`Going to ${house.address}`)
+    console.info(`Going to ${house.address}`)
     this.props.updateFlyingStatus(true)
     this.props.updateLngLat(lngLat)
   }
@@ -88,9 +96,6 @@ const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
 }
 
 export default connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)( LocalPredictions )
-
-
-
 
 
 

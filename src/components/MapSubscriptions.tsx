@@ -16,9 +16,6 @@ import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import MapBackground from './MapBackground'
 import LocalPredictions from './LocalPredictions'
 
-import * as message from 'antd/lib/message'
-import 'antd/lib/message/style/css'
-
 import 'styles/MapSubscriptions.scss'
 
 

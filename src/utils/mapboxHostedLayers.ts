@@ -8,7 +8,7 @@ export const mapboxHostedLayers = {
         url: 'mapbox://peitalin.dah4s0rb'
       },
       // paint: { 'line-opacity': 0.3, 'line-color': '#ddd' },
-      paint: { 'line-opacity': 0.3, 'line-color': '#222' },
+      paint: { 'line-opacity': 0.3, 'line-color': '#555' },
       layout: {},
       'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
     },
@@ -32,7 +32,7 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://peitalin.dah4s0rb'
       },
-      paint: { 'fill-opacity': 0.2, 'fill-color': '#aef' },
+      paint: { 'fill-opacity': 0.5, 'fill-color': '#90E0F3' },
       layout: {},
       filter:['==', 'name', ''],
       'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'

@@ -28,7 +28,7 @@ var styles = {
     top: '36px'
   },
   bmBurgerBars: {
-    background: '#444'
+    background: '#96616B'
   },
   bmCrossButton: {
     height: '24px',
@@ -38,7 +38,7 @@ var styles = {
     background: '#888'
   },
   bmMenu: {
-    background: '#37505C',
+    background: '#EEEEEE',
     padding: '2.5em 1.5em 0',
     fontSize: '1.15em'
   },
