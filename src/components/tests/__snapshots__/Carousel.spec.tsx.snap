@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Carousel/> component matches snapshot 1`] = `
+<div
+  className="carousel__container"
+>
+  <div
+    className="carousel__row"
+  >
+    <div
+      className="row__inner"
+    >
+      <div
+        style={
+          Object {
+            "height": 100,
+            "width": 100,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 100,
+            "width": 100,
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

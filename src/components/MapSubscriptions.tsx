@@ -77,7 +77,7 @@ interface antdMessage {
 
 
 
-export class Subscriptions extends React.Component<StateProps & DispatchProps & ReactProps, any> {
+export class MapSubscriptions extends React.Component<StateProps & DispatchProps & ReactProps, any> {
 
   componentWillMount() {
     this.subscription = this.startSubscriptions()

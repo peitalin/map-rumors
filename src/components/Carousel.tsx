@@ -1,22 +1,13 @@
 
 import * as React from 'react'
-import 'styles/PredictionCarousel.scss'
+import 'styles/Carousel.scss'
 import className from 'classname'
 
-
-interface DispatchProps {
-  updateLngLat?(lngLat: any): Dispatch<A>
-}
-
-interface StateProps {
-}
-
 interface ReactProps {
-  data?: any
   className?: string
 }
 
-class PredictionCarousel extends React.Component<StateProps & DispatchProps & ReactProps, any> {
+export class Carousel extends React.Component<ReactProps, any> {
 
   state = {}
 
@@ -36,6 +27,4 @@ class PredictionCarousel extends React.Component<StateProps & DispatchProps & Re
   }
 }
 
-
-
-export default PredictionCarousel
+export default Carousel

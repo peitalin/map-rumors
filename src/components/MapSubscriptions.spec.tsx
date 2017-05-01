@@ -4,7 +4,7 @@ import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { mount, shallow } from 'enzyme'
 
-import { Sub } from '../Subscriptions'
+import {  } from './Map'
 
 
 

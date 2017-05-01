@@ -54,9 +54,9 @@ const RouterFader = ( WrappedComponent ) => {
   return (props) => (
     <CSSTransitionGroup
       transitionAppear={true}
-      transitionAppearTimeout={600}
-      transitionEnterTimeout={600}
-      transitionLeaveTimeout={200}
+      transitionAppearTimeout={300}
+      transitionEnterTimeout={300}
+      transitionLeaveTimeout={300}
       transitionName="router-fade">
       <WrappedComponent {...props} />
     </CSSTransitionGroup>

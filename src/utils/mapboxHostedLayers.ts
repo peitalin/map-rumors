@@ -7,7 +7,8 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://peitalin.dah4s0rb'
       },
-      paint: { 'line-opacity': 1, 'line-color': '#222' },
+      // paint: { 'line-opacity': 0.3, 'line-color': '#ddd' },
+      paint: { 'line-opacity': 0.3, 'line-color': '#222' },
       layout: {},
       'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
     },

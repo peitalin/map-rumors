@@ -22,7 +22,7 @@ import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 
 
-import PredictionCarousel from './PredictionCarousel'
+import Carousel from './Carousel'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 
 
@@ -69,15 +69,6 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
       variables: { predictionId: predictionId }
     })
     this.props.isUpdatingPredictions(false)
-  }
-
-  formatPrediction = (prediction: number): string => {
-    // formats numbers into dollars: $1,000,000
-    prediction = prediction.toString()
-    prediction = prediction.split('').reverse()
-      .map((x, i) => (i % 3 == 0) ? x+',' : x)
-      .reverse().join('').slice(0, -1)
-    return  '$' + prediction
   }
 
   randomImage = () => {
@@ -141,9 +132,9 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
                 : undefined
               )}
             </div>
-            <PredictionCarousel>
+            <Carousel>
               { predictionListings }
-            </PredictionCarousel>
+            </Carousel>
           </div>
         </div>
       )

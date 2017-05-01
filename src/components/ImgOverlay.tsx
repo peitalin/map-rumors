@@ -1,12 +1,12 @@
 
 import * as React from 'react'
 
-interface ImgSVGProps {
+interface ImgOverlayProps {
   className: string
   src: string
 }
 
-export default class ImgSVG extends React.Component<ImgSVGProps, any> {
+export default class ImgOverlay extends React.Component<ImgOverlayProps, any> {
 
   render() {
     return (

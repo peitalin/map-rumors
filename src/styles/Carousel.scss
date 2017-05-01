@@ -12,6 +12,7 @@ $moveRight: $tileWidth * ($growFactor - 1);
 .prediction__carousel {
   position: absolute;
   bottom: 0px;
+  background-color: rgba(22,22,22,0.4)
 }
 
 .carousel__container {

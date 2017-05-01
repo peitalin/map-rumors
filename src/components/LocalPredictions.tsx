@@ -12,7 +12,8 @@ import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
 
 import { SpinnerRectangle } from './Spinners'
-import PredictionCarousel from './PredictionCarousel'
+import Carousel from './Carousel'
+import Price from './Price'
 
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
@@ -32,15 +33,6 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
     return true
   }
 
-  formatDollars = (dollars: number): string => {
-    // formats into dollars: $1,000,000
-    let dollarStr: string = dollars.toString()
-    dollarStr = dollarStr.split('').reverse()
-      .map((s: string, i: number) => (i%3 == 0) ? s+',' : s)
-      .reverse().join('').slice(0,-1)
-    return  '$' + dollarStr
-  }
-
   gotoPredictionLocation = (house: iHouse): void => {
     // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     let lngLat: LngLat = { lng: house.lng, lat: house.lat }
@@ -58,7 +50,7 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
   render() {
     if (this.props.localPredictions) {
       return (
-        <PredictionCarousel className='prediction__carousel'>
+        <Carousel className='prediction__carousel'>
           {
             this.props.localPredictions.map((p: iPrediction) =>
               <div className='tile' key={p.id} onClick={() => this.gotoPredictionLocation(p.house)}>
@@ -68,14 +60,14 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
                 <div className="tile__details">
                   <div className="tile__title">
                     <div>{ p.user.emailAddress }</div>
-                    <div>{ this.formatDollars(p.prediction) }</div>
+                    <Price price={p.prediction}/>
                     <div>{ p.house.address }</div>
                   </div>
                 </div>
               </div>
             )
           }
-        </PredictionCarousel>
+        </Carousel>
       )
     } else {
       return (

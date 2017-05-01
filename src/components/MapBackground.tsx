@@ -78,6 +78,7 @@ interface MapBackgroundState {
     PLAN: string
     LOT_AREA: number
   }
+  mapStyle: string
 }
 
 // Each parcel layer used on mapbox
@@ -132,7 +133,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
       isSearch: false,
       showHouseCard: false,
       houseProps: { LOT: '', PLAN: '', LOT_AREA: 0 },
-      mapStyle: '',
+      mapStyle: 'dark',
     }
   }
 
@@ -144,10 +145,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
-
-    if (this.map) {
-      this.map.addControl(new mapboxgl.NavigationControl())
-    }
 
     if (this.props.gData.features && this.props.userGQL.predictions) {
 
@@ -173,7 +170,6 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
   }
 
   handleScroll = (event) => {
-
     console.info(event)
   }
 
@@ -323,8 +319,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
 
   private onDragStart = (map: mapboxgl.Map, event: EventData): void => {
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.15)
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.1)
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.4)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.4)
   }
 
   private onDrag = (map: mapboxgl.Map, event: EventData): void => {
@@ -373,8 +369,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#58c')
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#aa88cc')
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.4)
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.4)
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.8)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.8)
 
   }
 
@@ -391,6 +387,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
     map.scrollZoom.disable()
+    map.addControl(new mapboxgl.NavigationControl())
 
     // if (/Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent)) {
     //   // disable zoom on mobile, UX issues with native browser zoom
@@ -418,10 +415,10 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
 
   switchStyle = () => {
     if (this.state.mapStyle !== 'dark') {
-      this.map.setStyle('mapbox://styles/mapbox/dark-v9');
+      // this.map.setStyle('mapbox://styles/mapbox/dark-v9');
       this.setState({ mapStyle: 'dark' })
     } else {
-      this.map.setStyle('mapbox://styles/mapbox/light-v9');
+      // this.map.setStyle('mapbox://styles/mapbox/light-v9');
       this.setState({ mapStyle: 'light' })
     }
   }
@@ -431,7 +428,7 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
     return (
       <div className="MapBackground">
 
-        <ReactMapboxGl style="mapbox://styles/mapbox/dark-v9"
+        <ReactMapboxGl style={`mapbox://styles/mapbox/${this.state.mapStyle}-v9`}
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}
@@ -457,8 +454,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gRadius"
             id={ mapboxlayers.radiusBorders }
             type="line"
-            paint={{ 'line-color': '#58c', 'line-opacity': 0.6, 'line-width': 1 }}
-            before={ mapboxlayers.radiusBordersWide }
+            paint={{ 'line-color': '#58c', 'line-opacity': 0.8, 'line-width': 1 }}
+            before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
           <Source id="gRadiusWide"
@@ -468,7 +465,8 @@ class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundSta
           <Layer sourceId="gRadiusWide"
             id={ mapboxlayers.radiusBordersWide }
             type="line"
-            paint={{ 'line-color': '#aa88cc', 'line-opacity': 0.3, 'line-width': 1 }}
+            paint={{ 'line-color': '#aa88cc', 'line-opacity': 0.8, 'line-width': 1 }}
+            before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
 
