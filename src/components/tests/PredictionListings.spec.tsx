@@ -44,15 +44,15 @@ test('<PredictionListings/> should contain 3 <Link>', () => {
   })
 })
 
-test('<PredictionListings/> should contain 3 <div className="tile"/>', () => {
-  beforeEach(() => {
-    PredictionListings.propTypes = {
-      store: jest.fn()
-    }
-    const el = shallow( <PredictionListings {...MockProps} /> )
-    expect(el.find('.tile').length).toEqual(3)
-  })
-})
+// test('<PredictionListings/> should contain 3 <div className="tile"/>', () => {
+//   beforeEach(() => {
+//     PredictionListings.propTypes = {
+//       store: jest.fn()
+//     }
+//     const el = shallow( <PredictionListings {...MockProps} /> )
+//     expect(el.find('.tile').length).toEqual(3)
+//   })
+// })
 
 test('<PredictionListings/> should contain 3 <Popconfirm>', () => {
   beforeEach(() => {

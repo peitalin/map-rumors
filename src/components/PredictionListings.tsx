@@ -21,11 +21,9 @@ import 'antd/lib/popconfirm/style/css'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 
-
 import Carousel from './Carousel'
+import CarouselTile from './CarouselTile'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
-
-
 
 
 
@@ -71,11 +69,6 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
     this.props.isUpdatingPredictions(false)
   }
 
-  randomImage = () => {
-    let imgNum = Math.floor(1 + Math.random() * 19)
-    return `https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/${imgNum}.jpg`
-  }
-
   render() {
     if (this.props.data.error) {
       return <Title><div>PredictionListings: GraphQL Errored.</div></Title>
@@ -83,53 +76,54 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
     if (this.props.data.loading) {
       return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
-    if (this.props.data.user) {
-      let user = this.props.data.user
+    if (!this.props.data.user) {
+      return <Title><div>No User. Log In.</div></Title>
+    }
 
-      if (user.predictions.length === 0) {
-        var predictionListings = <Title>No Predictions</Title>
-      } else {
-        var predictionListings = user.predictions.map(p => {
-          let unitStreetNum = p.house.unitNum
-            ? `${p.house.unitNum}/${p.house.streetNum}`
-            : `${p.house.streetNum}`
-          return (
-            <div className="tile" key={p.id}>
-              <div className="tile__media">
-                <img className="tile__img" src={this.randomImage()}/>
-              </div>
-              <div className="tile__details">
-                <div className="tile__title">
-                  <p>{(`${unitStreetNum} ${p.house.streetName} ${p.house.streetType}`)}</p>
-                  <p>
-                    <Link to={`/map/predictionlistings/${p.id}`} className="router-link">
-                      { p.house.lotPlan }
-                    </Link>
-                  </p>
-                  {(
-                    <Popconfirm className='child'
-                      title={`Delete prediction for ${p.house.address}?`}
-                      onConfirm={() => this.deletePrediction({ predictionId: p.id })}
-                      onCancel={() => console.log(`Kept ${p.house.address}.`)}
-                      okText="Yes" cancelText="No">
-                      <a href="#">Delete</a>
-                    </Popconfirm>
-                  )}
-                </div>
-              </div>
+    let user = this.props.data.user
+    if (user.predictions.length === 0) {
+      var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
+    } else {
+      var predictionListings = user.predictions.map(p => {
+        let unitStreetNum = p.house.unitNum
+          ? `${p.house.unitNum}/${p.house.streetNum}`
+          : `${p.house.streetNum}`
+        return (
+          <CarouselTile key={p.id}
+            onClick={() => this.gotoPredictionLocation(p.house)}
+            img={undefined}
+          >
+            <div>
+              {
+                p.house.unitNum
+                  ? `${p.house.unitNum}/${p.house.streetNum}`
+                  : `${p.house.streetNum}`
+              }
+              { " " + p.house.streetName }
+              { " " + p.house.streetType }
             </div>
-          )
-        })
-      }
+            <Link to={`/map/predictionlistings/${p.id}`} className="router-link">
+              { p.house.lotPlan }
+            </Link>
+            <Popconfirm className='child'
+              title={`Delete prediction for ${p.house.address}?`}
+              onConfirm={() => this.deletePrediction({ predictionId: p.id })}
+              onCancel={() => console.log(`Kept ${p.house.address}.`)}
+              okText="Yes" cancelText="No">
+              <a href="#">Delete</a>
+            </Popconfirm>
+          </CarouselTile>
+        )
+      })
+
 
       return (
         <div className='prediction-listings-container'>
           <div className='prediction-listings-inner'>
             <div className='prediction-listings-heading'>
               {(
-                this.props.data.loading
-                ? <SpinnerRectangle height='36px' width='8px' dark/>
-                : undefined
+                this.props.data.loading &&
+                <SpinnerRectangle height='36px' width='8px' dark/>
               )}
             </div>
             <Carousel>
@@ -137,10 +131,6 @@ export class PredictionListings extends React.Component<PredictionListingsProps,
             </Carousel>
           </div>
         </div>
-      )
-    } else {
-      return (
-        <div>No User</div>
       )
     }
   }

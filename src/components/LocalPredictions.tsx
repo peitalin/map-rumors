@@ -13,6 +13,7 @@ import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
 
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'
+import CarouselTile from './CarouselTile'
 import Price from './Price'
 
 import * as message from 'antd/lib/message'
@@ -42,29 +43,20 @@ export class LocalPredictions extends React.Component<ReactProps, any> {
     this.props.updateLngLat(lngLat)
   }
 
-  randomImage = (): void => {
-    let imgNum = Math.floor(1 + Math.random() * 19)
-    return `https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/${imgNum}.jpg`
-  }
-
   render() {
     if (this.props.localPredictions) {
       return (
         <Carousel className='prediction__carousel'>
           {
             this.props.localPredictions.map((p: iPrediction) =>
-              <div className='tile' key={p.id} onClick={() => this.gotoPredictionLocation(p.house)}>
-                <div className="tile__media">
-                  <img className="tile__img" src={this.randomImage()}/>
-                </div>
-                <div className="tile__details">
-                  <div className="tile__title">
-                    <div>{ p.user.emailAddress }</div>
-                    <Price price={p.prediction}/>
-                    <div>{ p.house.address }</div>
-                  </div>
-                </div>
-              </div>
+              <CarouselTile key={p.id}
+                onClick={() => this.gotoPredictionLocation(p.house)}
+                img={undefined}
+              >
+                <div>{ p.user.emailAddress }</div>
+                <Price price={p.prediction}/>
+                <div>{ p.house.address }</div>
+              </CarouselTile>
             )
           }
         </Carousel>

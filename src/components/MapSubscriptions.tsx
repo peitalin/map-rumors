@@ -23,13 +23,12 @@ import 'styles/MapSubscriptions.scss'
 
 
 
-type A = { type: string, payload: any }
-type LngLat = { lng: number, lat: number }
+type Action = { type: string, payload: any }
 
 interface DispatchProps {
-  updateLngLat?(lngLat: LngLat): Dispatch<A>
-  updateFlyingStatus?(flyingStatus: boolean): Dispatch<A>
-  updateGeoAllPredictions?(allPredictions: iPrediction[]): Dispatch<A>
+  updateLngLat?(lngLat: { lng: number, lat: number }): Dispatch<Action>
+  updateFlyingStatus?(flyingStatus: boolean): Dispatch<Action>
+  updateGeoAllPredictions?(allPredictions: iPrediction[]): Dispatch<Action>
 }
 
 interface StateProps {
@@ -255,7 +254,7 @@ export default compose(
   connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps),
   withApollo,
   graphql(query, queryOptions),
-)( Subscriptions )
+)( MapSubscriptions )
 
 
 

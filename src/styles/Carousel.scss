@@ -33,7 +33,7 @@ $moveRight: $tileWidth * ($growFactor - 1);
   margin: ($tileHeight / 8) 0;
 }
 
-.tile {
+.tile__container {
   position: relative;
   display: inline-block;
   width: $tileWidth;
@@ -92,27 +92,26 @@ $moveRight: $tileWidth * ($growFactor - 1);
 // We assume when you hover .row, you're also hovering a .tile
 // First, move the whole row towards the left
 .row__inner:hover {
-  transform: translate3d($moveLeft, 0, 0);
-
-  transform: scale(1.1);
+  transform: translate3d($moveLeft, 0, 0) scale(1.1);
   transition: transform 0.2s ease-in;
-  transition-delay: 0s;
   transform-origin: bottom;
 }
 
-.row__inner:hover .tile {
+.row__inner:hover .tile__container {
   // Fade out every tile
   opacity: .3;
+  transition: transform 0.2s ease-in;
   // And then grow the current tile and make it opaque again
   &:hover {
     transform: scale($growFactor);
+    transition: transform 0.2s ease-in;
     opacity: 1;
   }
 }
 
 // And finally move all tiles right of the current tile to the right,
 // so its flush against the hovered tile
-.tile:hover ~ .tile {
+.tile__container:hover ~ .tile__container {
   transform: translate3d($moveRight, 0, 0);
 }
 

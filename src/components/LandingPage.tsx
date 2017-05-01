@@ -5,7 +5,7 @@ import * as React from 'react'
 import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
 import DraggableList from './DraggableList'
-import ImgSVG from './ImgSVG'
+import ImgOverlay from './ImgOverlay'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
 import 'styles/LandingPage.scss'
