@@ -285,12 +285,12 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let lngLat: mapboxgl.LngLat = event.lngLat
     this.props.updateLngLat(lngLat)
     // var bearings = [-30, -15, 0, 15, 30]
-    map.flyTo({
-      center: lngLat,
-      speed: 2,
-      // bearing: bearings[parseInt(Math.random()*4)],
-      // pitch: parseInt(40+Math.random()*20)
-    })
+    // map.flyTo({
+    //   center: lngLat,
+    //   speed: 2,
+    //   // bearing: bearings[parseInt(Math.random()*4)],
+    //   // pitch: parseInt(40+Math.random()*20)
+    // })
 
     let features = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
       .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
@@ -403,7 +403,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
 
   private onMapStyleLoad = (map: mapboxgl.Map, event: EventData): void => {
-    this.setState({ map })
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
     map.scrollZoom.disable()
@@ -424,21 +423,26 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
       ...map.getStyle(),
       transition: { duration: 500, delay: 0 }
     })
-    map.addLayer(mapboxHostedLayers.parkinsonParcels)
-    map.addLayer(mapboxHostedLayers.parkinsonParcelsFill)
-    map.addLayer(mapboxHostedLayers.parkinsonParcelsHover)
     map.addLayer(mapboxHostedLayers.threeDBuildings)
-    map.addLayer(mapboxHostedLayers.brisbaneSuburbs)
-    map.addLayer(mapboxHostedLayers.traffic)
+    this.setState({ map })
+    // preferably, pass map as a prop to GeoSuggest component
+    // but how? setting this.map does not work since it will be null.
 
   }
 
-
   render() {
+    let mapboxstyles = {
+      dark: 'mapbox://styles/mapbox/dark-v9',
+      light: 'mapbox://styles/mapbox/light-v9',
+      outdoors: 'mapbox://styles/mapbox/outdoors-v10',
+      streets: 'mapbox://styles/mapbox/streets-v10',
+      satellite: 'mapbox://styles/mapbox/satellite-v9',
+      satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v10',
+    }
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
-        <ReactMapboxGl style={`mapbox://styles/mapbox/dark-v9`}
+        <ReactMapboxGl style={mapboxstyles.dark}
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}
@@ -457,6 +461,14 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
             width: "100vw",
         }}>
 
+
+          <Layer {...mapboxHostedLayers.parkinsonParcels}/>
+          <Layer {...mapboxHostedLayers.parkinsonParcelsFill}/>
+          <Layer {...mapboxHostedLayers.parkinsonParcelsHover}/>
+          <Layer {...mapboxHostedLayers.brisbaneSuburbs}/>
+          <Layer {...mapboxHostedLayers.traffic}/>
+          {/* <Layer {...mapboxHostedLayers.threeDBuildings}/> */}
+
           <Source id="gRadius"
             onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.props.gRadius }}
@@ -465,7 +477,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
             id={ mapboxlayers.radiusBorders }
             type="line"
             paint={{ 'line-color': mapboxlayerColors.radiusBorders, 'line-opacity': 0.8, 'line-width': 1 }}
-            before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
           <Source id="gRadiusWide"
@@ -476,7 +487,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
             id={ mapboxlayers.radiusBordersWide }
             type="line"
             paint={{ 'line-color': mapboxlayerColors.radiusBordersWide, 'line-opacity': 0.8, 'line-width': 1 }}
-            before={ mapboxHostedLayers.parkinsonParcels.id }
           />
 
 

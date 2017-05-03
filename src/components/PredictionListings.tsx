@@ -24,8 +24,7 @@ import 'antd/lib/message/style/css'
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
 import { SpinnerRectangle } from './Spinners'
-
-
+const PREDICTIONLISTINGS_ROUTE = "/map/parallax/predictionlistings"
 
 
 interface ReactProps {
@@ -112,7 +111,7 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
               { " " + p.house.streetName }
               { " " + p.house.streetType }
             </div>
-            <Link to={`/map/predictionlistings/${p.id}`} className="router-link">
+            <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
               { p.house.lotPlan }
             </Link>
             <Popconfirm className='child'
