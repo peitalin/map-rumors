@@ -42,7 +42,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
   private initApolloNetworkInterface = async(GRAPHQL_PROJECT_ID) => {
     const networkInterface = createBatchingNetworkInterface({
       uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
-      batchInterval: 10
+      batchInterval: 40
     });
     const middlewareAuth0 = {
       applyBatchMiddleware: (req, next) => {
@@ -63,8 +63,8 @@ class AppApollo extends React.Component<any, AppApolloState> {
       networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
       dataIdFromObject: o => o.id, // enable object ID for better cacheing
       queryDeduplication: true, // batch graphql queries
+      // initialState: initialState,
       // reduxRootSelector: state => state.apollo,
-      // initialState: res,
     })
   }
 
@@ -82,7 +82,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
         rehydratedState,
         compose(
           this.registerReduxDevtools(),
-          // applyMiddleware(thunk),
+          applyMiddleware(thunk),
           // offline(offlineConfig), // Redux-offline
           // applyMiddleware(this.apolloClient.middleware()), // Apollo-client: wrong state shape
         )

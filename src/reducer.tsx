@@ -59,7 +59,7 @@ export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMa
     case "UPDATE_LOTPLAN":
       return { ...state, lotPlan: action.payload }
 
-    case "UPDATE_LOCAL_PREDICTIONS":
+    case "UPDATE_LOCAL_PREDICTION_LISTINGS":
       return { ...state, localPredictions: action.payload }
 
     default: {
@@ -110,7 +110,7 @@ export interface ReduxStateParcels {
   gRadiusWide?: geoData
   gHover?: geoData
   gClickedParcels?: geoData
-  gPredictions?: geoData
+  gMyPredictions?: geoData
   gAllPredictions?: geoData
 }
 
@@ -120,7 +120,7 @@ const initialReduxStateParcels = {
   gRadiusWide:      { features: [] },
   gHover:           { features: [] },
   gClickedParcels:  { features: [] },
-  gPredictions:     { features: [] },
+  gMyPredictions:   { features: [] },
   gAllPredictions:  { features: [] },
 }
 
@@ -142,8 +142,8 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
     case "UPDATE_GEOCLICKED_PARCELS":
       return { ...state, gClickedParcels: action.payload }
 
-    case "UPDATE_GEOPREDICTIONS":
-      return { ...state, gPredictions: action.payload }
+    case "UPDATE_GEOMY_PREDICTIONS":
+      return { ...state, gMyPredictions: action.payload }
 
     case "UPDATE_GEOALL_PREDICTIONS":
       return { ...state, gAllPredictions: action.payload }

@@ -47,14 +47,14 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
     let lngLat: LngLat = { lng: house.lng, lat: house.lat }
     // let message: antdMessage
     console.info(`Going to ${house.address}`)
-    this.props.updateFlyingStatus(true)
     this.props.updateLngLat(lngLat)
+    this.props.updateFlyingStatus(true)
   }
 
   render() {
     if (this.props.localPredictions) {
       return (
-        <Carousel className='prediction__carousel'>
+        <Carousel className='local__predictions__carousel'>
           {
             this.props.localPredictions.map((p: iPrediction) =>
               <CarouselTile key={p.id}
@@ -70,9 +70,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
         </Carousel>
       )
     } else {
-      return (
-        <div>No Local Predictions</div>
-      )
+      return (<div>No Local Predictions</div>)
     }
   }
 }

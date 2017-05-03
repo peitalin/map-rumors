@@ -12,7 +12,9 @@ import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
 
-import { iHouse, mutationResponsePrediction as mutationResponse } from './interfaceDefinitions'
+import { iHouse, iPrediction, userGQL,
+  mutationResponsePrediction as mutationResponse
+} from './interfaceDefinitions'
 
 
 interface AddPredictionProps {
@@ -49,7 +51,7 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
   private updatePredictionsRedux = (newPredictionId = 'tempId'): void => {
     let predictions: iPrediction[] = this.props.userGQL.predictions
     let House: iHouse = this.props.data.House
-    let newPrediction = predictions.filter(prediction => prediction.id === 'tempId')
+    let newPrediction = predictions.filter((prediction: iPrediction) => prediction.id === 'tempId')
 
     if (newPrediction.length > 0) {
       // console.info(`House: ${House.address} is already in the list! Updating PredictionId.`)
@@ -86,6 +88,10 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
   }
 
   render() {
+    if (!this.props.userGQL) {
+      return <div>Login to make a prediction.</div>
+    }
+
     let maxPredictionLimitReached = (this.props.userGQL.predictions.length >= 9)
       ? true : false
 

@@ -11,7 +11,7 @@ export default class ImgOverlay extends React.Component<ImgOverlayProps, any> {
   render() {
     return (
       <div>
-        <div className='clear-img-overlay' style={{ position: 'absolute', height: '100%', width: '100%' }}></div>
+        <div className='clear-img-overlay' style={{ position: 'absolute' }}></div>
         <img {...this.props} className={this.props.className} src={this.props.src}/>
       </div>
     )

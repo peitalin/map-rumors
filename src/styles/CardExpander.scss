@@ -70,11 +70,13 @@
     padding: 0% 2%;
   }
   &.expanded-full{
-    transition: all 0.5s ease;
     width: 100vw;
     height: 50vh;
+    border-radius: 0px;
+    padding: 5%;
     transform: translate3d(0, 0, 0);
     transition-delay: 0.0s;
+    transition: all 0.5s ease;
   }
 }
 

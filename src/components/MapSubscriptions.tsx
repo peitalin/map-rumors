@@ -3,6 +3,7 @@
 
 import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
 
 import gql from 'graphql-tag'
@@ -12,9 +13,9 @@ import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
 
 
-import { SpinnerRectangle, SpinnerDots } from './Spinners'
+import { SpinnerRectangle } from './Spinners'
+import Title from './Title'
 import MapBackground from './MapBackground'
-import LocalPredictions from './LocalPredictions'
 
 import 'styles/MapSubscriptions.scss'
 
@@ -27,15 +28,12 @@ interface DispatchProps {
   updateFlyingStatus?(flyingStatus: boolean): Dispatch<Action>
   updateGeoAllPredictions?(allPredictions: iPrediction[]): Dispatch<Action>
 }
-
 interface StateProps {
   userGQL: userGQL
 }
-
 interface ReactProps {
   data?: SubscriptionState
 }
-
 interface SubscriptionState {
   allPredictions?: iPrediction[]
   error?: any
@@ -49,7 +47,6 @@ interface SubscriptionState {
   variables?: Object
   [key: string]: any
 }
-
 interface SubscriptionResponse {
   subscriptionData?: {
     data?: {
@@ -66,7 +63,6 @@ interface SubscriptionResponse {
     }
   }
 }
-
 interface antdMessage {
   info: any
 }
@@ -123,8 +119,11 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
   }
 
   render() {
+    if (!this.props.userGQL) {
+      return <Redirect to='/'/>
+    }
     if (this.props.data.error) {
-      return <div>Error in Sub Component</div>
+      return <div><Title>Error in Sub Component</Title></div>
     }
     if (this.props.data.loading) {
       return (
@@ -138,7 +137,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
     }
     if (this.props.data.allPredictions) {
       return (
-        <div className="map__subscriptions">
+        <div id="map__subscriptions" className="map__subscriptions">
           <MapBackground data={this.props.data}/>
         </div>
       )
@@ -241,7 +240,7 @@ const queryOptions = {
   options: (ownProps: ReduxStateUser) => {
     return ({
       variables: {
-        emailAddress: ownProps.userGQL.emailAddress
+        emailAddress: ownProps.userGQL.emailAddress ? ownProps.userGQL.emailAddress : ''
       },
       fetchPolicy: 'network-only',
     })

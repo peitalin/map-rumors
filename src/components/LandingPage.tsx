@@ -65,30 +65,30 @@ export default class LandingPage extends React.Component<any, any> {
 
           <div className="landing-page-listings-container">
             <div className='landing-page-listings-flex'>
-              <DraggableList className='draggable-outer' itemClassName='landing-page-draggable-item'>
+              <div className='draggable-outer'>
                 <ImgOverlay className='landing-page-listings' src={require('../img/house11.svg')} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house12.svg")} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house13.svg")} />
-              </DraggableList>
+              </div>
             </div>
             <div className='landing-page-listings-flex'>
-              <DraggableList className='draggable-outer' itemClassName='landing-page-draggable-item'>
+              <div className='draggable-outer'>
                 <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house14.svg")} />
                 <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house15.svg")} />
-              </DraggableList>
+              </div>
             </div>
             <div className='landing-page-listings-flex'>
-              <DraggableList className='draggable-outer' itemClassName='landing-page-draggable-item'>
+              <div className='draggable-outer'>
                 <ImgOverlay className='landing-page-listings' src={require("../img/house16.svg")} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house18.svg")} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house19.svg")} />
-              </DraggableList>
+              </div>
             </div>
             <div className='landing-page-listings-flex'>
-              <DraggableList className='draggable-outer' itemClassName='landing-page-draggable-item'>
+              <div className='draggable-outer'>
                 <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house20.svg")} />
                 <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house21.svg")} />
-              </DraggableList>
+              </div>
             </div>
           </div>
 

@@ -9,7 +9,7 @@
 
 .fade-enter.fade-enter-active {
   opacity: 1;
-  transition: opacity 250ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 // CSS transitions
@@ -19,7 +19,7 @@
 }
 .router-fade-appear.router-fade-appear-active {
   opacity: 1;
-  transition: opacity 200ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 // entering
 .router-fade-enter {
@@ -27,7 +27,7 @@
 }
 .router-fade-enter.router-fade-enter-active {
   opacity: 1;
-  transition: opacity 200ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 // leaving
 .router-fade-leave {
@@ -35,7 +35,7 @@
 }
 .router-fade-leave.router-fade-leave-active {
   opacity: 0.01;
-  transition: opacity 200ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 

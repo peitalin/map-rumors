@@ -237,7 +237,6 @@ $listings-height: 15rem;
 
 // draggable items
 .landing-page-draggable-item {
-  transition: filter 0.3s ease;
   overflow: hidden;
   background-color: #fafafa;
 }
@@ -246,6 +245,8 @@ $listings-height: 15rem;
 
 .draggable-outer {
   background-color: rgba(222,222,222, 0.2);
+  display: flex;
+  justify-content: center;
 
   span {
     display: flex;

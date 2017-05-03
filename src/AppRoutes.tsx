@@ -11,6 +11,20 @@ import { asyncComponent } from 'react-async-component'
 import Loadable from 'react-loadable'
 
 //// Components
+// import Title from './components/Title'
+// import LandingPage from './components/LandingPage'
+// import LoginAuth0 from './components/LoginAuth0'
+// import Navbar from './components/Navbar'
+//
+// import MapSubscriptions from './components/MapSubscriptions'
+// import LocalPredictions from './components/LocalPredictions'
+// import PredictionListings from './components/PredictionListings'
+// import PredictionStats from './components/PredictionStats'
+//
+// import DraggableGrid from './components/DraggableGrid'
+// import CardExpander from './components/CardExpander'
+// import Parallax from './components/Parallax'
+
 //////// Lazy-loading Components by Route /////////
 const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
 const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
@@ -22,8 +36,9 @@ const LocalPredictions = asyncComponent({ resolve: () => System.import('./compon
 const PredictionListings = asyncComponent({ resolve: () => System.import('./components/PredictionListings.tsx') })
 const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
 
-const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
+// const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
 const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
+const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
 
 
 
@@ -60,12 +75,12 @@ export default class AppRoutes extends React.Component {
           <Route exact path="/" component={ RouterFader(LandingPage) } />
 
           <Route path="/map" component={ RouterFader(MapSubscriptions) } />
-          <Route path="/map/localpredictions" component={ RouterFader(LocalPredictions) } />
-          <Route path="/map/predictionlistings" component={ RouterFader(PredictionListings) } />
-          <Route path="/map/predictionlistings/:id" component={ RouterFader(PredictionStats) } />
+          <Route path="/map/parallax/localpredictions" component={ RouterFader(LocalPredictions) } />
+          <Route path="/map/parallax/predictionlistings" component={ RouterFader(PredictionListings) } />
+          <Route path="/map/parallax/predictionlistings/:id" component={ RouterFader(PredictionStats) } />
+          <Route path="/map/parallax" component={ RouterFader(Parallax) } />
 
           <Route path="/test" component={ RouterFader(CardExpander) } />
-          <Route path="/profile" component={ RouterFader(DraggableGrid) } />
         </div>
       </HashRouter>
     )

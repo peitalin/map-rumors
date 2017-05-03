@@ -1,0 +1,35 @@
+
+$eggshell: #f7f4e9;
+$raisinblack: #270b20;
+// Parallax
+.parallax {
+    position: relative;
+    background-repeat: no-repeat no-repeat;
+    overflow: hidden;
+    background-size: 100px auto;
+    background-position: 50% 50%;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100px;
+}
+
+.parallax__spacer {
+    padding-top: .5em;
+    background-color: rgba(0,0,0,0.2);
+    height: 100vh;
+    // temporary fix, make screen transition so slow that there is not jank on android mobile
+    // transition: height .1s ease;
+    // -webkit-transition: height .1s ease;
+}
+
+.parallax__textbox {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 1.1em;
+    background-color: transparentize($raisinblack, 0);
+    top: 300px;
+    opacity: 0;
+}

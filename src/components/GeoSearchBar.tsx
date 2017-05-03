@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox } from '../reducer'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import { SpinnerRectangle } from './Spinners'
 
 // GoogleMaps
 import '../styles/GeoSearchBar.scss'

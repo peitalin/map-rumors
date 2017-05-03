@@ -128,18 +128,14 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
 
 
       return (
-        <div className='prediction-listings-container'>
-          <div className='prediction-listings-inner'>
-            <div className='prediction-listings-heading'>
-              {(
-                this.props.data.loading &&
-                <SpinnerRectangle height='36px' width='8px' dark/>
-              )}
-            </div>
-            <Carousel>
-              { predictionListings }
-            </Carousel>
-          </div>
+        <div className='prediction__listings__container'>
+          {(
+            this.props.data.loading &&
+            <SpinnerRectangle height='36px' width='8px' dark/>
+          )}
+          <Carousel className='prediction__carousel'>
+            { predictionListings }
+          </Carousel>
         </div>
       )
     }

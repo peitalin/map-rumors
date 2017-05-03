@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { Link, withRouter, Location } from 'react-router-dom'
+import { Link, withRouter, Location, Redirect } from 'react-router-dom'
 import { slide as Menu } from 'react-burger-menu'
 
 import * as Breadcrumb from 'antd/lib/breadcrumb'
@@ -90,10 +90,11 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
             </Breadcrumb>
           </div>
           <Link className="menu-item" to='/'>Home</Link>
-          <Link className="menu-item" to='/map/localpredictions'>Local Predictions</Link>
-          <Link className="menu-item" to='/map/predictionlistings'>My Predictions</Link>
+          <Link className="menu-item" to='/map'>Map</Link>
+          <Link className="menu-item" to='/map/parallax/localpredictions'>Local Predictions</Link>
+          <Link className="menu-item" to='/map/parallax/predictionlistings'>My Predictions</Link>
           <Link className="menu-item" to='/profile'>Profile</Link>
-          <Link className="menu-item" to='/test'>Test</Link>
+          <Link className="menu-item" to='/map/parallax'>Parallax Test</Link>
           <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
         </Menu>
       </div>
