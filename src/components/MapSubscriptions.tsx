@@ -92,7 +92,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
         switch (mutationType) {
           case 'CREATED': {
             let newAllPredictions = [...prevState.allPredictions, newPrediction]
-            this._updateGeoAllPredictions(newAllPredictions)
+            this.props.updateGeoAllPredictions(newAllPredictions)
             return {
               ...prevState,
               allPredictions: newAllPredictions
@@ -102,7 +102,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
             let newAllPredictions = prevState.allPredictions.filter(
               (p: iPrediction) => p.id !== subscriptionData.data.Prediction.previousValues.id
             )
-            this._updateGeoAllPredictions(newAllPredictions)
+            this.props.updateGeoAllPredictions(newAllPredictions)
             return {
               ...prevState,
               allPredictions: newAllPredictions
