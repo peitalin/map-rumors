@@ -108,7 +108,6 @@ export interface ReduxStateParcels {
   gData?: geoData
   gRadius?: geoData
   gRadiusWide?: geoData
-  gHover?: geoData
   gClickedParcels?: geoData
   gMyPredictions?: geoData
   gAllPredictions?: geoData
@@ -118,7 +117,6 @@ const initialReduxStateParcels = {
   gData:            { features: [] },
   gRadius:          { features: [] },
   gRadiusWide:      { features: [] },
-  gHover:           { features: [] },
   gClickedParcels:  { features: [] },
   gMyPredictions:   { features: [] },
   gAllPredictions:  { features: [] },
@@ -135,9 +133,6 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
 
     case "UPDATE_GEORADIUS_WIDE":
       return { ...state, gRadiusWide: action.payload }
-
-    case "UPDATE_GEOHOVER":
-      return { ...state, gHover: action.payload }
 
     case "UPDATE_GEOCLICKED_PARCELS":
       return { ...state, gClickedParcels: action.payload }

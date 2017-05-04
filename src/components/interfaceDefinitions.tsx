@@ -108,6 +108,32 @@ export interface geoParcel {
   }
 }
 
+export interface mapboxFeature {
+  id?: number
+  layer?: {
+    filter?: any[]
+    id?: string
+    paint?: {
+      "fill-color"?: string
+      "fill-opacity"?: number
+    }
+    source: string
+    "source-layer": string
+    type: string
+  }
+  properties?: {
+    LOCALITY: string
+    LOT: string
+    LOTPLAN: string
+    LOT_AREA: number
+    O_SHAPE_Area: number
+    O_SHAPE_Length: number
+    PLAN: string
+    SHIRE_NAME: string
+  }
+  type?: string
+}
+
 export interface gplacesDestination {
   gmaps: {
     address_components: any[]

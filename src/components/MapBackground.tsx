@@ -32,7 +32,7 @@ import 'antd/lib/button/style/css'
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
-import { geoData, geoParcel, gplacesDestination, userGQL } from './interfaceDefinitions'
+import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature } from './interfaceDefinitions'
 
 import { isParcelNear } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
@@ -250,22 +250,20 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   }
 
 
-  private handleClickedParcel = (features: GeoJSON.Feature<GeoJSON.GeometryObject>[]): void => {
+  private handleClickedParcel = (features: mapboxFeature[]): void => {
     // features: are property parcels (polygons)
     if (features.length > 1) {
       // hover layer and parcel layer == 2 layers
       let { LOT, PLAN, LOTPLAN, LOT_AREA, O_SHAPE_Area, O_SHAPE_Length, LOCALITY } = features[0].properties
       this.props.updateLotPlan(LOTPLAN)
 
-      if (!features.filter(f => f.layer.id === mapboxlayers.clickedParcelsFill).length) {
-        let clickedParcel: Array<geoParcel> = this.props.gHover.features
-          .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
-        // add purple parcel, visited parcel
-        this.props.updateGeoClickedParcels({
-          ...this.props.gClickedParcels,
-          features: [...this.props.gClickedParcels.features, ...clickedParcel]
-        })
-      }
+      let clickedParcel: geoParcel[] = this.props.gData.features
+        .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
+      // add purple parcel, visited parcel
+      this.props.updateGeoClickedParcels({
+        ...this.props.gClickedParcels,
+        features: [...clickedParcel]
+      })
       this.setState({
         houseProps: { LOT: LOT, PLAN: PLAN, LOT_AREA: LOT_AREA },
         showHouseCard: true
@@ -292,7 +290,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     //   // pitch: parseInt(40+Math.random()*20)
     // })
 
-    let features = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
+
+    let features: mapboxFeature[] = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
       .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
     if (!features.length) {
       this.setState({ showHouseCard: false })
@@ -336,8 +335,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
 
   private onDragStart = (map: mapboxgl.Map, event: EventData): void => {
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.3)
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.3)
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.2)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.2)
   }
 
   private onDrag = (map: mapboxgl.Map, event: EventData): void => {
@@ -389,8 +388,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
-    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.8)
-    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.8)
+    map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.5)
+    map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.5)
 
   }
 
@@ -476,7 +475,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
           <Layer sourceId="gRadius"
             id={ mapboxlayers.radiusBorders }
             type="line"
-            paint={{ 'line-color': mapboxlayerColors.radiusBorders, 'line-opacity': 0.8, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.radiusBorders, 'line-opacity': 0.6, 'line-width': 1 }}
           />
 
           <Source id="gRadiusWide"
@@ -486,7 +485,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
           <Layer sourceId="gRadiusWide"
             id={ mapboxlayers.radiusBordersWide }
             type="line"
-            paint={{ 'line-color': mapboxlayerColors.radiusBordersWide, 'line-opacity': 0.8, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.radiusBordersWide, 'line-opacity': 0.6, 'line-width': 1 }}
           />
 
 
@@ -575,7 +574,6 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox|ReduxStateParcel
     gData: state.reduxParcels.gData,
     gRadius: state.reduxParcels.gRadius,
     gRadiusWide: state.reduxParcels.gRadiusWide,
-    gHover: state.reduxParcels.gHover,
     gClickedParcels: state.reduxParcels.gClickedParcels,
     gMyPredictions: state.reduxParcels.gMyPredictions,
     gAllPredictions: state.reduxParcels.gAllPredictions,
@@ -615,10 +613,6 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: "UPDATE_GEORADIUS_WIDE", payload: gRadiusWide }
       // circle of parcels (wide ring) on the map
     ),
-    updateGeoHover: (gHover: geoData) => dispatch(
-      { type: "UPDATE_GEOHOVER", payload: gHover }
-      // circle of parcels near mouse cursor
-    ),
     updateGeoClickedParcels: (gClickedParcels: geoData) => dispatch(
       { type: "UPDATE_GEOCLICKED_PARCELS", payload: gClickedParcels }
       // visited parcels on the map
@@ -631,7 +625,6 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: "UPDATE_GEOALL_PREDICTIONS", payload: gAllPredictions }
       // parcels which others have made predictions on (subscriptions)
     ),
-    dispatch: dispatch,
   }
 }
 
