@@ -14,7 +14,7 @@ import 'antd/lib/input-number/style/css'
 
 import { iHouse, iPrediction, userGQL,
   mutationResponsePrediction as mutationResponse
-} from './interfaceDefinitions'
+} from '../typings/interfaceDefinitions'
 
 
 interface AddPredictionProps {

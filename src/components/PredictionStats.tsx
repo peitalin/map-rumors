@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo'
 // import Evolutions from './Evolutions'
 import Title from './Title'
 import AddPrediction from './AddPrediction'
-import { iPrediction } from './interfaceDefinitions'
+import { iPrediction } from '../typings/interfaceDefinitions'
 // import { RadarGraph } from './Radar'
 
 import { Link, Redirect } from 'react-router-dom'

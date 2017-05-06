@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { gplacesDestination } from './interfaceDefinitions'
+import { gplacesDestination } from '../typings/interfaceDefinitions'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox } from '../reducer'
 

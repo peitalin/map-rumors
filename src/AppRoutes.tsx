@@ -8,7 +8,7 @@ import 'styles/AppRoutes.scss'
 //// Lazyload
 // import { lazyLoad } from './utils/lazyLoad'
 import { asyncComponent } from 'react-async-component'
-import Loadable from 'react-loadable'
+// import Loadable from 'react-loadable'
 
 //// Components
 // import Title from './components/Title'
@@ -18,7 +18,7 @@ import Loadable from 'react-loadable'
 //
 // import MapSubscriptions from './components/MapSubscriptions'
 // import LocalPredictions from './components/LocalPredictions'
-// import PredictionListings from './components/PredictionListings'
+// import MyPredictionListings from './components/PredictionListings'
 // import PredictionStats from './components/PredictionStats'
 //
 // import DraggableGrid from './components/DraggableGrid'
@@ -33,7 +33,7 @@ const Navbar = asyncComponent({ resolve: () => System.import('./components/Navba
 
 const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
 const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
-const PredictionListings = asyncComponent({ resolve: () => System.import('./components/PredictionListings.tsx') })
+const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/PredictionListings.tsx') })
 const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
 
 // const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
@@ -76,8 +76,8 @@ export default class AppRoutes extends React.Component {
 
           <Route path="/map" component={ RouterFader(MapSubscriptions) } />
           <Route path="/map/parallax/localpredictions" component={ RouterFader(LocalPredictions) } />
-          <Route path="/map/parallax/predictionlistings" component={ RouterFader(PredictionListings) } />
-          <Route path="/map/parallax/predictionlistings/:id" component={ RouterFader(PredictionStats) } />
+          <Route path="/map/parallax/mypredictionlistings" component={ RouterFader(MyPredictionListings) } />
+          <Route path="/map/parallax/mypredictionlistings/:id" component={ RouterFader(PredictionStats) } />
           <Route path="/map/parallax" component={ RouterFader(Parallax) } />
 
           <Route path="/test" component={ RouterFader(CardExpander) } />

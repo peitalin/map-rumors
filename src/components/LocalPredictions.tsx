@@ -8,7 +8,7 @@ import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import { iPrediction, iHouse, iLocalPrediction, userGQL, geoData } from './interfaceDefinitions'
+import { iPrediction, iHouse, iLocalPrediction, userGQL, geoData } from '../typings/interfaceDefinitions'
 
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'

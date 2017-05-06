@@ -1,5 +1,5 @@
 
-import { geoParcel, LngLat } from '../components/interfaceDefinitions'
+import { geoParcel, LngLat } from '../typings/interfaceDefinitions'
 const { sqrt, abs } = Math
 
 // don't put let or const in front of onmessage

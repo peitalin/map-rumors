@@ -1,6 +1,6 @@
 
 
-import { userGQL, geoData, iLocalPrediction } from './components/interfaceDefinitions'
+import { userGQL, geoData, iLocalPrediction } from './typings/interfaceDefinitions'
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import * as Immutable from 'immutable'
 
@@ -19,11 +19,11 @@ export interface ReduxState {
   reduxUser: ReduxStateUser
   apollo: Object
 }
-type Action = {
+type ActionType = {
   type: string
   payload: any
 }
-
+//////////////////////////////////////
 ////// Mapbox state reducer //////////
 export interface ReduxStateMapbox {
   longitude: number
@@ -45,7 +45,10 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   localPredictions: [],
 }
 
-export const reduxReducerMapbox = (state: ReduxStateMapbox = initialReduxStateMapbox, action: Action): ReduxStateMapbox => {
+export const reduxReducerMapbox = (
+    state: ReduxStateMapbox = initialReduxStateMapbox,
+    action: ActionType
+  ): ReduxStateMapbox => {
 
   switch ( action.type ) {
     case "UPDATE_LNGLAT":
@@ -95,7 +98,10 @@ const initialReduxStateUser: ReduxStateUser = {
   approxLocation: mapboxgl.LngLat,
 }
 
-export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, action: Action): ReduxStateUser => {
+export const reduxReducerUser = (
+    state: ReduxStateUser = initialReduxStateUser,
+    action: ActionType
+  ): ReduxStateUser => {
 
   switch ( action.type ) {
     case "USER_GQL":
@@ -137,7 +143,10 @@ const initialReduxStateParcels = {
 
 // const reduxWorker = new MyWorker()
 
-export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action: Action): ReduxStateParcels => {
+export const reduxReducerParcels = (
+    state: ReduxStateParcels = initialReduxStateParcels,
+    action: ActionType
+  ): ReduxStateParcels => {
 
   switch ( action.type ) {
 
@@ -171,25 +180,23 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
     }
 
     case "UPDATE_GEORADIUS": {
-      let { lng, lat } = action.payload.lngLat
-      let { gData } = action.payload
+      let { lng, lat } = action.payload
       return {
         ...state,
         gRadius: {
-          ...gData
-          features: gData.features.filter(g => isParcelNear(g, lng, lat, 0.0015))
+          ...state.gData
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0015))
         }
       }
     }
 
     case "UPDATE_GEORADIUS_WIDE": {
-      let { lng, lat } = action.payload.lngLat
-      let { gData } = action.payload
+      let { lng, lat } = action.payload
       return {
         ...state,
         gRadiusWide: {
-          ...gData
-          features: gData.features.filter(g => isParcelNear(g, lng, lat, 0.0020, 0.0010))
+          ...state.gData,
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0020, 0.0010))
         }
       }
     }
@@ -199,13 +206,13 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
     }
 
     case "UPDATE_GEOMY_PREDICTIONS": {
-      let { predictions, gData } = action.payload
+      let { predictions } = action.payload
       let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
       return {
         ...state,
         gMyPredictions: {
-          ...gData,
-          features: gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+          ...state.gData,
+          features: state.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
         }
       }
     }

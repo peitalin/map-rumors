@@ -3,7 +3,7 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import { userGQL } from './interfaceDefinitions'
+import { userGQL } from '../typings/interfaceDefinitions'
 
 import { Redirect } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'

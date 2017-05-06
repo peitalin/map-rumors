@@ -12,8 +12,8 @@ import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
 import { iHouse, userGQL, geoData, iPrediction,
   mutationResponsePrediction as mutationResponse
-} from './interfaceDefinitions'
-import 'styles/PredictionListings.scss'
+} from '../typings/interfaceDefinitions'
+import 'styles/MyPredictionListings.scss'
 
 import Title from './Title'
 import * as Button from 'antd/lib/button'
@@ -26,7 +26,7 @@ import 'antd/lib/message/style/css'
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
 import { SpinnerRectangle } from './Spinners'
-const PREDICTIONLISTINGS_ROUTE = "/map/parallax/predictionlistings"
+const PREDICTIONLISTINGS_ROUTE = "/map/parallax/mypredictionlistings"
 
 
 interface ReactProps {
@@ -53,7 +53,7 @@ interface StateProps {
 
 
 
-export class PredictionListings extends React.Component<DispatchProps & StateProps & ReactProps, any> {
+export class MyPredictionListings extends React.Component<DispatchProps & StateProps & ReactProps, any> {
 
   constructor(props: any) {
     super(props)
@@ -92,12 +92,19 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
     this.props.updateFlyingStatus('MyPredictionListings')
-
+    if (props.userGQL) {
+      if (props.userGQL.predictions.length > 0) {
+        this.props.updateGeoMyPredictions({
+          predictions: this.props.userGQL.predictions,
+          gData: this.props.gData
+        })
+      }
+    }
   }
 
   render() {
     if (this.props.data.error) {
-      return <Title><div>PredictionListings: GraphQL Errored.</div></Title>
+      return <Title><div>MyPredictionListings: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
       return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
@@ -237,6 +244,6 @@ export default compose(
   graphql(deletePredictionMutation, { name: 'deletePrediction', fetchPolicy: 'network-only' }),
   graphql(userQuery, { fetchPolicy: 'network-only' }),
   connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)
-)( PredictionListings )
+)( MyPredictionListings )
 
 

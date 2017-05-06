@@ -32,7 +32,7 @@ import 'antd/lib/button/style/css'
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
-import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature, iPrediction } from './interfaceDefinitions'
+import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature, iPrediction } from '../typings/interfaceDefinitions'
 import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
 
@@ -65,9 +65,9 @@ interface MapBackgroundProps {
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: { longitude: number, latitude: number }): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
-  updateGeoRadius?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
-  updateGeoRadiusWide?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
-  updateGeoMyPredictions?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
+  updateGeoRadius?(lngLat: mapboxgl.LngLat): void
+  updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): void
+  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
   updateGeoAllPredictions?(gAllPredictions: geoData): void
 }
@@ -91,10 +91,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
   constructor(props: MapBackgroundProps) {
     super(props)
-
-    props.updateGeoData({ lng: props.longitude, lat: props.latitude })
-    props.updateGeoRadius({ lngLat: { lng: props.longitude, lat: props.latitude }, gData: props.gData })
-    props.updateGeoRadiusWide({ lngLat: { lng: props.longitude, lat: props.latitude }, gData: props.gData })
 
     if (props.data) {
       // pass (other user's predictions) to PredictionListings
@@ -146,14 +142,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   componentWillUpdate(nextProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.state.map
     if (map && this.props.flying && this.props.userGQL.predictions) {
-
-      this.props.updateGeoMyPredictions({
-        predictions: this.props.userGQL.predictions,
-        gData: this.props.gData
-      })
-
-      this.props.updateGeoRadius({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
-      this.props.updateGeoRadiusWide({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
+      this.props.updateGeoRadius({ lng: nextProps.longitude, lat: nextProps.latitude })
+      this.props.updateGeoRadiusWide({ lng: nextProps.longitude, lat: nextProps.latitude })
     }
   }
 
@@ -228,8 +218,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     }
 
     // update parcels near mouse click
-    this.props.updateGeoRadius({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
-    this.props.updateGeoRadiusWide({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
+    this.props.updateGeoRadius(lngLat)
+    this.props.updateGeoRadiusWide(lngLat)
 
     map.getSource('gRadius').setData(this.props.gRadius)
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
@@ -291,15 +281,12 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let lngLat: mapboxgl.LngLat = map.getCenter()
     if (this.props.userGQL) {
       if (this.props.userGQL.predictions) {
-        this.props.updateGeoMyPredictions({
-          predictions: this.props.userGQL.predictions,
-          gData: this.props.gData
-        })
+        this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
       }
     }
 
-    this.props.updateGeoRadius({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
-    this.props.updateGeoRadiusWide({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
+    this.props.updateGeoRadius(lngLat)
+    this.props.updateGeoRadiusWide(lngLat)
 
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
@@ -539,15 +526,15 @@ const mapDispatchToProps = ( dispatch ) => {
       // circle of parcels (invisible) to filter as user moves on the map
       // all other parcels are based on this layer (filtered from)
     ),
-    updateGeoRadius: (payload: { lngLat: mapboxgl.LngLat, gData: geoData }) => dispatch(
-      { type: "UPDATE_GEORADIUS", payload: payload }
+    updateGeoRadius: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: "UPDATE_GEORADIUS", payload: lngLat }
       // circle of parcels on the map in UI
     ),
-    updateGeoRadiusWide: (payload: { lngLat: mapboxgl.LngLat, gData: geoData }) => dispatch(
-      { type: "UPDATE_GEORADIUS_WIDE", payload: payload }
+    updateGeoRadiusWide: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: "UPDATE_GEORADIUS_WIDE", payload: lngLat }
       // circle of parcels (wide ring) on the map
     ),
-    updateGeoMyPredictions: (payload: { predictions: iPrediction[], gData: geoData }) => dispatch(
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
       { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
       // parcels which you've made a prediction on
     ),

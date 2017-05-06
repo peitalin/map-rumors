@@ -21,7 +21,7 @@ import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
-import { iHouse } from './interfaceDefinitions'
+import { iHouse } from '../typings/interfaceDefinitions'
 import AddPrediction from './AddPrediction'
 
 import 'styles/HouseStats.scss'

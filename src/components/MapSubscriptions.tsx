@@ -10,7 +10,7 @@ import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import { iPrediction, iHouse, userGQL, geoData } from './interfaceDefinitions'
+import { iPrediction, iHouse, userGQL, geoData } from '../typings/interfaceDefinitions'
 
 
 import { SpinnerRectangle } from './Spinners'
