@@ -1,5 +1,5 @@
 
-import { geoParcel } from './components/interfaceDefinitions'
+import { geoParcel, LngLat } from '../components/interfaceDefinitions'
 const { sqrt, abs } = Math
 
 // don't put let or const in front of onmessage
@@ -33,19 +33,25 @@ onerror = (e) => {
 //   return (abs(abs(lngCenter) - abs(longitude)) < 0.002) && (abs(abs(latCenter) - abs(latitude)) < 0.002)
 // }
 
-export const isParcelNear = (
-  geoJsonFeature: geoParcel,
-  longitude: number,
-  latitude: number,
-  radiusMax: number,
-  radiusMin: number) => {
-  let lngCenter = geoJsonFeature.properties.lngCenter
-  let latCenter = geoJsonFeature.properties.latCenter
-  let l2Norm = sqrt((abs(lngCenter) - abs(longitude))**2 + (abs(latitude) - abs(latCenter))**2)
-  return ((radiusMin || 0) <= l2Norm) && (l2Norm <= radiusMax)
+export const L2Norm = (
+  { longitude, latitude }: { longitude: number, latitude: number  },
+  { lngCenter, latCenter }: { lngCenter: number, latCenter: number }
+  ): number => {
+  // calculates the L2 Norm for 2 geolocations
+  return sqrt((abs(lngCenter) - abs(longitude))**2 + (abs(latitude) - abs(latCenter))**2)
 }
 
-
+export const isParcelNear = (
+    geoJsonFeature: geoParcel,
+    longitude: number,
+    latitude: number,
+    radiusMax: number,
+    radiusMin: number
+  ) => {
+  let { lngCenter, latCenter } = geoJsonFeature.properties
+  let L2Distance = L2Norm({ longitude: longitude, latitude: latitude }, { lngCenter: lngCenter, latCenter: latCenter })
+  return ((radiusMin || 0) <= L2Distance) && (L2Distance <= radiusMax)
+}
 
 
 interface MessageEvent {

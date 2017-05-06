@@ -10,16 +10,14 @@ $raisinblack: #270b20;
     background-position: 50% 50%;
     background-attachment: fixed;
     height: 100%;
-    width: 100px;
+    width: 10px;
 }
 
 .parallax__spacer {
     padding-top: .5em;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.05);
+    border: 1px solid red;
     height: 100vh;
-    // temporary fix, make screen transition so slow that there is not jank on android mobile
-    // transition: height .1s ease;
-    // -webkit-transition: height .1s ease;
 }
 
 .parallax__textbox {

@@ -2,7 +2,14 @@
 
 import { userGQL, geoData, iLocalPrediction } from './components/interfaceDefinitions'
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import * as I from 'immutable'
+import * as Immutable from 'immutable'
+
+let localDataRaw: geoData = require('./data/parkinson_parcels.json')
+// let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
+let localData = { ...localDataRaw, features: localDataRaw.features }
+import { isParcelNear } from './utils/worker'
+let MyWorker = require('worker-loader!./utils/worker.ts')
+
 
 
 ///// Grand Redux State Shape ////////
@@ -105,6 +112,7 @@ export const reduxReducerUser = (state: ReduxStateUser = initialReduxStateUser, 
 
 //////// geojson parcels /////////
 export interface ReduxStateParcels {
+  gLngLat?: { longitude: number, latitude: number }
   gData?: geoData
   gRadius?: geoData
   gRadiusWide?: geoData
@@ -114,19 +122,49 @@ export interface ReduxStateParcels {
 }
 
 const initialReduxStateParcels = {
-  gData:            { features: [] },
-  gRadius:          { features: [] },
-  gRadiusWide:      { features: [] },
-  gClickedParcels:  { features: [] },
-  gMyPredictions:   { features: [] },
-  gAllPredictions:  { features: [] },
+  gLngLat:          { longitude: 153.0383, latitude: -27.6342 },
+  gData:            { type: "FeatureCollection", features: [] },
+  gRadius:          { type: "FeatureCollection", features: [] },
+  gRadiusWide:      { type: "FeatureCollection", features: [] },
+  gClickedParcels:  { type: "FeatureCollection", features: [] },
+  gMyPredictions:   { type: "FeatureCollection", features: [] },
+  gAllPredictions:  { type: "FeatureCollection", features: [] },
 }
+
+// const reduxWorker = new MyWorker()
 
 export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels, action): ReduxStateParcels => {
 
   switch ( action.type ) {
-    case "UPDATE_GEODATA":
-      return { ...state, gData: action.payload }
+
+    case "UPDATE_GEODATA": {
+      let { lng, lat } = action.payload
+      // reduxWorker.postMessage({
+      //   features: localData.features,
+      //   longitude: lng,
+      //   latitude: lat,
+      //   radiusMax: 0.0080,
+      // })
+      // let gData = reduxWorker.onmessage = (m) => {
+      //   return {
+      //     ...state,
+      //     gData: {
+      //       ...localData,
+      //       features: m.data
+      //     }
+      //   }
+      // }
+      return {
+        ...state,
+        gData: {
+          ...localData,
+          features: localData.features.filter(g => isParcelNear(g, lng, lat, 0.008))
+        }
+      }
+    }
+
+    case "UPDATE_GEODATA_LNGLAT":
+      return { ...state, gLngLat: action.payload }
 
     case "UPDATE_GEORADIUS":
       return { ...state, gRadius: action.payload }

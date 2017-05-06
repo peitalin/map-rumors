@@ -169,6 +169,8 @@ query {
         streetName
         streetType
         lotPlan
+        lng
+        lat
       }
     }
   }

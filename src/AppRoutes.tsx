@@ -45,7 +45,7 @@ const Parallax = asyncComponent({ resolve: () => System.import('./components/Par
 const Login = (): JSX.Element => {
   const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
   const domain: string = 'peitalin.au.auth0.com'
-  const redirectUrl: string = '/map/localpredictions' // redirect to route on authentication
+  const redirectUrl: string = '/map/parallax/localpredictions' // redirect to route on authentication
   return <LoginAuth0 clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
 }
 

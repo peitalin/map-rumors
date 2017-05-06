@@ -1,6 +1,8 @@
 
 import * as Immutable from 'immutable'
+import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
+export type LngLat = mapboxgl.LngLat
 
 export interface userGQL {
   id?: string

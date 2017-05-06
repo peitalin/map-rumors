@@ -33,14 +33,11 @@ import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
 import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature } from './interfaceDefinitions'
-
-import { isParcelNear } from '../utils/worker'
+import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
 
 
-let localDataRaw: geoData = require('../data/parkinson_parcels.json')
-// let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
-let localData = { ...localDataRaw, features: localDataRaw.features }
+
 
 
 interface MapBackgroundProps {
@@ -55,6 +52,9 @@ interface MapBackgroundProps {
   toggleShowModal?(): void
   updateLotPlan?(): void
   userGQL: userGQL
+  // gLngLat: is the lngLat for geoData, not the actual map center
+  // used to calculate when we need to fetch additional geoData when moving on the map
+  gLngLat: { longitude: number, latitude: number }
   // parcel data
   gData: geoData
   gRadius: geoData
@@ -63,7 +63,8 @@ interface MapBackgroundProps {
   gMyPredictions: geoData
   gAllPredictions: geoData
   // redux parcel update dispatchers
-  updateGeoData?(): void
+  updateGeoDataLngLat?(gLngLat: { longitude: number, latitude: number }): void
+  updateGeoData?(lngLat: mapboxgl.LngLat): void
   updateGeoRadius?(gRadius: geoData): void
   updateGeoRadiusWide?(gRadiusWide: geoData): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
@@ -82,77 +83,54 @@ interface MapBackgroundState {
   map: mapboxgl.Map
 }
 
-// Each parcel layer used on mapbox
-const mapboxlayers = {
-  radiusBorders: 'radius-borders',
-  radiusBordersWide: 'radius-borders-wide',
-  clickedParcelsBorders: 'clicked-parcels-borders',
-  clickedParcelsFill: 'clicked-parcels-fill',
-  myPredictionsBorders: 'my-predictions-borders',
-  myPredictionsFill: 'my-predictions-fill',
-  allPredictionsBorders: 'all-predictions-borders',
-  allPredictionsFill: 'all-predictions-fill',
-}
-const mapboxlayerColors = {
-  radiusBorders: '#58c',
-  radiusBordersWide: '#aa88cc',
-  clickedParcelsBorders: '#37505C',
-  clickedParcelsFill: '#B8B3E9',
-  myPredictionsBorders: '#eee',
-  myPredictionsFill: '#eee',
-  allPredictionsBorders: '#D17B88',
-  allPredictionsFill: '#D17B88',
-}
-
 
 
 
 
 export class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundState> {
 
-  constructor(props) {
+  constructor(props: MapBackgroundProps) {
     super(props)
 
-    this.props.updateGeoData({
-      ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0050))
+    props.updateGeoData({ lng: props.longitude, lat: props.latitude })
+
+    props.updateGeoRadius({
+      ...props.gData
+      features: props.gData.features.filter(g => isParcelNear(g, props.longitude, props.latitude, 0.0015))
     })
-    this.props.updateGeoRadius({
-      ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0015))
+    props.updateGeoRadiusWide({
+      ...props.gData,
+      features: props.gData.features.filter(g => isParcelNear(g, props.longitude, props.latitude, 0.0020, 0.0010))
+
     })
-    this.props.updateGeoRadiusWide({
-      ...localData,
-      features: localData.features.filter(g => isParcelNear(g, this.props.longitude, this.props.latitude, 0.0020, 0.0010))
-    })
-    this.props.updateGeoClickedParcels({
-      ...localData,
+    props.updateGeoClickedParcels({
+      ...props.gData,
       features: []
     })
 
-    if (this.props.userGQL) {
-      if (this.props.userGQL.predictions.length > 0) {
-        let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-        this.props.updateGeoMyPredictions({
-          ...this.props.gData,
-          features: this.props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+    if (props.userGQL) {
+      if (props.userGQL.predictions.length > 0) {
+        let predictionLotPlans = new Set(props.userGQL.predictions.map(p => p.house.lotPlan))
+        props.updateGeoMyPredictions({
+          ...props.gData,
+          features: props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
         })
       }
     }
 
-    if (this.props.data) {
+    if (props.data) {
       // pass (other user's predictions) to PredictionListings
-      this.props.updateLocalPredictionListings(this.props.data.allPredictions)
+      props.updateLocalPredictionListings(props.data.allPredictions)
       // Read prediction data from subscriptions
       let gAllPredictions: geoData = {
-        ...localData,
-        features: this.props.data.allPredictions.map((p: iPrediction) => ({
+        ...props.gData,
+        features: props.data.allPredictions.map((p: iPrediction) => ({
           type: p.house.geojsonparcel.type,
           geometry: p.house.geojsonparcel.geometry,
           properties: p.house.geojsonparcel.properties,
         }))
       }
-      this.props.updateGeoAllPredictions(gAllPredictions)
+      props.updateGeoAllPredictions(gAllPredictions)
     }
 
     this.state = {
@@ -193,10 +171,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   componentWillReceiveProps(nextProps: MapBackgroundProps) {
     if (this.props.flying) {
       // update parcels near home which you flew to
-      this.props.updateGeoData({
-        ...this.props.gData,
-        features: localData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0050))
-      })
+      this.props.updateGeoData({ lng: nextProps.longitude, lat: nextProps.latitude })
     }
   }
 
@@ -290,7 +265,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     //   // pitch: parseInt(40+Math.random()*20)
     // })
 
-
     let features: mapboxFeature[] = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
       .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
     if (!features.length) {
@@ -304,11 +278,11 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
     // update parcels near mouse click
     this.props.updateGeoRadius({
-      ...this.props.gRadius,
+      ...this.props.gData,
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0015))
     })
     this.props.updateGeoRadiusWide({
-      ...this.props.gRadiusWide,
+      ...this.props.gData,
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
     })
     map.getSource('gRadius').setData(this.props.gRadius)
@@ -343,23 +317,28 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let lngLat: mapboxgl.LngLat = map.getCenter()
     this.props.updateLngLat(lngLat)
 
-    // update geojson parcel set in background worker
-    this.worker.postMessage({
-      features: localDataRaw.features,
-      longitude: this.props.longitude,
-      latitude: this.props.latitude,
-      radiusMax: 0.0050,
-    })
-    this.worker.onmessage = (m) => {
-      this.props.updateGeoData({
-        ...this.props.gData,
-        features: m.data
-      })
-    }
-    // offload radius calculations to worker
     // IMPLEMENT a "APPROX CURRENT LOCATION" reducer
     // checks current location, compares to see if you have moved outside radius,
     // then updates position if you are more than a radius away from previous location.k
+    let L2Distance = L2Norm(this.props.gLngLat, { lngCenter: lngLat.lng, latCenter: lngLat.lat })
+    if (L2Distance > 0.006) {
+      this.props.updateGeoDataLngLat({ longitude: lngLat.lng, latitude: lngLat.lat })
+    }
+
+    // update geojson parcel set in background worker
+    // this.worker.postMessage({
+    //   features: localDataRaw.features,
+    //   longitude: this.props.longitude,
+    //   latitude: this.props.latitude,
+    //   radiusMax: 0.0080,
+    // })
+    // this.worker.onmessage = (m) => {
+    //   this.props.updateGeoData({
+    //     ...this.props.gData,
+    //     features: m.data
+    //   })
+    // }
+    // offload radius calculations to worker
   }
 
 
@@ -378,11 +357,11 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     }
 
     this.props.updateGeoRadius({
-      ...this.props.gRadius,
+      ...this.props.gData,
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0015))
     })
     this.props.updateGeoRadiusWide({
-      ...this.props.gRadiusWide,
+      ...this.props.gData,
       features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
     })
 
@@ -426,18 +405,9 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     this.setState({ map })
     // preferably, pass map as a prop to GeoSuggest component
     // but how? setting this.map does not work since it will be null.
-
   }
 
   render() {
-    let mapboxstyles = {
-      dark: 'mapbox://styles/mapbox/dark-v9',
-      light: 'mapbox://styles/mapbox/light-v9',
-      outdoors: 'mapbox://styles/mapbox/outdoors-v10',
-      streets: 'mapbox://styles/mapbox/streets-v10',
-      satellite: 'mapbox://styles/mapbox/satellite-v9',
-      satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v10',
-    }
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
@@ -460,13 +430,11 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
             width: "100vw",
         }}>
 
-
           <Layer {...mapboxHostedLayers.parkinsonParcels}/>
           <Layer {...mapboxHostedLayers.parkinsonParcelsFill}/>
           <Layer {...mapboxHostedLayers.parkinsonParcelsHover}/>
           <Layer {...mapboxHostedLayers.brisbaneSuburbs}/>
           <Layer {...mapboxHostedLayers.traffic}/>
-          {/* <Layer {...mapboxHostedLayers.threeDBuildings}/> */}
 
           <Source id="gRadius"
             onSourceAdded={(source) => (source)}
@@ -508,37 +476,31 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
             onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.props.gMyPredictions }}
           />
-          {(
-            (this.props.gMyPredictions.features.length > 0) &&
-            <Layer sourceId="gMyPredictions"
-              id={ mapboxlayers.myPredictionsBorders }
-              type="line"
-              paint={{ 'line-color': mapboxlayerColors.myPredictionsBorders, 'line-opacity': 0.6, 'line-width': 1 }}
-            />
-            <Layer sourceId="gMyPredictions"
-              id={ mapboxlayers.myPredictionsFill }
-              type="fill"
-              paint={{ 'fill-color': mapboxlayerColors.myPredictionsFill, 'fill-opacity': 0.3 }}
-            />
-          )}
+          <Layer sourceId="gMyPredictions"
+            id={ mapboxlayers.myPredictionsBorders }
+            type="line"
+            paint={{ 'line-color': mapboxlayerColors.myPredictionsBorders, 'line-opacity': 0.6, 'line-width': 1 }}
+          />
+          <Layer sourceId="gMyPredictions"
+            id={ mapboxlayers.myPredictionsFill }
+            type="fill"
+            paint={{ 'fill-color': mapboxlayerColors.myPredictionsFill, 'fill-opacity': 0.3 }}
+          />
 
           <Source id="gAllPredictions"
             onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.props.gAllPredictions }}
           />
-          {(
-            (this.props.gAllPredictions.features.length > 0) &&
-            <Layer sourceId="gAllPredictions"
-              id={ mapboxlayers.allPredictionsBorders }
-              type="line"
-              paint={{ 'line-color': mapboxlayerColors.allPredictionsBorders, 'line-opacity': 0.4, 'line-width': 1 }}
-            />
-            <Layer sourceId="gAllPredictions"
-              id={ mapboxlayers.allPredictionsFill }
-              type="fill"
-              paint={{ 'fill-color': mapboxlayerColors.allPredictionsFill, 'fill-opacity': 0.2 }}
-            />
-          )}
+          <Layer sourceId="gAllPredictions"
+            id={ mapboxlayers.allPredictionsBorders }
+            type="line"
+            paint={{ 'line-color': mapboxlayerColors.allPredictionsBorders, 'line-opacity': 0.4, 'line-width': 1 }}
+          />
+          <Layer sourceId="gAllPredictions"
+            id={ mapboxlayers.allPredictionsFill }
+            type="fill"
+            paint={{ 'fill-color': mapboxlayerColors.allPredictionsFill, 'fill-opacity': 0.2 }}
+          />
 
         </ReactMapboxGl>
 
@@ -558,11 +520,42 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 }
 
 
+///// MAPBOX PARCEL LAYER //////////
+// Each parcel layer used on mapbox
+const mapboxlayers = {
+  radiusBorders: 'radius-borders',
+  radiusBordersWide: 'radius-borders-wide',
+  clickedParcelsBorders: 'clicked-parcels-borders',
+  clickedParcelsFill: 'clicked-parcels-fill',
+  myPredictionsBorders: 'my-predictions-borders',
+  myPredictionsFill: 'my-predictions-fill',
+  allPredictionsBorders: 'all-predictions-borders',
+  allPredictionsFill: 'all-predictions-fill',
+}
+const mapboxlayerColors = {
+  radiusBorders: '#58c',
+  radiusBordersWide: '#aa88cc',
+  clickedParcelsBorders: '#37505C',
+  clickedParcelsFill: '#B8B3E9',
+  myPredictionsBorders: '#eee',
+  myPredictionsFill: '#eee',
+  allPredictionsBorders: '#D17B88',
+  allPredictionsFill: '#D17B88',
+}
+const mapboxstyles = {
+  dark: 'mapbox://styles/mapbox/dark-v9',
+  light: 'mapbox://styles/mapbox/light-v9',
+  outdoors: 'mapbox://styles/mapbox/outdoors-v10',
+  streets: 'mapbox://styles/mapbox/streets-v10',
+  satellite: 'mapbox://styles/mapbox/satellite-v9',
+  satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v10',
+}
 
 
 
 
-const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox|ReduxStateParcels => {
+///////// REDUX ////////////
+const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateParcels => {
   return {
     // reduxMapbox
     latitude: state.reduxMapbox.latitude,
@@ -572,6 +565,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox|ReduxStateParcel
     flying: state.reduxMapbox.flying,
     // reduxParcels
     gData: state.reduxParcels.gData,
+    gLngLat: state.reduxParcels.gLngLat,
     gRadius: state.reduxParcels.gRadius,
     gRadiusWide: state.reduxParcels.gRadiusWide,
     gClickedParcels: state.reduxParcels.gClickedParcels,
@@ -601,9 +595,14 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: "UPDATE_LOCAL_PREDICTION_LISTINGS", payload: localPredictions }
       // circle of parcels (unseen) to filter as user moves on the map
     ),
-    updateGeoData: (gData: geoData) => dispatch(
-      { type: "UPDATE_GEODATA", payload: gData }
+    updateGeoDataLngLat: (gLngLat: { longitude: number, latitude: number }) => dispatch(
+      { type: "UPDATE_GEODATA_LNGLAT", payload: gLngLat }
       // circle of parcels (unseen) to filter as user moves on the map
+    ),
+    updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: "UPDATE_GEODATA", payload: lngLat }
+      // circle of parcels (invisible) to filter as user moves on the map
+      // all other parcels are based on this layer (filtered from)
     ),
     updateGeoRadius: (gRadius: geoData) => dispatch(
       { type: "UPDATE_GEORADIUS", payload: gRadius }

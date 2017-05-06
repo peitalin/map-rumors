@@ -119,9 +119,6 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
   }
 
   render() {
-    if (!this.props.userGQL) {
-      return <Redirect to='/'/>
-    }
     if (this.props.data.error) {
       return <div><Title>Error in Sub Component</Title></div>
     }

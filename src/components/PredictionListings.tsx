@@ -89,7 +89,8 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
       return <Title><div>No User. Log In.</div></Title>
     }
 
-    let user = this.props.data.user
+    // let user = this.props.data.user
+    let user = this.props.userGQL
     if (user.predictions.length === 0) {
       var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
     } else {

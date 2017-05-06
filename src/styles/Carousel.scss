@@ -95,7 +95,7 @@ $moveRight: $tileWidth * ($growFactor - 1);
 
 .row__inner:hover .tile__container {
   // Fade out every tile
-  opacity: .3;
+  opacity: .8;
   transition: transform 0.2s ease-in;
   // And then grow the current tile and make it opaque again
   &:hover {
