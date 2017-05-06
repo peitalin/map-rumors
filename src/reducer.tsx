@@ -19,10 +19,7 @@ export interface ReduxState {
   reduxUser: ReduxStateUser
   apollo: Object
 }
-type ActionType = {
-  type: string
-  payload: any
-}
+export type ActionType = { type: string, payload: any }
 //////////////////////////////////////
 ////// Mapbox state reducer //////////
 export interface ReduxStateMapbox {

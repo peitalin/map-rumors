@@ -92,7 +92,7 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
           <Link className="menu-item" to='/'>Home</Link>
           <Link className="menu-item" to='/map'>Map</Link>
           <Link className="menu-item" to='/map/parallax/localpredictions'>Local Predictions</Link>
-          <Link className="menu-item" to='/map/parallax/predictionlistings'>My Predictions</Link>
+          <Link className="menu-item" to='/map/parallax/mypredictionlistings'>My Predictions</Link>
           <Link className="menu-item" to='/profile'>Profile</Link>
           <Link className="menu-item" to='/map/parallax'>Parallax Test</Link>
           <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>

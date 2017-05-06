@@ -10,7 +10,8 @@ import gql from 'graphql-tag'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
-import { iHouse, userGQL, geoData, iPrediction,
+import {
+  iHouse, userGQL, geoData, iPrediction,
   mutationResponsePrediction as mutationResponse
 } from '../typings/interfaceDefinitions'
 import 'styles/MyPredictionListings.scss'
@@ -40,11 +41,15 @@ interface ReactProps {
     variables: { predictionId: string }
   })?: void // graph-ql mutation
 }
+
 interface DispatchProps {
   updateLngLat?(lngLat: any): Dispatch<{ type: string, payload: any }>
   updateFlyingStatus?(flyingStatus: boolean): Dispatch<{ type: string, payload: any }>
-  updateUserProfileRedux(userProfile: userGQL)?: void // redux
-  isUpdatingPredictions(bool: boolean)?: void // redux
+  updateUserProfileRedux?(userProfile: userGQL): Dispatch<{ type: string, payload: any }>
+  updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
+  updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
+  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<{ type: string, payload: any }>
+  isUpdatingPredictions?(bool: boolean): Dispatch<{ type: string, payload: any }>
 }
 interface StateProps {
   userGQL?: userGQL
@@ -59,10 +64,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     super(props)
     if (props.userGQL) {
       if (props.userGQL.predictions.length > 0) {
-        this.props.updateGeoMyPredictions({
-          predictions: this.props.userGQL.predictions,
-          gData: this.props.gData
-        })
+        this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
       }
     }
   }
@@ -70,7 +72,6 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
   private deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
     this.props.isUpdatingPredictions(true)
-
     this.props.updateUserProfileRedux({
       ...this.props.userGQL,
       predictions: this.props.userGQL.predictions
@@ -94,10 +95,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.updateFlyingStatus('MyPredictionListings')
     if (props.userGQL) {
       if (props.userGQL.predictions.length > 0) {
-        this.props.updateGeoMyPredictions({
-          predictions: this.props.userGQL.predictions,
-          gData: this.props.gData
-        })
+        this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
       }
     }
   }
@@ -115,7 +113,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
 
     // let user = this.props.data.user
     let user = this.props.userGQL
-    if (user.predictions.length === 0) {
+    if (!user.predictions.length) {
       var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
     } else {
       var predictionListings = user.predictions.map(p => {
@@ -231,7 +229,7 @@ const mapDispatchToProps = ( dispatch ) => {
     updateGeoDataLngLat: (lngLat) => dispatch(
       { type: "UPDATE_GEODATA_LNGLAT", payload: lngLat }
     ),
-    updateGeoMyPredictions: (payload: { predictions: iPrediction[], gData: geoData }) => dispatch(
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
       { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
       // parcels which you've made a prediction on
     ),

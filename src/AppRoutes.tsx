@@ -18,7 +18,7 @@ import { asyncComponent } from 'react-async-component'
 //
 // import MapSubscriptions from './components/MapSubscriptions'
 // import LocalPredictions from './components/LocalPredictions'
-// import MyPredictionListings from './components/PredictionListings'
+// import MyPredictionListings from './components/MyPredictionListings'
 // import PredictionStats from './components/PredictionStats'
 //
 // import DraggableGrid from './components/DraggableGrid'
@@ -33,7 +33,7 @@ const Navbar = asyncComponent({ resolve: () => System.import('./components/Navba
 
 const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
 const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
-const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/PredictionListings.tsx') })
+const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/MyPredictionListings.tsx') })
 const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
 
 // const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
