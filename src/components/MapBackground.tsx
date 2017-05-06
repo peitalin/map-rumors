@@ -32,7 +32,7 @@ import 'antd/lib/button/style/css'
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
-import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature } from './interfaceDefinitions'
+import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature, iPrediction } from './interfaceDefinitions'
 import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
 
@@ -65,10 +65,10 @@ interface MapBackgroundProps {
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: { longitude: number, latitude: number }): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
-  updateGeoRadius?(gRadius: geoData): void
-  updateGeoRadiusWide?(gRadiusWide: geoData): void
+  updateGeoRadius?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
+  updateGeoRadiusWide?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
+  updateGeoMyPredictions?(payload: { lngLat: mapboxgl.LngLat, gData: geoData }): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
-  updateGeoMyPredictions?(gMyPredictions: geoData): void
   updateGeoAllPredictions?(gAllPredictions: geoData): void
 }
 
@@ -93,30 +93,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     super(props)
 
     props.updateGeoData({ lng: props.longitude, lat: props.latitude })
-
-    props.updateGeoRadius({
-      ...props.gData
-      features: props.gData.features.filter(g => isParcelNear(g, props.longitude, props.latitude, 0.0015))
-    })
-    props.updateGeoRadiusWide({
-      ...props.gData,
-      features: props.gData.features.filter(g => isParcelNear(g, props.longitude, props.latitude, 0.0020, 0.0010))
-
-    })
-    props.updateGeoClickedParcels({
-      ...props.gData,
-      features: []
-    })
-
-    if (props.userGQL) {
-      if (props.userGQL.predictions.length > 0) {
-        let predictionLotPlans = new Set(props.userGQL.predictions.map(p => p.house.lotPlan))
-        props.updateGeoMyPredictions({
-          ...props.gData,
-          features: props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
-        })
-      }
-    }
+    props.updateGeoRadius({ lngLat: { lng: props.longitude, lat: props.latitude }, gData: props.gData })
+    props.updateGeoRadiusWide({ lngLat: { lng: props.longitude, lat: props.latitude }, gData: props.gData })
 
     if (props.data) {
       // pass (other user's predictions) to PredictionListings
@@ -141,22 +119,12 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     }
   }
 
-
   componentWillMount() {
     this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
   }
 
   componentDidMount() {
-    if (this.props.gData.features && this.props.userGQL) {
-      if (this.props.userGQL.predictions) {
-        let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-        this.props.updateGeoMyPredictions({
-          ...this.props.gData,
-          features: this.props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
-        })
-      }
-    }
     // var MapboxClient = require('mapbox')
     // const accessToken = 'pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw'
     // var client = new MapboxClient(accessToken)
@@ -179,20 +147,18 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let map: mapboxgl.Map = this.state.map
     if (map && this.props.flying && this.props.userGQL.predictions) {
 
-      let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-
       this.props.updateGeoMyPredictions({
-        ...nextProps.gMyPredictions,
-        features: nextProps.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+        predictions: this.props.userGQL.predictions,
+        gData: this.props.gData
       })
-      this.props.updateGeoRadius({
-        ...nextProps.gRadius,
-        features: nextProps.gData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0015))
-      })
-      this.props.updateGeoRadiusWide({
-        ...nextProps.gRadiusWide,
-        features: nextProps.gData.features.filter(g => isParcelNear(g, nextProps.longitude, nextProps.latitude, 0.0020, 0.0010))
-      })
+      // let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
+      // this.props.updateGeoMyPredictions({
+      //   ...nextProps.gMyPredictions,
+      //   features: nextProps.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+      // })
+
+      this.props.updateGeoRadius({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
+      this.props.updateGeoRadiusWide({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
     }
   }
 
@@ -204,7 +170,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
         speed: 2, // make flying speed 2x fast
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
-      map.getSource('gRadius').setData(this.props.gRadius)
       if (this.props.flying == 'MyPredictionListings') {
         map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
         map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
@@ -268,14 +233,9 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     }
 
     // update parcels near mouse click
-    this.props.updateGeoRadius({
-      ...this.props.gData,
-      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0015))
-    })
-    this.props.updateGeoRadiusWide({
-      ...this.props.gData,
-      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
-    })
+    this.props.updateGeoRadius({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
+    this.props.updateGeoRadiusWide({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
+
     map.getSource('gRadius').setData(this.props.gRadius)
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
@@ -336,22 +296,15 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let lngLat: mapboxgl.LngLat = map.getCenter()
     if (this.props.userGQL) {
       if (this.props.userGQL.predictions) {
-        let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
         this.props.updateGeoMyPredictions({
-          ...this.props.gData,
-          features: this.props.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+          predictions: this.props.userGQL.predictions,
+          gData: this.props.gData
         })
       }
     }
 
-    this.props.updateGeoRadius({
-      ...this.props.gData,
-      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0015))
-    })
-    this.props.updateGeoRadiusWide({
-      ...this.props.gData,
-      features: this.props.gData.features.filter(g => isParcelNear(g, lngLat.lng, lngLat.lat, 0.0020, 0.0010))
-    })
+    this.props.updateGeoRadius({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
+    this.props.updateGeoRadiusWide({ lngLat: { lng: lngLat.lng, lat: lngLat.lat }, gData: this.props.gData })
 
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
@@ -591,21 +544,21 @@ const mapDispatchToProps = ( dispatch ) => {
       // circle of parcels (invisible) to filter as user moves on the map
       // all other parcels are based on this layer (filtered from)
     ),
-    updateGeoRadius: (gRadius: geoData) => dispatch(
-      { type: "UPDATE_GEORADIUS", payload: gRadius }
+    updateGeoRadius: (payload: { lngLat: mapboxgl.LngLat, gData: geoData }) => dispatch(
+      { type: "UPDATE_GEORADIUS", payload: payload }
       // circle of parcels on the map in UI
     ),
-    updateGeoRadiusWide: (gRadiusWide: geoData) => dispatch(
-      { type: "UPDATE_GEORADIUS_WIDE", payload: gRadiusWide }
+    updateGeoRadiusWide: (payload: { lngLat: mapboxgl.LngLat, gData: geoData }) => dispatch(
+      { type: "UPDATE_GEORADIUS_WIDE", payload: payload }
       // circle of parcels (wide ring) on the map
+    ),
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[], gData: geoData }) => dispatch(
+      { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
+      // parcels which you've made a prediction on
     ),
     updateGeoClickedParcels: (gClickedParcels: geoData) => dispatch(
       { type: "UPDATE_GEOCLICKED_PARCELS", payload: gClickedParcels }
       // visited parcels on the map
-    ),
-    updateGeoMyPredictions: (gMyPredictions: geoData) => dispatch(
-      { type: "UPDATE_GEOMY_PREDICTIONS", payload: gMyPredictions }
-      // parcels which you've made a prediction on
     ),
     updateGeoAllPredictions: (gAllPredictions: geoData) => dispatch(
       { type: "UPDATE_GEOALL_PREDICTIONS", payload: gAllPredictions }

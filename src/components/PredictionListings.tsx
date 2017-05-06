@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { ReduxState, ReduxStateUser } from '../reducer'
+import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
 import { Link } from 'react-router-dom'
 
 import { graphql, compose } from 'react-apollo'
@@ -10,7 +10,9 @@ import gql from 'graphql-tag'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
-import { iHouse, userGQL, mutationResponsePrediction as mutationResponse } from './interfaceDefinitions'
+import { iHouse, userGQL, geoData, iPrediction,
+  mutationResponsePrediction as mutationResponse
+} from './interfaceDefinitions'
 import 'styles/PredictionListings.scss'
 
 import Title from './Title'
@@ -53,7 +55,19 @@ interface StateProps {
 
 export class PredictionListings extends React.Component<DispatchProps & StateProps & ReactProps, any> {
 
-  deletePrediction = async({ predictionId }: { predictionId: string }): void => {
+  constructor(props: any) {
+    super(props)
+    if (props.userGQL) {
+      if (props.userGQL.predictions.length > 0) {
+        this.props.updateGeoMyPredictions({
+          predictions: this.props.userGQL.predictions,
+          gData: this.props.gData
+        })
+      }
+    }
+  }
+
+  private deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     // Redux optimistic update first
     this.props.isUpdatingPredictions(true)
 
@@ -69,7 +83,7 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
     this.props.isUpdatingPredictions(false)
   }
 
-  gotoPredictionLocation = (house: iHouse): void => {
+  private gotoPredictionLocation = (house: iHouse): void => {
     // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     let lngLat: mapboxgl.LngLat = { lng: house.lng, lat: house.lat }
     // let message: antdMessage
@@ -78,6 +92,7 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
     this.props.updateFlyingStatus('MyPredictionListings')
+
   }
 
   render() {
@@ -182,10 +197,11 @@ query {
 `
 
 //////// REDUX ////////
-const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateUser|ReduxStateParcels => {
   return {
     userGQL: state.reduxUser.userGQL,
     updatingPredictions: state.reduxUser.updatingPredictions,
+    gData: state.reduxParcels.gData,
   }
 }
 const mapDispatchToProps = ( dispatch ) => {
@@ -207,6 +223,10 @@ const mapDispatchToProps = ( dispatch ) => {
     ),
     updateGeoDataLngLat: (lngLat) => dispatch(
       { type: "UPDATE_GEODATA_LNGLAT", payload: lngLat }
+    ),
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[], gData: geoData }) => dispatch(
+      { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
+      // parcels which you've made a prediction on
     ),
   }
 }
