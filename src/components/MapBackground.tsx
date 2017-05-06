@@ -323,6 +323,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let L2Distance = L2Norm(this.props.gLngLat, { lngCenter: lngLat.lng, latCenter: lngLat.lat })
     if (L2Distance > 0.006) {
       this.props.updateGeoDataLngLat({ longitude: lngLat.lng, latitude: lngLat.lat })
+      this.props.updateGeoData(lngLat)
     }
 
     // update geojson parcel set in background worker

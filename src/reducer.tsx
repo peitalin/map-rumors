@@ -158,7 +158,7 @@ export const reduxReducerParcels = (state: ReduxState = initialReduxStateParcels
         ...state,
         gData: {
           ...localData,
-          features: localData.features.filter(g => isParcelNear(g, lng, lat, 0.008))
+          features: localData.features.filter(g => isParcelNear(g, lng, lat, 0.0080))
         }
       }
     }
