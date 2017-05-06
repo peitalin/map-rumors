@@ -169,22 +169,9 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   }
 
   componentWillReceiveProps(nextProps: MapBackgroundProps) {
-    if (this.props.flying) {
-      // update parcels near home which you flew to
-      this.props.updateGeoData({ lng: nextProps.longitude, lat: nextProps.latitude })
-    }
   }
 
   shouldComponentUpdate(nextProps: MapBackgroundProps, nextState: MapBackgroundState) {
-    if (this.props.gRadius.features === nextProps.gRadius.features) {
-      false
-    }
-    if (this.props.gRadiusWide.features === nextProps.gRadiusWide.features) {
-      false
-    }
-    if (this.props.gData.features === nextProps.gData.features) {
-      false
-    }
     return true
   }
 
@@ -214,12 +201,17 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     if (map && this.props.flying) {
       map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
-        speed: 3, // make flying speed 3x fast
+        speed: 2, // make flying speed 2x fast
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
       map.getSource('gRadius').setData(this.props.gRadius)
-      map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
-      map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#eee')
+      if (this.props.flying == 'MyPredictionListings') {
+        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
+        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+      } else {
+        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
+        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+      }
       this.props.updateFlyingStatus(false)
     }
   }
@@ -249,7 +241,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
       //   .setDOMContent( document.getElementById('housecard1') )
       //   .addTo(map);
       // anchor options: 'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', and 'bottom-right'
-
     }
   }
 
@@ -289,7 +280,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
   }
-
 
   private onMouseMove = (map: mapboxgl.Map, event: MapMouseEvent): void => {
     //// hover highlight
@@ -342,11 +332,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     // offload radius calculations to worker
   }
 
-
   private onDragEnd = (map: mapboxgl.Map, event: EventData): void => {
-
     let lngLat: mapboxgl.LngLat = map.getCenter()
-
     if (this.props.userGQL) {
       if (this.props.userGQL.predictions) {
         let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
@@ -370,7 +357,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.5)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.5)
-
   }
 
 
@@ -538,8 +524,8 @@ const mapboxlayerColors = {
   radiusBordersWide: '#aa88cc',
   clickedParcelsBorders: '#37505C',
   clickedParcelsFill: '#B8B3E9',
-  myPredictionsBorders: '#eee',
-  myPredictionsFill: '#eee',
+  myPredictionsBorders: '#ddd',
+  myPredictionsFill: '#ddd',
   allPredictionsBorders: '#D17B88',
   allPredictionsFill: '#D17B88',
 }

@@ -71,11 +71,13 @@ export class PredictionListings extends React.Component<DispatchProps & StatePro
 
   gotoPredictionLocation = (house: iHouse): void => {
     // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
-    let lngLat: LngLat = { lng: house.lng, lat: house.lat }
+    let lngLat: mapboxgl.LngLat = { lng: house.lng, lat: house.lat }
     // let message: antdMessage
     console.info(`Going to ${house.address}`)
-    this.props.updateFlyingStatus(true)
+    this.props.updateGeoDataLngLat(lngLat)
+    this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
+    this.props.updateFlyingStatus('MyPredictionListings')
   }
 
   render() {
@@ -199,6 +201,12 @@ const mapDispatchToProps = ( dispatch ) => {
     ),
     updateFlyingStatus: (flyingStatus: boolean) => dispatch(
       { type: 'UPDATE_FLYING', payload: flyingStatus }
+    ),
+    updateGeoData: (lngLat) => dispatch(
+      { type: "UPDATE_GEODATA", payload: lngLat }
+    ),
+    updateGeoDataLngLat: (lngLat) => dispatch(
+      { type: "UPDATE_GEODATA_LNGLAT", payload: lngLat }
     ),
   }
 }

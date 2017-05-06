@@ -25,7 +25,7 @@ export interface ReduxStateMapbox {
   longitude: number
   latitude: number
   showModal: boolean
-  flying: boolean
+  flying: boolean | string
   mapboxZoom: number[]
   lotPlan: string
   localPredictions: Array<iLocalPrediction>

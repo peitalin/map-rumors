@@ -4,6 +4,7 @@ import 'styles/CardExpander.scss'
 import * as classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
+const PREDICTIONLISTINGS_ROUTE = '/map/parallax/predictionlistings'
 
 
 interface DispatchProps {
@@ -64,7 +65,7 @@ export default class CardExpander extends React.Component<StateProps & DispatchP
           {/*   "expanded-full": this.state.infoClicked && this.state.imgClicked */}
           {/* })}>wtf</div> */}
 
-          <Link to={'/map/predictionlistings'}>
+          <Link to={PREDICTIONLISTINGS_ROUTE}>
             <div className="card__underlay"></div>
           </Link>
 

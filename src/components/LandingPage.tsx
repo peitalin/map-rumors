@@ -7,6 +7,7 @@ import FooterLinks from './FooterLinks'
 import DraggableList from './DraggableList'
 import ImgOverlay from './ImgOverlay'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+import * as gsap from 'gsap'
 
 import 'styles/LandingPage.scss'
 
@@ -65,7 +66,7 @@ export default class LandingPage extends React.Component<any, any> {
 
           <div className="landing-page-listings-container">
             <div className='landing-page-listings-flex'>
-              <div className='draggable-outer'>
+              <div className='draggable-outer' onClick={this.handleClick}>
                 <ImgOverlay className='landing-page-listings' src={require('../img/house11.svg')} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house12.svg")} />
                 <ImgOverlay className='landing-page-listings' src={require("../img/house13.svg")} />
