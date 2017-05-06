@@ -151,11 +151,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
         predictions: this.props.userGQL.predictions,
         gData: this.props.gData
       })
-      // let predictionLotPlans = new Set(this.props.userGQL.predictions.map(p => p.house.lotPlan))
-      // this.props.updateGeoMyPredictions({
-      //   ...nextProps.gMyPredictions,
-      //   features: nextProps.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
-      // })
 
       this.props.updateGeoRadius({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
       this.props.updateGeoRadiusWide({ lngLat: { lng: nextProps.longitude, lat: nextProps.latitude }, gData: nextProps.gData })
