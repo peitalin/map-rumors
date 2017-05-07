@@ -46,7 +46,7 @@ interface ReactProps {
 
 interface DispatchProps {
   updateLngLat?(lngLat: any): Dispatch<ActionType>
-  updateFlyingStatus?(flyingStatus: boolean): Dispatch<ActionType>
+  updateFlyingTo?(flyingTo: boolean | string): Dispatch<ActionType>
   updateUserProfileRedux?(userProfile: userGQL): Dispatch<ActionType>
   updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
@@ -94,7 +94,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
-    this.props.updateFlyingStatus('MyPredictionListings')
+    this.props.updateFlyingTo('MyPredictionListings')
     if (props.userGQL) {
       if (!!props.userGQL.predictions.length) {
         this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
@@ -222,8 +222,8 @@ const mapDispatchToProps = ( dispatch ) => {
     updateLngLat: (lngLat: mapboxgl.LngLat) => dispatch(
       { type: A.Mapbox.UPDATE_LNGLAT, payload: lngLat }
     ),
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
+    updateFlyingTo: (flyingTo: boolean | string) => dispatch(
+      { type: A.Mapbox.UPDATE_FLYING_TO, payload: flyingTo }
     ),
     ////// GeoJSON Action Dispatchers
     updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(

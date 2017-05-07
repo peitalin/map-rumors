@@ -3,6 +3,7 @@ import GoogleMapReact from 'google-map-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox } from '../reducer'
+import { Actions as A } from '../reduxActions'
 
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
@@ -144,7 +145,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox => {
 const mapDispatchToProps = ( dispatch ) => {
   return {
     toggleShowModal: (bool: boolean) => dispatch(
-      { type: "SHOW_MODAL", payload: bool }
+      { type: A.Mapbox.SHOW_MODAL, payload: bool }
     )
   }
 }

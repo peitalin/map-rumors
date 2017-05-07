@@ -4,7 +4,7 @@ import 'styles/CardExpander.scss'
 import * as classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-const PREDICTIONLISTINGS_ROUTE = '/map/parallax/predictionlistings'
+const PREDICTIONLISTINGS_ROUTE = '/map/parallax/mypredictionlistings'
 
 
 interface DispatchProps {

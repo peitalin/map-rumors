@@ -26,7 +26,7 @@ export interface ReduxStateMapbox {
   longitude: number
   latitude: number
   showModal: boolean
-  flying: boolean | string
+  flyingTo: boolean | string
   mapboxZoom: number[]
   lotPlan: string
   localPredictions: Array<iLocalPrediction>
@@ -36,7 +36,7 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   longitude: 153.038326429,
   latitude: -27.63419925525,
   showModal: false,
-  flying: false,
+  flyingTo: false,
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
   lotPlan: '',
   localPredictions: [],
@@ -60,8 +60,8 @@ export const reduxReducerMapbox = (
     case A.UPDATE_MAPBOX_ZOOM:
       return { ...state, mapboxZoom: action.payload }
 
-    case A.UPDATE_FLYING:
-      return { ...state, flying: action.payload }
+    case A.UPDATE_FLYING_TO:
+      return { ...state, flyingTo: action.payload }
 
     case A.SHOW_MODAL:
       return { ...state, showModal: action.payload }
@@ -82,7 +82,7 @@ export const reduxReducerMapbox = (
 ////// Mapbox state reducer //////////
 export interface ReduxStateUser {
   userGQL?: userGQL
-  updatingPredictions?: boolean
+  isUpdatingMyPredictions?: boolean
 }
 
 const initialReduxStateUser: ReduxStateUser = {
@@ -90,7 +90,7 @@ const initialReduxStateUser: ReduxStateUser = {
     bids: [],
     predictions: [],
   },
-  updatingPredictions: false,
+  isUpdatingMyPredictions: false,
 }
 
 export const reduxReducerUser = (
@@ -104,8 +104,8 @@ export const reduxReducerUser = (
     case A.USER_GQL:
       return { ...state, userGQL: action.payload }
 
-    case A.UPDATING_MY_PREDICTIONS:
-      return { ...state, updatingPredictions: action.payload }
+    case A.IS_UPDATING_MY_PREDICTIONS:
+      return { ...state, isUpdatingMyPredictions: action.payload }
 
     default: {
       return state

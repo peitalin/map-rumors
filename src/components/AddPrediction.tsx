@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateUser } from '../reducer'
+import { Actions as A } from '../reduxActions'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -31,8 +32,8 @@ interface AddPredictionProps {
     House: iHouse
   }
   userGQL: userGQL // redux
-  updateUserProfileRedux?(userProfile: userGQL): void // redux
-  isLoading?(bool: boolean): void // redux
+  updateUserGQL?(userGQL: userGQL): void // redux
+  isUpdatingMyPredictions?(bool: boolean): void // redux
   dispatch?(action: { type: string, payload: any }): void // redux
 }
 
@@ -60,19 +61,19 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
         ...oldPredictions,
         { prediction: this.state.prediction, id: newPredictionId, house: House }
       ]
-      this.props.updateUserProfileRedux({ ...this.props.userGQL, predictions: newPredictions })
+      this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
     } else {
       // console.info('Optimistically updating user predictions in Redux.')
       let newPredictions = [
         ...predictions,
         { prediction: this.state.prediction, id: newPredictionId, house: House }
       ]
-      this.props.updateUserProfileRedux({ ...this.props.userGQL, predictions: newPredictions })
+      this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
     }
   }
 
   private createPrediction = async(prediction: number): void => {
-    this.props.isLoading(true)
+    this.props.isUpdatingMyPredictions(true)
     // Redux optimistic update
     this.updatePredictionsRedux()
     // GraphQL createBid
@@ -84,7 +85,7 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
       }
     })
     this.updatePredictionsRedux(createPredictionResponse.data.createPrediction.id)
-    this.props.isLoading(false)
+    this.props.isUpdatingMyPredictions(false)
   }
 
   render() {
@@ -133,11 +134,11 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile) => dispatch(
-      { type: "USER_GQL", payload: userProfile }
+    updateUserGQL: (userGQL: userGQL) => dispatch(
+      { type: A.User.USER_GQL, payload: userGQL }
     ),
-    isLoading: (bool) => dispatch(
-      { type: "LOADING", payload: bool }
+    isUpdatingMyPredictions: (bool: boolean) => dispatch(
+      { type: A.User.IS_UPDATING_MY_PREDICTIONS, payload: bool }
     ),
     dispatch: dispatch,
   }

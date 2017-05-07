@@ -27,7 +27,7 @@ let message: { success: Function, error: Function, warning: Function, info: Func
 
 interface DispatchProps {
   updateLngLat?(lngLat: any): Dispatch<{ type: string, payload: any }>
-  updateFlyingStatus?(flyingStatus: boolean): Dispatch<{ type: string, payload: any }>
+  updateFlyingTo?(flyingTo: boolean | string): Dispatch<{ type: string, payload: any }>
   updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
   updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
   updateGeoRadius?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
@@ -56,7 +56,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
-    this.props.updateFlyingStatus("LocalPredictions")
+    this.props.updateFlyingTo("LocalPredictions")
     if (props.userGQL) {
       if (!!props.userGQL.predictions.length) {
         this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
@@ -102,8 +102,8 @@ const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
     updateLngLat: (lngLat) => dispatch(
       { type: A.Mapbox.UPDATE_LNGLAT, payload: lngLat }
     ),
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
+    updateFlyingTo: (flyingTo: boolean | string) => dispatch(
+      { type: A.Mapbox.UPDATE_FLYING_TO, payload: flyingTo }
     ),
     ////// GeoJSON Action Dispatchers
     updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(

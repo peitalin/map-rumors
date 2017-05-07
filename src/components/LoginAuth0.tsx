@@ -3,6 +3,8 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { Actions } from '../reduxActions'
+
 import { userGQL } from '../typings/interfaceDefinitions'
 
 import { Redirect } from 'react-router-dom'
@@ -180,7 +182,7 @@ query {
 const mapDispatchToProps = ( dispatch ) => {
   return {
     updateUserProfileRedux: (userProfile: userGQL) => dispatch(
-      { type: "USER_GQL", payload: userProfile }
+      { type: Actions.User.USER_GQL, payload: userProfile }
     )
   }
 }

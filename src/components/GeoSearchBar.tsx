@@ -3,6 +3,7 @@ import * as React from 'react'
 import { gplacesDestination } from '../typings/interfaceDefinitions'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox } from '../reducer'
+import { Actions as A } from '../reduxActions'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { SpinnerRectangle } from './Spinners'
@@ -67,7 +68,7 @@ class GeoSearchBar extends React.Component<GeoSearchBarProps, GeoSearchBarProps>
 const mapDispatchToProps = ( dispatch ) => {
   return {
     updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch(
-      { type: "UPDATE_LNGLAT", payload: lnglat }
+      { type: A.Mapbox.UPDATE_LNGLAT, payload: lnglat }
     ),
   }
 }

@@ -46,10 +46,10 @@ interface MapBackgroundProps {
   longitude: number
   latitude: number
   mapboxZoom: Array<number>
-  flying: boolean
+  flyingTo: boolean | string
   // redux mapbox dispatchers
   updateLngLat?(lnglat: mapboxgl.LngLat): void
-  updateFlyingStatus?(flying: boolean): void
+  updateFlyingTo?(flyingTo: boolean | string): void
   onZoomChange?(zoom): void
   toggleShowModal?(): void
   updateLotPlan?(): void
@@ -146,7 +146,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
   componentWillUpdate(nextProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.state.map
-    if (map && this.props.flying && this.props.userGQL.predictions) {
+    if (map && this.props.flyingTo && this.props.userGQL.predictions) {
       // this.props.updateGeoRadius({ lng: nextProps.longitude, lat: nextProps.latitude })
       // this.props.updateGeoRadiusWide({ lng: nextProps.longitude, lat: nextProps.latitude })
     }
@@ -154,19 +154,19 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
   componentDidUpdate(prevProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.state.map
-    if (map && this.props.flying) {
+    if (map && this.props.flyingTo) {
       map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
         speed: 2, // make flying speed 2x fast
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
-      switch (this.props.flying) {
+      switch (this.props.flyingTo) {
         case 'MyPredictionListings': {
           map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
           map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
           break;
         }
-        case 'case2': {
+        case 'LocalPredictions': {
           map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
           map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
           break;
@@ -176,7 +176,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
           map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
         }
       }
-      this.props.updateFlyingStatus(false)
+      this.props.updateFlyingTo(false)
     }
   }
 
@@ -498,7 +498,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateParc
     longitude: state.reduxMapbox.longitude,
     mapboxZoom: state.reduxMapbox.mapboxZoom,
     userGQL: state.reduxMapbox.userGQL,
-    flying: state.reduxMapbox.flying,
+    flyingTo: state.reduxMapbox.flyingTo,
     // reduxParcels
     gData: state.reduxParcels.gData,
     gLngLat: state.reduxParcels.gLngLat,
@@ -516,8 +516,8 @@ const mapDispatchToProps = ( dispatch ) => {
     updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch(
       { type: A.Mapbox.UPDATE_LNGLAT, payload: lnglat }
     ),
-    updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
+    updateFlyingTo: (flyingTo: boolean | string) => dispatch(
+      { type: A.Mapbox.UPDATE_FLYING_TO, payload: flyingTo }
     ),
     onZoomChange: (zoom: Array<number>) => dispatch(
       { type: A.Mapbox.UPDATE_MAPBOX_ZOOM, payload: zoom }

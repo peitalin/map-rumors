@@ -43,6 +43,10 @@ h3 {
   background: #222;
 }
 
+a {
+  color: #96616B;
+}
+
 a:hover {
   color: #D4AFDF;
 }
@@ -120,6 +124,9 @@ a:hover {
 }
 .mapboxgl-ctrl-icon.mapboxgl-ctrl-compass {
   display: none;
+}
+.mapboxgl-ctrl.mapboxgl-ctrl-group {
+  border-radius: 0px;
 }
 
 .ReactFlipCard {
