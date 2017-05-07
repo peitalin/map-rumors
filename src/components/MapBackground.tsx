@@ -5,6 +5,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { render, findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox, ReduxStateParcels } from '../reducer'
+import { ActionType, Actions as A } from '../reduxActions'
+
 import * as throttle from 'lodash/throttle'
 import * as debounce from 'lodash/debounce'
 import * as Immutable from 'immutable'
@@ -136,14 +138,17 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   }
 
   shouldComponentUpdate(nextProps: MapBackgroundProps, nextState: MapBackgroundState) {
+    if (this.props === nextProps && this.state === nextState) {
+      return false
+    }
     return true
   }
 
   componentWillUpdate(nextProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.state.map
     if (map && this.props.flying && this.props.userGQL.predictions) {
-      this.props.updateGeoRadius({ lng: nextProps.longitude, lat: nextProps.latitude })
-      this.props.updateGeoRadiusWide({ lng: nextProps.longitude, lat: nextProps.latitude })
+      // this.props.updateGeoRadius({ lng: nextProps.longitude, lat: nextProps.latitude })
+      // this.props.updateGeoRadiusWide({ lng: nextProps.longitude, lat: nextProps.latitude })
     }
   }
 
@@ -155,12 +160,21 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
         speed: 2, // make flying speed 2x fast
         curve: 1.2, // make zoom intensity 1.1x as fast
       })
-      if (this.props.flying == 'MyPredictionListings') {
-        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
-        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
-      } else {
-        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
-        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+      switch (this.props.flying) {
+        case 'MyPredictionListings': {
+          map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
+          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+          break;
+        }
+        case 'case2': {
+          map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
+          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+          break;
+        }
+        default: {
+          map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#F8F1AD')
+          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+        }
       }
       this.props.updateFlyingStatus(false)
     }
@@ -498,52 +512,54 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateParc
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
+    ////////// Mapbox Reducer Actions
     updateLngLat: (lnglat: mapboxgl.LngLat) => dispatch(
-      { type: "UPDATE_LNGLAT", payload: lnglat }
+      { type: A.Mapbox.UPDATE_LNGLAT, payload: lnglat }
     ),
     updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: "UPDATE_FLYING", payload: flyingStatus }
+      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
     ),
     onZoomChange: (zoom: Array<number>) => dispatch(
-      { type: "UPDATE_MAPBOX_ZOOM", payload: zoom }
+      { type: A.Mapbox.UPDATE_MAPBOX_ZOOM, payload: zoom }
     ),
     toggleShowModal: (showModal: boolean) => dispatch(
-      { type: "SHOW_MODAL", payload: showModal }
+      { type: A.Mapbox.SHOW_MODAL, payload: showModal }
     ),
     updateLotPlan: (lotPlan: string) => dispatch(
-      { type: "UPDATE_LOTPLAN", payload: lotPlan }
+      { type: A.Mapbox.UPDATE_LOTPLAN, payload: lotPlan }
     ),
     updateLocalPredictionListings: (localPredictions: iLocalPrediction[]) => dispatch(
-      { type: "UPDATE_LOCAL_PREDICTION_LISTINGS", payload: localPredictions }
+      { type: A.Mapbox.UPDATE_LOCAL_PREDICTION_LISTINGS, payload: localPredictions }
       // circle of parcels (unseen) to filter as user moves on the map
     ),
+    ////////// Parcel Reducer Actions
     updateGeoDataLngLat: (gLngLat: { longitude: number, latitude: number }) => dispatch(
-      { type: "UPDATE_GEODATA_LNGLAT", payload: gLngLat }
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: gLngLat }
       // circle of parcels (unseen) to filter as user moves on the map
     ),
     updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: "UPDATE_GEODATA", payload: lngLat }
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA, payload: lngLat }
       // circle of parcels (invisible) to filter as user moves on the map
       // all other parcels are based on this layer (filtered from)
     ),
     updateGeoRadius: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: "UPDATE_GEORADIUS", payload: lngLat }
+      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS, payload: lngLat }
       // circle of parcels on the map in UI
     ),
     updateGeoRadiusWide: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: "UPDATE_GEORADIUS_WIDE", payload: lngLat }
+      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS_WIDE, payload: lngLat }
       // circle of parcels (wide ring) on the map
     ),
     updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
-      { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
+      { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
       // parcels which you've made a prediction on
     ),
     updateGeoClickedParcels: (gClickedParcels: geoData) => dispatch(
-      { type: "UPDATE_GEOCLICKED_PARCELS", payload: gClickedParcels }
+      { type: A.GeoJSON.UPDATE_GEOJSON_CLICKED_PARCELS, payload: gClickedParcels }
       // visited parcels on the map
     ),
     updateGeoAllPredictions: (gAllPredictions: geoData) => dispatch(
-      { type: "UPDATE_GEOALL_PREDICTIONS", payload: gAllPredictions }
+      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: gAllPredictions }
       // parcels which others have made predictions on (subscriptions)
     ),
   }

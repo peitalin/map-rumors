@@ -5,6 +5,7 @@ import * as React from 'react'
 import { connect, Dispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
+import { Actions as A } from '../reduxActions'
 
 import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
@@ -218,16 +219,16 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateUser & ReduxStateParcel
   }
 }
 
-const mapDispatchToProps = ( dispatch: Function ): DispatchProps => {
+const mapDispatchToProps = ( dispatch ) => {
   return {
     updateLngLat: (lngLat) => dispatch(
-      { type: 'UPDATE_LNGLAT', payload: lngLat }
+      { type: A.Mapbox.UPDATE_LNGLAT, payload: lngLat }
     ),
     updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: 'UPDATE_FLYING', payload: flyingStatus }
+      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
     ),
     updateGeoAllPredictions: (gAllPredictions: geoData) => dispatch(
-      { type: "UPDATE_GEOALL_PREDICTIONS", payload: gAllPredictions }
+      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: gAllPredictions }
       // parcels which otherws have made predictions on (subscriptions)
     ),
   }

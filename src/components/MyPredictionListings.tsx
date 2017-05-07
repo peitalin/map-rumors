@@ -1,8 +1,9 @@
 
 
 import * as React from 'react'
-import { connect, MapStateToProps } from 'react-redux'
+import { connect, MapStateToProps, Dispatch } from 'react-redux'
 import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
+import { Actions as A, ActionType } from '../reduxActions'
 import { Link } from 'react-router-dom'
 
 import { graphql, compose } from 'react-apollo'
@@ -23,6 +24,7 @@ import * as Popconfirm from 'antd/lib/popconfirm'
 import 'antd/lib/popconfirm/style/css'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
+let message: { success: Function, error: Function, warning: Function, info: Function }
 
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
@@ -43,13 +45,15 @@ interface ReactProps {
 }
 
 interface DispatchProps {
-  updateLngLat?(lngLat: any): Dispatch<{ type: string, payload: any }>
-  updateFlyingStatus?(flyingStatus: boolean): Dispatch<{ type: string, payload: any }>
-  updateUserProfileRedux?(userProfile: userGQL): Dispatch<{ type: string, payload: any }>
-  updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
-  updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<{ type: string, payload: any }>
-  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<{ type: string, payload: any }>
-  isUpdatingPredictions?(bool: boolean): Dispatch<{ type: string, payload: any }>
+  updateLngLat?(lngLat: any): Dispatch<ActionType>
+  updateFlyingStatus?(flyingStatus: boolean): Dispatch<ActionType>
+  updateUserProfileRedux?(userProfile: userGQL): Dispatch<ActionType>
+  updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
+  updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
+  updateGeoRadius?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
+  updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
+  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<ActionType>
+  isUpdatingPredictions?(bool: boolean): Dispatch<ActionType>
 }
 interface StateProps {
   userGQL?: userGQL
@@ -85,19 +89,19 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
   }
 
   private gotoPredictionLocation = (house: iHouse): void => {
-    // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
-    let lngLat: mapboxgl.LngLat = { lng: house.lng, lat: house.lat }
-    // let message: antdMessage
-    console.info(`Going to ${house.address}`)
+    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+    message.info(`Going to ${house.address}`)
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
     this.props.updateFlyingStatus('MyPredictionListings')
     if (props.userGQL) {
-      if (props.userGQL.predictions.length > 0) {
+      if (!!props.userGQL.predictions.length) {
         this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
       }
     }
+    this.props.updateGeoRadius(lngLat)
+    this.props.updateGeoRadiusWide(lngLat)
   }
 
   render() {
@@ -110,7 +114,6 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     if (!this.props.data.user) {
       return <Title><div>No User. Log In.</div></Title>
     }
-
     // let user = this.props.data.user
     let user = this.props.userGQL
     if (!user.predictions.length) {
@@ -206,32 +209,38 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateUser|ReduxStateParcels 
   return {
     userGQL: state.reduxUser.userGQL,
     updatingPredictions: state.reduxUser.updatingPredictions,
-    gData: state.reduxParcels.gData,
   }
 }
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile) => dispatch(
-      { type: "USER_GQL", payload: userProfile }
+    updateUserProfileRedux: (userProfile: userGQL) => dispatch(
+      { type: A.User.USER_GQL, payload: userProfile }
     ),
-    isUpdatingPredictions: (bool) => dispatch(
-      { type: "UPDATING_PREDICTIONS", payload: bool }
+    isUpdatingPredictions: (bool: boolean) => dispatch(
+      { type: A.User.UPDATING_MY_PREDICTIONS, payload: bool }
     ),
-    updateLngLat: (lngLat) => dispatch(
-      { type: 'UPDATE_LNGLAT', payload: lngLat }
+    updateLngLat: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: A.Mapbox.UPDATE_LNGLAT, payload: lngLat }
     ),
     updateFlyingStatus: (flyingStatus: boolean) => dispatch(
-      { type: 'UPDATE_FLYING', payload: flyingStatus }
+      { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
     ),
-    updateGeoData: (lngLat) => dispatch(
-      { type: "UPDATE_GEODATA", payload: lngLat }
+    ////// GeoJSON Action Dispatchers
+    updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA, payload: lngLat }
     ),
-    updateGeoDataLngLat: (lngLat) => dispatch(
-      { type: "UPDATE_GEODATA_LNGLAT", payload: lngLat }
+    updateGeoDataLngLat: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: lngLat }
     ),
     updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
-      { type: "UPDATE_GEOMY_PREDICTIONS", payload: payload }
+      { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
       // parcels which you've made a prediction on
+    ),
+    updateGeoRadius: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS, payload: lngLat }
+    ),
+    updateGeoRadiusWide: (lngLat: mapboxgl.LngLat) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS_WIDE, payload: lngLat }
     ),
   }
 }

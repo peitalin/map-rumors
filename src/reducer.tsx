@@ -1,6 +1,8 @@
 
 
+import { ActionType, Actions } from './reduxActions'
 import { userGQL, geoData, iLocalPrediction } from './typings/interfaceDefinitions'
+
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import * as Immutable from 'immutable'
 
@@ -11,7 +13,6 @@ import { isParcelNear } from './utils/worker'
 let MyWorker = require('worker-loader!./utils/worker.ts')
 
 
-
 ///// Grand Redux State Shape ////////
 export interface ReduxState {
   reduxMapbox: ReduxStateMapbox
@@ -19,7 +20,6 @@ export interface ReduxState {
   reduxUser: ReduxStateUser
   apollo: Object
 }
-export type ActionType = { type: string, payload: any }
 //////////////////////////////////////
 ////// Mapbox state reducer //////////
 export interface ReduxStateMapbox {
@@ -47,30 +47,29 @@ export const reduxReducerMapbox = (
     action: ActionType
   ): ReduxStateMapbox => {
 
+  let A = Actions.Mapbox
   switch ( action.type ) {
-    case "UPDATE_LNGLAT":
+
+    case A.UPDATE_LNGLAT:
       return {
         ...state,
         longitude: action.payload.lng,
         latitude: action.payload.lat,
       }
 
-    case "UPDATE_MAPBOX_ZOOM":
+    case A.UPDATE_MAPBOX_ZOOM:
       return { ...state, mapboxZoom: action.payload }
 
-    case "UPDATE_FLYING":
+    case A.UPDATE_FLYING:
       return { ...state, flying: action.payload }
 
-    case "SHOW_MODAL":
+    case A.SHOW_MODAL:
       return { ...state, showModal: action.payload }
 
-    case "USER_GQL":
-      return { ...state, userGQL: action.payload }
-
-    case "UPDATE_LOTPLAN":
+    case A.UPDATE_LOTPLAN:
       return { ...state, lotPlan: action.payload }
 
-    case "UPDATE_LOCAL_PREDICTION_LISTINGS":
+    case A.UPDATE_LOCAL_PREDICTION_LISTINGS:
       return { ...state, localPredictions: action.payload }
 
     default: {
@@ -92,7 +91,6 @@ const initialReduxStateUser: ReduxStateUser = {
     predictions: [],
   },
   updatingPredictions: false,
-  approxLocation: mapboxgl.LngLat,
 }
 
 export const reduxReducerUser = (
@@ -100,15 +98,14 @@ export const reduxReducerUser = (
     action: ActionType
   ): ReduxStateUser => {
 
+  let A = Actions.User
   switch ( action.type ) {
-    case "USER_GQL":
+
+    case A.USER_GQL:
       return { ...state, userGQL: action.payload }
 
-    case "UPDATING_PREDICTIONS":
+    case A.UPDATING_MY_PREDICTIONS:
       return { ...state, updatingPredictions: action.payload }
-
-    case "UPDATE_APPROX_LOCATION":
-      return { ...state, approxLocation: action.payload }
 
     default: {
       return state
@@ -139,34 +136,36 @@ const initialReduxStateParcels = {
 }
 
 // const reduxWorker = new MyWorker()
+// reduxWorker.postMessage({
+//   features: localData.features,
+//   longitude: lng,
+//   latitude: lat,
+//   radiusMax: 0.0080,
+// })
+// let gData = reduxWorker.onmessage = (m) => {
+//   return {
+//     ...state,
+//     gData: {
+//       ...localData,
+//       features: m.data
+//     }
+//   }
+// }
 
 export const reduxReducerParcels = (
     state: ReduxStateParcels = initialReduxStateParcels,
     action: ActionType
   ): ReduxStateParcels => {
 
+  let A = Actions.GeoJSON
   switch ( action.type ) {
 
-    case "UPDATE_GEODATA_LNGLAT":
+    case A.UPDATE_GEOJSON_DATA_LNGLAT: {
       return { ...state, gLngLat: action.payload }
+    }
 
-    case "UPDATE_GEODATA": {
+    case A.UPDATE_GEO_DATA: {
       let { lng, lat } = action.payload
-      // reduxWorker.postMessage({
-      //   features: localData.features,
-      //   longitude: lng,
-      //   latitude: lat,
-      //   radiusMax: 0.0080,
-      // })
-      // let gData = reduxWorker.onmessage = (m) => {
-      //   return {
-      //     ...state,
-      //     gData: {
-      //       ...localData,
-      //       features: m.data
-      //     }
-      //   }
-      // }
       return {
         ...state,
         gData: {
@@ -176,7 +175,7 @@ export const reduxReducerParcels = (
       }
     }
 
-    case "UPDATE_GEORADIUS": {
+    case A.UPDATE_GEOJSON_RADIUS: {
       let { lng, lat } = action.payload
       return {
         ...state,
@@ -187,7 +186,7 @@ export const reduxReducerParcels = (
       }
     }
 
-    case "UPDATE_GEORADIUS_WIDE": {
+    case A.UPDATE_GEOJSON_RADIUS_WIDE: {
       let { lng, lat } = action.payload
       return {
         ...state,
@@ -198,11 +197,11 @@ export const reduxReducerParcels = (
       }
     }
 
-    case "UPDATE_GEOCLICKED_PARCELS": {
+    case A.UPDATE_GEOJSON_CLICKED_PARCELS: {
       return { ...state, gClickedParcels: action.payload }
     }
 
-    case "UPDATE_GEOMY_PREDICTIONS": {
+    case A.UPDATE_GEOJSON_MY_PREDICTIONS: {
       let { predictions } = action.payload
       let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
       return {
@@ -214,8 +213,9 @@ export const reduxReducerParcels = (
       }
     }
 
-    case "UPDATE_GEOALL_PREDICTIONS":
+    case A.UPDATE_GEOJSON_ALL_PREDICTIONS: {
       return { ...state, gAllPredictions: action.payload }
+    }
 
     default: {
       return state
