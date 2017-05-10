@@ -85,7 +85,9 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
   private startSubscriptions = () => {
     return this.props.data.subscribeToMore({
       document: subscriptionQuery,
-      variables: {},
+      variables: {
+        emailAddress: this.props.userGQL.emailAddress ? this.props.userGQL.emailAddress : ''
+      },
       updateQuery: ( prevState, { subscriptionData } ) => {
         let mutationType = subscriptionData.data.Prediction.mutation
         let newPrediction: iPrediction = subscriptionData.data.Prediction.node
@@ -93,6 +95,8 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
         switch (mutationType) {
           case 'CREATED': {
             let newAllPredictions = [...prevState.allPredictions, newPrediction]
+            // this.props.userGQL.emailAddress
+            // newPrediction.user.emailAddress
             this.props.updateGeoAllPredictions({ predictions: newAllPredictions })
             return {
               ...prevState,
@@ -181,8 +185,13 @@ query($emailAddress: String!) {
 `
 
 const subscriptionQuery = gql`
-subscription {
-  Prediction(filter: { mutation_in: [CREATED,DELETED] }) {
+subscription($emailAddress: String!) {
+  Prediction(filter: {
+    AND: [
+      { mutation_in: [CREATED,DELETED] },
+      { node: { user: { emailAddress_not_in: [$emailAddress] }}}
+    ]
+  }) {
     mutation
     node {
       id
