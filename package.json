@@ -131,6 +131,7 @@
     "react-burger-menu": "^2.0.0",
     "react-dom": "^15.5.4",
     "react-geosuggest": "^2.1.0",
+    "react-loadable": "^3.3.1",
     "react-mapbox-gl": "^1.9.2",
     "react-motion": "^0.5.0",
     "react-redux": "^5.0.4",
