@@ -38,22 +38,16 @@ import Loadable from 'react-loadable'
 // const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
 // const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
 
-
-let loadingPlaceholder = ({ isLoading, error, pastDelay }: { isLoading: boolean, error: Error | null, pastDelay: null }) => {
-  if (isLoading) {
-    return pastDelay ? <div>Loading...</div> : null; // Don't flash "Loading..." when we don't need to.
-  } else if (error) {
-    return (<div>Error! Component failed to load</div>);
-  } else {
-    return null;
-  }
-}
 const asyncComponent = ({ resolve }) => {
   return (
     Loadable({
       loader: resolve,
-      LoadingComponent: loadingPlaceholder,
-      delay: 200,
+      LoadingComponent: ({ isLoading, error, pastDelay }) => {
+        return isLoading
+          ? (pastDelay ? <div>Loading...</div> : null)
+          : (<div>Error! Component failed to load</div>)
+      },
+      delay: 200, // show loader only after 200ms
     })
   )
 }
