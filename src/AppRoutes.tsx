@@ -8,7 +8,7 @@ import 'styles/AppRoutes.scss'
 //// Lazyload
 // import { lazyLoad } from './utils/lazyLoad'
 import { asyncComponent } from 'react-async-component'
-// import Loadable from 'react-loadable'
+import Loadable from 'react-loadable'
 
 //// Components
 // import Title from './components/Title'
@@ -26,19 +26,33 @@ import { asyncComponent } from 'react-async-component'
 // import Parallax from './components/Parallax'
 
 //////// Lazy-loading Components by Route /////////
-const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
-const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
-const LoginAuth0 = asyncComponent({ resolve: () => System.import('./components/LoginAuth0.tsx') })
-const Navbar = asyncComponent({ resolve: () => System.import('./components/Navbar.tsx') })
+// const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
+// const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
+// const LoginAuth0 = asyncComponent({ resolve: () => System.import('./components/LoginAuth0.tsx') })
+// const Navbar = asyncComponent({ resolve: () => System.import('./components/Navbar.tsx') })
+//
+// const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
+// const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
+// const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/MyPredictionListings.tsx') })
+// const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
+//
+// // const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
+// const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
+// const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
 
-const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
-const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
-const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/MyPredictionListings.tsx') })
-const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
+const Title = Loadable({ loader: () => System.import('./components/Title.tsx') })
+const LandingPage = Loadable({ loader: () => System.import('./components/LandingPage.tsx') })
+const LoginAuth0 = Loadable({ loader: () => System.import('./components/LoginAuth0.tsx') })
+const Navbar = Loadable({ loader: () => System.import('./components/Navbar.tsx') })
 
-// const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
-const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
-const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
+const MapSubscriptions = Loadable({ loader: () => System.import('./components/MapSubscriptions.tsx') })
+const LocalPredictions = Loadable({ loader: () => System.import('./components/LocalPredictions.tsx') })
+const MyPredictionListings = Loadable({ loader: () => System.import('./components/MyPredictionListings.tsx') })
+const PredictionStats = Loadable({ loader: () => System.import('./components/PredictionStats.tsx') })
+
+// const DraggableGrid = Loadable({ loader: () => System.import('./components/DraggableGrid.tsx') })
+const CardExpander = Loadable({ loader: () => System.import('./components/CardExpander.tsx') })
+const Parallax = Loadable({ loader: () => System.import('./components/Parallax.tsx') })
 
 
 
