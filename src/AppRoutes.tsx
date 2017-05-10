@@ -24,10 +24,10 @@ import Loadable from 'react-loadable'
 // import Parallax from './components/Parallax'
 
 //////// Lazy-loading Components by Route /////////
-const asyncComponent = ({ resolve }) => {
+export const asyncComponent = ({ loader }) => {
   return (
     Loadable({
-      loader: resolve,
+      loader: loader,
       LoadingComponent: ({ isLoading, error, pastDelay }) => {
         return isLoading
           ? (pastDelay ? <div>Loading...</div> : null)
@@ -37,19 +37,19 @@ const asyncComponent = ({ resolve }) => {
     })
   )
 }
-const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
-const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
-const LoginAuth0 = asyncComponent({ resolve: () => System.import('./components/LoginAuth0.tsx') })
-const Navbar = asyncComponent({ resolve: () => System.import('./components/Navbar.tsx') })
+const Title = asyncComponent({ loader: () => System.import('./components/Title.tsx') })
+const LandingPage = asyncComponent({ loader: () => System.import('./components/LandingPage.tsx') })
+const LoginAuth0 = asyncComponent({ loader: () => System.import('./components/LoginAuth0.tsx') })
+const Navbar = asyncComponent({ loader: () => System.import('./components/Navbar.tsx') })
 
-const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
-const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
-const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/MyPredictionListings.tsx') })
-const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
+const MapSubscriptions = asyncComponent({ loader: () => System.import('./components/MapSubscriptions.tsx') })
+const LocalPredictions = asyncComponent({ loader: () => System.import('./components/LocalPredictions.tsx') })
+const MyPredictionListings = asyncComponent({ loader: () => System.import('./components/MyPredictionListings.tsx') })
+const PredictionStats = asyncComponent({ loader: () => System.import('./components/PredictionStats.tsx') })
 
-// const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
-const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
-const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
+// const DraggableGrid = asyncComponent({ loader: () => System.import('./components/DraggableGrid.tsx') })
+const CardExpander = asyncComponent({ loader: () => System.import('./components/CardExpander.tsx') })
+const Parallax = asyncComponent({ loader: () => System.import('./components/Parallax.tsx') })
 
 
 
@@ -59,7 +59,6 @@ const Login = (): JSX.Element => {
   const redirectUrl: string = '/map/parallax/localpredictions' // redirect to route on authentication
   return <LoginAuth0 clientId={clientId} domain={domain} redirectOnAuth={redirectUrl}/>
 }
-
 
 const RouterFader = ( WrappedComponent ) => {
   return (props) => (
@@ -81,17 +80,17 @@ export default class AppRoutes extends React.Component {
     return (
       <HashRouter>
         <div>
-          <Route path="/" component={ RouterFader(Login) } />
-          <Route path="/" component={ RouterFader(Navbar) } />
-          <Route exact path="/" component={ RouterFader(LandingPage) } />
+          <Route path="/" component={ Login } />
+          <Route path="/" component={ Navbar } />
+          <Route exact path="/" component={ LandingPage } />
 
-          <Route path="/map" component={ RouterFader(MapSubscriptions) } />
-          <Route path="/map/parallax/localpredictions" component={ RouterFader(LocalPredictions) } />
-          <Route path="/map/parallax/mypredictionlistings" component={ RouterFader(MyPredictionListings) } />
-          <Route path="/map/parallax/mypredictionlistings/:id" component={ RouterFader(PredictionStats) } />
-          <Route path="/map/parallax" component={ RouterFader(Parallax) } />
+          <Route path="/map" component={ MapSubscriptions } />
+          <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
+          <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
+          <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
+          <Route path="/map/parallax" component={ Parallax } />
 
-          <Route path="/test" component={ RouterFader(CardExpander) } />
+          <Route path="/test" component={ CardExpander } />
         </div>
       </HashRouter>
     )

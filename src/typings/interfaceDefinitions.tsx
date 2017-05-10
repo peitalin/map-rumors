@@ -44,12 +44,6 @@ export interface iHouse {
   unitNum?: string
 }
 
-export interface iLocalPrediction {
-  prediction: number
-  user: userGQL
-  house: iHouse
-}
-
 
 export interface mutationResponsePrediction {
   data: {
@@ -73,6 +67,11 @@ export interface mutationResponsePrediction {
         id: string
         prediction: number
       }
+    }
+
+    deletePrediction?: {
+      id: string
+      prediction: number
     }
 
   }

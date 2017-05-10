@@ -27,7 +27,7 @@ type Action = { type: string, payload: any }
 interface DispatchProps {
   updateLngLat?(lngLat: { lng: number, lat: number }): Dispatch<Action>
   updateFlyingStatus?(flyingStatus: boolean): Dispatch<Action>
-  updateGeoAllPredictions?(allPredictions: iPrediction[]): Dispatch<Action>
+  updateGeoAllPredictions?(payload: { predictions: iPrediction[] }): Dispatch<Action>
 }
 interface StateProps {
   userGQL: userGQL
@@ -93,7 +93,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
         switch (mutationType) {
           case 'CREATED': {
             let newAllPredictions = [...prevState.allPredictions, newPrediction]
-            this.props.updateGeoAllPredictions(newAllPredictions)
+            this.props.updateGeoAllPredictions({ predictions: newAllPredictions })
             return {
               ...prevState,
               allPredictions: newAllPredictions
@@ -103,7 +103,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
             let newAllPredictions = prevState.allPredictions.filter(
               (p: iPrediction) => p.id !== subscriptionData.data.Prediction.previousValues.id
             )
-            this.props.updateGeoAllPredictions(newAllPredictions)
+            this.props.updateGeoAllPredictions({ predictions: newAllPredictions })
             return {
               ...prevState,
               allPredictions: newAllPredictions
@@ -162,14 +162,16 @@ query($emailAddress: String!) {
     house {
       id
       address
+      lotPlan
       lng
       lat
       geojsonparcel {
-        lotPlan
-        city
-        locality
         geometry
         properties
+        type
+        city
+        locality
+        lotPlan
         lngCenter
         latCenter
       }
@@ -192,14 +194,16 @@ subscription {
       house {
         id
         address
+        lotPlan
         lng
         lat
         geojsonparcel {
-          lotPlan
-          city
-          locality
           geometry
           properties
+          type
+          city
+          locality
+          lotPlan
           lngCenter
           latCenter
         }
@@ -227,8 +231,8 @@ const mapDispatchToProps = ( dispatch ) => {
     updateFlyingStatus: (flyingStatus: boolean) => dispatch(
       { type: A.Mapbox.UPDATE_FLYING, payload: flyingStatus }
     ),
-    updateGeoAllPredictions: (gAllPredictions: geoData) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: gAllPredictions }
+    updateGeoAllPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: payload }
       // parcels which otherws have made predictions on (subscriptions)
     ),
   }

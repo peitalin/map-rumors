@@ -207,12 +207,14 @@ query($lotPlan: String!) {
     carspaces
     planNum
     lotNum
-    lotPlan
     unitNum
     streetNum
     streetName
     streetType
     locality
+    lotPlan
+    lng
+    lat
   }
 }
 `

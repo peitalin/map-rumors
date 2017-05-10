@@ -9,6 +9,9 @@ interface ReactProps {
 
 export default class CarouselTile extends React.Component<ReactProps, any> {
 
+  componentDidMount() {
+  }
+
   randomImage = () => {
     let imgNum = Math.floor(1 + Math.random() * 19)
     return `https://s3-ap-southeast-2.amazonaws.com/hayekhouses/outside/${imgNum}.jpg`

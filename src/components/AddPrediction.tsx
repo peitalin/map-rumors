@@ -61,14 +61,18 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
         ...oldPredictions,
         { prediction: this.state.prediction, id: newPredictionId, house: House }
       ]
+      // update userGQL and gMyPredictions
       this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
+      this.props.updateGeoMyPredictions({ predictions: newPredictions })
     } else {
       // console.info('Optimistically updating user predictions in Redux.')
       let newPredictions = [
         ...predictions,
         { prediction: this.state.prediction, id: newPredictionId, house: House }
       ]
+      // update userGQL and gMyPredictions
       this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
+      this.props.updateGeoMyPredictions({ predictions: newPredictions })
     }
   }
 
@@ -139,6 +143,10 @@ const mapDispatchToProps = ( dispatch ) => {
     ),
     isUpdatingMyPredictions: (bool: boolean) => dispatch(
       { type: A.User.IS_UPDATING_MY_PREDICTIONS, payload: bool }
+    ),
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
+      // parcels which you've made a prediction on
     ),
     dispatch: dispatch,
   }

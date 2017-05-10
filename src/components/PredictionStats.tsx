@@ -50,6 +50,10 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
     return true
   }
 
+  componentDidMount() {
+    this.props.data.refetch()
+  }
+
   render() {
     if (this.props.data.error) {
       return <Title><div>PredictionStats: GraphQL Errored.</div></Title>
@@ -57,13 +61,15 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
     if (this.props.data.loading) {
       return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
     }
-    if (this.props.data.allPredictions.length) {
+    if (!!this.props.data.allPredictions.length) {
       return (
         <CardExpander data={this.props.data}/>
       )
     } else {
       return (
-        <div>No Prediction Stats</div>
+        <Title>
+          <div className="prediction__stats" style={{ position: 'fixed', zIndex: 10 }}>No Prediction Stats</div>
+        </Title>
       )
     }
   }
@@ -75,10 +81,10 @@ query PredictionStatsQuery($id: ID!) {
   allPredictions(filter: { id: $id }) {
     prediction
     user {
-    emailAddress
+      emailAddress
     }
     house {
-     address
+      address
     }
   }
 }
@@ -86,10 +92,13 @@ query PredictionStatsQuery($id: ID!) {
 
 const PredictionStatsQueryOptions = {
   options: (ownProps) => {
+    let houseId = ownProps.match ? ownProps.match.params.houseId : ownProps.houseId
+    // either houseId passed from react-router, or passed from props
     return ({
       variables: {
-        id: ownProps.match.params.id
-      }
+        id: houseId
+      },
+      fetchPolicy: 'network-only'
     })
   }
 }

@@ -87,9 +87,10 @@ class AppApollo extends React.Component<any, AppApolloState> {
           // applyMiddleware(this.apolloClient.middleware()), // Apollo-client: wrong state shape
         )
       );
-      const persistor = createPersistor(reduxStore, { storage: localforage })
-      // this.clearStore()
-      console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
+      // const persistor = createPersistor(reduxStore, { storage: localforage })
+      // this.clearStore(persistor)
+      // console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
+      console.info('Rehydrating OFF')
       this.reduxStore = reduxStore
       this.setState({ rehydrated: true })
     })
@@ -98,6 +99,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
   clearStore = (persistor) => {
     ///// MUST CLEAR STORE WHEN  MODIFYING REDUCERS
     //// otherwise old state shape is persisted
+    console.info("Purging redux-persist store!")
     persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
     localforage.clear()
     ////// must login again after purge to get user profile

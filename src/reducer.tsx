@@ -1,14 +1,14 @@
 
 
 import { ActionType, Actions } from './reduxActions'
-import { userGQL, geoData, iLocalPrediction } from './typings/interfaceDefinitions'
+import { userGQL, geoData, iPrediction } from './typings/interfaceDefinitions'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import * as Immutable from 'immutable'
 
 let localDataRaw: geoData = require('./data/parkinson_parcels.json')
-let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
-// let localData = { ...localDataRaw, features: localDataRaw.features }
+// let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
+let localData = { ...localDataRaw, features: localDataRaw.features }
 import { isParcelNear } from './utils/worker'
 let MyWorker = require('worker-loader!./utils/worker.ts')
 
@@ -126,8 +126,12 @@ export interface ReduxStateParcels {
 }
 
 const initialReduxStateParcels = {
-  gLngLat:          { lng: 153.0383, lat: -27.6342 }, // keeps track of geoData location so we know when to update geoData
-  gData:            { type: "FeatureCollection", features: [] },
+  gLngLat: { lng: 153.0383, lat: -27.6342 }, // keeps track of geoData location so we know when to update geoData
+  gData: {
+    ...localData,
+    features: localData.features.filter(g => isParcelNear(g, 153.0383, -27.6342, 0.0080))
+  },
+  // gData:            { type: "FeatureCollection", features: [] },
   gRadius:          { type: "FeatureCollection", features: [] },
   gRadiusWide:      { type: "FeatureCollection", features: [] },
   gClickedParcels:  { type: "FeatureCollection", features: [] },
@@ -202,7 +206,7 @@ export const reduxReducerParcels = (
     }
 
     case A.UPDATE_GEOJSON_MY_PREDICTIONS: {
-      let { predictions } = action.payload
+      let { predictions }: { predictions: iPrediction[] }  = action.payload
       let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
       return {
         ...state,
@@ -214,7 +218,16 @@ export const reduxReducerParcels = (
     }
 
     case A.UPDATE_GEOJSON_ALL_PREDICTIONS: {
-      return { ...state, gAllPredictions: action.payload }
+      let { predictions }: { predictions: iPrediction[] } = action.payload
+      console.info(predictions)
+      let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
+      return {
+        ...state,
+        gAllPredictions: {
+          ...state.gData
+          features: state.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+        }
+      }
     }
 
     default: {

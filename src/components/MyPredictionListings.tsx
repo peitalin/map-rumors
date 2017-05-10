@@ -31,6 +31,13 @@ import CarouselTile from './CarouselTile'
 import { SpinnerRectangle } from './Spinners'
 const PREDICTIONLISTINGS_ROUTE = "/map/parallax/mypredictionlistings"
 
+import { asyncComponent } from '../AppRoutes'
+const PredictionStats = asyncComponent({ loader: () => System.import('./PredictionStats.tsx') })
+
+import { TweenLite } from 'gsap'
+
+
+
 
 interface ReactProps {
   data?: {
@@ -47,7 +54,7 @@ interface ReactProps {
 interface DispatchProps {
   updateLngLat?(lngLat: any): Dispatch<ActionType>
   updateFlyingTo?(flyingTo: boolean | string): Dispatch<ActionType>
-  updateUserProfileRedux?(userProfile: userGQL): Dispatch<ActionType>
+  updateUserGQL?(userProfile: userGQL): Dispatch<ActionType>
   updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoRadius?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
@@ -73,24 +80,44 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     }
   }
 
+  state = {
+    showCard: false
+    houseId: '',
+  }
+
+  componentDidMount() {
+    TweenLite.from('.prediction__listings__container', 0.4, { opacity: 0 })
+  }
+
   private deletePrediction = async({ predictionId }: { predictionId: string }): void => {
     //////// REFACTOR WITH REDUX-SAGA
     // Redux optimistic update first
     this.props.isUpdatingMyPredictions(true)
-    this.props.updateUserProfileRedux({
+
+    // do graphql Mutation
+    try {
+      let deletePredictionResponse: mutationResponse = await this.props.deletePrediction({
+        variables: { predictionId: predictionId }
+      })
+    } catch(e) {
+      console.warn(e)
+      // if graphql mutataion fails (already delete entry) proceed to remove from userGQL as well
+    }
+    // then update userGQL predictions
+    let newPredictions = this.props.userGQL.predictions.filter(p => p.id !== predictionId)
+    this.props.updateUserGQL({
       ...this.props.userGQL,
-      predictions: this.props.userGQL.predictions.filter(p => p.id !== predictionId)
+      predictions: newPredictions
     })
-    // then do graphql Mutation
-    let deletePredictionResponse = await this.props.deletePrediction({
-      variables: { predictionId: predictionId }
-    })
+    // update gMyPredictions
+    this.props.updateGeoMyPredictions({ predictions: newPredictions })
     this.props.isUpdatingMyPredictions(false)
   }
 
   private gotoPredictionLocation = (house: iHouse): void => {
     if (!house.lat || !house.lng) {
-      console.error("MyPredictionListings.tsx error: house.lat or house.lng doesn't exist")
+      console.error("MyPredictionListings.tsx error: house.lat or house.lng doesn't exist", house)
+      return
     }
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     message.info(`Going to ${house.address}`)
@@ -98,35 +125,27 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
     this.props.updateFlyingTo('MyPredictionListings')
-    if (this.props.data.user) {
-      if (!!this.props.data.user.predictions.length) {
-        this.props.updateGeoMyPredictions({ predictions: this.props.data.user.predictions })
-        this.props.updateUserProfileRedux({
-          ...this.props.userGQL,
-          predictions: this.props.data.user.predictions
-        })
-      }
-    }
     this.props.updateGeoRadius(lngLat)
     this.props.updateGeoRadiusWide(lngLat)
   }
 
+  private handleMouseOver = (houseId: string) => {
+    this.setState({ houseId }, () => {
+      console.info("Pre-loading Component: ", houseId)
+      PredictionStats.preload()
+    })
+  }
+
+  private handleClick = (event) => {
+    this.setState({ showCard: true });
+  }
+
   render() {
-    if (this.props.data.error) {
-      return <Title><div>MyPredictionListings: GraphQL Errored.</div></Title>
-    }
-    if (this.props.data.loading) {
-      return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
-    }
-    if (!this.props.data.user) {
-      return <Title><div>No User. Log In.</div></Title>
-    }
     if (!this.props.userGQL) {
       return <Title><div>No User. Log In.</div></Title>
     }
 
-    let user = this.props.data.user
-    // let user = this.props.userGQL
+    let user = this.props.userGQL
     if (!user.predictions.length) {
       var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
     }
@@ -149,9 +168,15 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
             { " " + p.house.streetName }
             { " " + p.house.streetType }
           </div>
+
           <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
             { p.house.lotPlan }
           </Link>
+
+          {/* <button onMouseOver={() => this.handleMouseOver(p.house.id)} onClick={this.handleClick}> */}
+          {/*   { p.house.lotPlan } */}
+          {/* </button> */}
+
           <Popconfirm className='child'
             title={`Delete prediction for ${p.house.address}?`}
             onConfirm={() => this.deletePrediction({ predictionId: p.id })}
@@ -165,10 +190,9 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
 
     return (
       <div className='prediction__listings__container'>
+        <div className="prediction__listings__heading">My Predictions</div>
         {(
-          this.props.data.loading
-          ? <SpinnerRectangle height='36px' width='8px' dark/>
-          : <div className="prediction__listings__heading">My Predictions</div>
+          this.state.showCard && <PredictionStats houseId={this.state.houseId}/>
         )}
         <Carousel className='prediction__listings__carousel'>
           { predictionListings }
@@ -177,7 +201,6 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     )
   }
 }
-
 
 
 
@@ -191,30 +214,6 @@ mutation ($predictionId: ID!) {
 }
 `
 
-const userQuery = gql`
-query {
-  user {
-    id
-    emailAddress
-    predictions {
-      id
-      prediction
-      house {
-        id
-        address
-        unitNum
-        streetNum
-        streetName
-        streetType
-        lotPlan
-        lng
-        lat
-      }
-    }
-  }
-}
-`
-
 //////// REDUX ////////
 const mapStateToProps = ( state: ReduxState ): ReduxStateUser|ReduxStateParcels => {
   return {
@@ -224,7 +223,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateUser|ReduxStateParcels 
 }
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    updateUserProfileRedux: (userProfile: userGQL) => dispatch(
+    updateUserGQL: (userProfile: userGQL) => dispatch(
       { type: A.User.USER_GQL, payload: userProfile }
     ),
     isUpdatingMyPredictions: (bool: boolean) => dispatch(
@@ -260,7 +259,6 @@ const mapDispatchToProps = ( dispatch ) => {
 
 export default compose(
   graphql(deletePredictionMutation, { name: 'deletePrediction', fetchPolicy: 'network-only' }),
-  graphql(userQuery, { fetchPolicy: 'network-only' }),
   connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)
 )( MyPredictionListings )
 

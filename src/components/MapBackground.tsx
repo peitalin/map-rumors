@@ -4,7 +4,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { render, findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { ReduxState, ReduxStateMapbox, ReduxStateParcels } from '../reducer'
+import { ReduxState, ReduxStateUser, ReduxStateMapbox, ReduxStateParcels } from '../reducer'
 import { ActionType, Actions as A } from '../reduxActions'
 
 import * as throttle from 'lodash/throttle'
@@ -35,43 +35,57 @@ import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
 import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature, iPrediction } from '../typings/interfaceDefinitions'
+import { geojsonValidate } from '../typings/geojson-validate.d'
+import * as geojsonValidation from 'geojson-validation'
+declare var geojsonValidation: geojsonValidate
+
 import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
 
 
 
 
-
-interface MapBackgroundProps {
+interface ReactProps {
+  data?: {
+    allPredictions?: iPrediction[]
+    error?: any
+    loading?: boolean
+  }
+}
+interface StateProps {
+  // ReduxStateMapbox
   longitude: number
   latitude: number
   mapboxZoom: Array<number>
   flyingTo: boolean | string
-  // redux mapbox dispatchers
-  updateLngLat?(lnglat: mapboxgl.LngLat): void
-  updateFlyingTo?(flyingTo: boolean | string): void
-  onZoomChange?(zoom): void
-  toggleShowModal?(): void
-  updateLotPlan?(): void
+  // ReduxStateUser
   userGQL: userGQL
+  // ReduxStateParcels
+  gLngLat: mapboxgl.LngLat
   // gLngLat: is the lngLat for geoData, not the actual map center
   // used to calculate when we need to fetch additional geoData when moving on the map
-  gLngLat: mapboxgl.LngLat
-  // parcel data
   gData: geoData
   gRadius: geoData
   gRadiusWide: geoData
   gClickedParcels: geoData
   gMyPredictions: geoData
   gAllPredictions: geoData
+}
+interface DispatchProps {
+  // redux mapbox dispatchers
+  updateLngLat?(lnglat: mapboxgl.LngLat): void
+  updateFlyingTo?(flyingTo: boolean | string): void
+  onZoomChange?(zoom): void
+  toggleShowModal?(): void
+  updateLotPlan?(): void
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
   updateGeoRadius?(lngLat: mapboxgl.LngLat): void
   updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): void
-  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
-  updateGeoAllPredictions?(gAllPredictions: geoData): void
+  updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): void
+  updateGeoAllPredictions?(payload: { predictions: iPrediction[] }): void
 }
 
 interface MapBackgroundState {
@@ -89,24 +103,15 @@ interface MapBackgroundState {
 
 
 
-export class MapBackground extends React.Component<MapBackgroundProps, MapBackgroundState> {
+export class MapBackground extends React.Component<StateProps & DispatchProps & ReactProps, MapBackgroundState> {
 
-  constructor(props: MapBackgroundProps) {
+  constructor(props: ReactProps & StateProps & DispatchProps) {
     super(props)
 
     if (props.data) {
       // pass (other user's predictions) to PredictionListings
       props.updateLocalPredictionListings(props.data.allPredictions)
-      // Read prediction data from subscriptions
-      let gAllPredictions: geoData = {
-        ...props.gData,
-        features: props.data.allPredictions.map((p: iPrediction) => ({
-          type: p.house.geojsonparcel.type,
-          geometry: p.house.geojsonparcel.geometry,
-          properties: p.house.geojsonparcel.properties,
-        }))
-      }
-      props.updateGeoAllPredictions(gAllPredictions)
+      props.updateGeoAllPredictions({ predictions: props.data.allPredictions })
     }
 
     this.state = {
@@ -338,7 +343,17 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     // but how? setting this.map does not work since it will be null.
   }
 
+  validateGeoJsonData = () => {
+    ['gData', 'gRadius', 'gRadiusWide', 'gMyPredictions', 'gAllPredictions', 'gClickedParcels'].map(s => {
+      if (!geojsonValidation.valid(this.props[s])) {
+        console.info(`invalid GeoJson for layer: ${s}`)
+        console.info(this.props[s])
+      }
+    })
+  }
+
   render() {
+    this.validateGeoJsonData()
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
@@ -545,21 +560,21 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS_WIDE, payload: lngLat }
       // circle of parcels (wide ring) on the map
     ),
-    updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
-      // parcels which you've made a prediction on
-    ),
     updateGeoClickedParcels: (gClickedParcels: geoData) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_CLICKED_PARCELS, payload: gClickedParcels }
       // visited parcels on the map
     ),
-    updateGeoAllPredictions: (gAllPredictions: geoData) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: gAllPredictions }
+    updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
+      // parcels which you've made a prediction on
+    ),
+    updateGeoAllPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_ALL_PREDICTIONS, payload: payload }
       // parcels which others have made predictions on (subscriptions)
     ),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)( MapBackground )
+export default connect<StateProps, DispatchProps, ReactProps>(mapStateToProps, mapDispatchToProps)( MapBackground )
 
 
