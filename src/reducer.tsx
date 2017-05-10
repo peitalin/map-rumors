@@ -116,7 +116,7 @@ export const reduxReducerUser = (
 
 //////// geojson parcels /////////
 export interface ReduxStateParcels {
-  gLngLat?: { longitude: number, latitude: number }
+  gLngLat?: mapboxgl.LngLat
   gData?: geoData
   gRadius?: geoData
   gRadiusWide?: geoData
@@ -126,7 +126,7 @@ export interface ReduxStateParcels {
 }
 
 const initialReduxStateParcels = {
-  gLngLat:          { longitude: 153.0383, latitude: -27.6342 },
+  gLngLat:          { lng: 153.0383, lat: -27.6342 }, // keeps track of geoData location so we know when to update geoData
   gData:            { type: "FeatureCollection", features: [] },
   gRadius:          { type: "FeatureCollection", features: [] },
   gRadiusWide:      { type: "FeatureCollection", features: [] },

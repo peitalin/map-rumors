@@ -56,7 +56,7 @@ interface MapBackgroundProps {
   userGQL: userGQL
   // gLngLat: is the lngLat for geoData, not the actual map center
   // used to calculate when we need to fetch additional geoData when moving on the map
-  gLngLat: { longitude: number, latitude: number }
+  gLngLat: mapboxgl.LngLat
   // parcel data
   gData: geoData
   gRadius: geoData
@@ -65,7 +65,7 @@ interface MapBackgroundProps {
   gMyPredictions: geoData
   gAllPredictions: geoData
   // redux parcel update dispatchers
-  updateGeoDataLngLat?(gLngLat: { longitude: number, latitude: number }): void
+  updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
   updateGeoRadius?(lngLat: mapboxgl.LngLat): void
   updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): void
@@ -271,7 +271,8 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     // then updates position if you are more than a radius away from previous location.k
     let L2Distance = L2Norm(this.props.gLngLat, { lngCenter: lngLat.lng, latCenter: lngLat.lat })
     if (L2Distance > 0.006) {
-      this.props.updateGeoDataLngLat({ longitude: lngLat.lng, latitude: lngLat.lat })
+      console.info("gLntLat changed")
+      this.props.updateGeoDataLngLat({ lng: lngLat.lng, lat: lngLat.lat })
       this.props.updateGeoData(lngLat)
     }
 
@@ -293,11 +294,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
   private onDragEnd = (map: mapboxgl.Map, event: EventData): void => {
     let lngLat: mapboxgl.LngLat = map.getCenter()
-    if (this.props.userGQL) {
-      if (this.props.userGQL.predictions) {
-        this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
-      }
-    }
 
     this.props.updateGeoRadius(lngLat)
     this.props.updateGeoRadiusWide(lngLat)
@@ -533,7 +529,7 @@ const mapDispatchToProps = ( dispatch ) => {
       // circle of parcels (unseen) to filter as user moves on the map
     ),
     ////////// Parcel Reducer Actions
-    updateGeoDataLngLat: (gLngLat: { longitude: number, latitude: number }) => dispatch(
+    updateGeoDataLngLat: (gLngLat: mapboxgl.LngLat) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: gLngLat }
       // circle of parcels (unseen) to filter as user moves on the map
     ),

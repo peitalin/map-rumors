@@ -1,24 +1,31 @@
 
+$carousel-height: 175px;
+// surround with ${} when using scss variables in calc()
 
 .prediction__listings__container {
   position: absolute;
-  left: 0;
-  top: calc(100vh - 176px);
   width: 100vw;
   z-index: 0;
   color: #eee;
   background-color: rgba(22,22,22,0.4);
   // box-shadow: 0px 1px 2px 3px #999;
-  bottom: 0px;
+  bottom: 0;
+  left: 0;
+  top: calc(100vh - #{$carousel-height});
+  height: $carousel-height;
   transform: scale(1);
-  transition: transform 0.3s ease;
-  transition-delay: 0.3s;
+  transition: height 0.5s ease-out;
+
+  .prediction__listings__heading {
+    padding: 4px;
+  }
 }
 
 .prediction__listings__container:hover {
   position: absolute;
   height: 100vh;
-  top: calc(100vh - 176px);
+  top: calc(100vh - #{$carousel-height});
+  transition: height 0.5s ease-in;
   // background-color: rgba(22,22,22,0.4)
 
   background: -moz-linear-gradient(top,  rgba(11,11,11,0) 0%, rgba(11,11,11,0.65) 10%, rgba(11,11,11,1) 23%, rgba(11,11,11,1) 82%);
@@ -28,15 +35,7 @@
 
 }
 
-// .prediction-listings-inner {
-//   display: flex;
-//   flex-direction: row;
-//   text-align: center;
-//   justify-content: center;
-//   align-items: center
-// }
-
-.prediction__carousel {
+.prediction__listings__carousel {
   position: absolute;
   top: 0px;
   background-color: rgba(22,22,22,0.4)

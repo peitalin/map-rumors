@@ -10,6 +10,9 @@ import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import * as gsap from 'gsap'
 
 import 'styles/LandingPage.scss'
+import SarahDrasner from './SarahDrasner'
+
+
 
 
 export default class LandingPage extends React.Component<any, any> {
@@ -59,7 +62,8 @@ export default class LandingPage extends React.Component<any, any> {
           </CSSTransitionGroup>
 
           <div className='world-map-container'>
-            <WorldMap/>
+            <SarahDrasner/>
+            {/* <WorldMap/> */}
           </div>
 
           { switchLanguageHeader2(this.state.language) }

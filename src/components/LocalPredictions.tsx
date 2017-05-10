@@ -68,21 +68,27 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
 
   render() {
     if (this.props.localPredictions) {
+
+      let localPredictions = this.props.localPredictions.map((p: iPrediction) => {
+        return (
+          <CarouselTile key={p.id}
+            onClick={() => this.gotoPredictionLocation(p.house)}
+            img={undefined}
+          >
+            <div>{ p.user.emailAddress }</div>
+            <Price price={p.prediction}/>
+            <div>{ p.house.address }</div>
+          </CarouselTile>
+        )
+      }
+
       return (
-        <Carousel className='local__predictions__carousel'>
-          {
-            this.props.localPredictions.map((p: iPrediction) =>
-              <CarouselTile key={p.id}
-                onClick={() => this.gotoPredictionLocation(p.house)}
-                img={undefined}
-              >
-                <div>{ p.user.emailAddress }</div>
-                <Price price={p.prediction}/>
-                <div>{ p.house.address }</div>
-              </CarouselTile>
-            )
-          }
-        </Carousel>
+        <div className='local__predictions__container'>
+          <div className='local__predictions__heading'>Local Predictions</div>
+          <Carousel className='local__predictions__carousel'>
+            { localPredictions }
+          </Carousel>
+        </div>
       )
     } else {
       return (<div>No Local Predictions</div>)

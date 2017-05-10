@@ -1,18 +1,43 @@
 
+$carousel-height: 175px;
+// surround with ${} when using scss variables in calc()
 
-$carousel-height: 176px;
+.local__predictions__container {
+  position: absolute;
+  width: 100vw;
+  z-index: 0;
+  color: #eee;
+  background-color: rgba(22,22,22,0.4);
+  // box-shadow: 0px 1px 2px 3px #999;
+  bottom: 0px;
+  left: 0;
+  top: calc(100vh - #{$carousel-height});
+  height: $carousel-height;
+  transform: scale(1);
+  transition: height 0.5s ease-out;
+
+  .local__predictions__heading {
+    padding: 4px;
+  }
+}
+
+.local__predictions__container:hover {
+  position: absolute;
+  height: 100vh;
+  top: calc(100vh - #{$carousel-height});
+  transition: height 0.5s ease-in;
+  // background-color: rgba(22,22,22,0.4)
+
+  background: -moz-linear-gradient(top,  rgba(11,11,11,0) 0%, rgba(11,11,11,0.65) 10%, rgba(11,11,11,1) 23%, rgba(11,11,11,1) 82%);
+  background: -webkit-linear-gradient(top,  rgba(11,11,11,0) 0%,rgba(11,11,11,0.65) 10%,rgba(11,11,11,1) 23%,rgba(11,11,11,1) 82%);
+  background: linear-gradient(to bottom,  rgba(11,11,11,0) 0%,rgba(11,11,11,0.65) 10%,rgba(11,11,11,1) 23%,rgba(11,11,11,1) 82%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+
+}
 
 .local__predictions__carousel {
   position: absolute;
-  height: 100vh;
-  top: calc(100vh - 176px);
-  // background-color: rgba(22,22,22,0.4)
-
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+82&0+0,0.65+10,1+23 */
-  background: -moz-linear-gradient(top,  rgba(222,222,222,0) 0%, rgba(222,222,222,0.65) 10%, rgba(222,222,222,1) 23%, rgba(222,222,222,1) 82%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top,  rgba(222,222,222,0) 0%,rgba(222,222,222,0.65) 10%,rgba(222,222,222,1) 23%,rgba(222,222,222,1) 82%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom,  rgba(222,222,222,0) 0%,rgba(222,222,222,0.65) 10%,rgba(222,222,222,1) 23%,rgba(222,222,222,1) 82%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
-
+  top: 0px;
+  background-color: rgba(22,22,22,0.4)
 }
 

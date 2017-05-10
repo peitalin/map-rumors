@@ -53,7 +53,7 @@ interface DispatchProps {
   updateGeoRadius?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<ActionType>
-  isUpdatingPredictions?(bool: boolean): Dispatch<ActionType>
+  isUpdatingMyPredictions?(bool: boolean): Dispatch<ActionType>
 }
 interface StateProps {
   userGQL?: userGQL
@@ -74,30 +74,37 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
   }
 
   private deletePrediction = async({ predictionId }: { predictionId: string }): void => {
+    //////// REFACTOR WITH REDUX-SAGA
     // Redux optimistic update first
-    this.props.isUpdatingPredictions(true)
+    this.props.isUpdatingMyPredictions(true)
     this.props.updateUserProfileRedux({
       ...this.props.userGQL,
-      predictions: this.props.userGQL.predictions
-                      .filter(p => p.id !== predictionId)
+      predictions: this.props.userGQL.predictions.filter(p => p.id !== predictionId)
     })
     // then do graphql Mutation
     let deletePredictionResponse = await this.props.deletePrediction({
       variables: { predictionId: predictionId }
     })
-    this.props.isUpdatingPredictions(false)
+    this.props.isUpdatingMyPredictions(false)
   }
 
   private gotoPredictionLocation = (house: iHouse): void => {
+    if (!house.lat || !house.lng) {
+      console.error("MyPredictionListings.tsx error: house.lat or house.lng doesn't exist")
+    }
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
     message.info(`Going to ${house.address}`)
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)
     this.props.updateLngLat(lngLat)
     this.props.updateFlyingTo('MyPredictionListings')
-    if (props.userGQL) {
-      if (!!props.userGQL.predictions.length) {
-        this.props.updateGeoMyPredictions({ predictions: this.props.userGQL.predictions })
+    if (this.props.data.user) {
+      if (!!this.props.data.user.predictions.length) {
+        this.props.updateGeoMyPredictions({ predictions: this.props.data.user.predictions })
+        this.props.updateUserProfileRedux({
+          ...this.props.userGQL,
+          predictions: this.props.data.user.predictions
+        })
       }
     }
     this.props.updateGeoRadius(lngLat)
@@ -114,56 +121,60 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     if (!this.props.data.user) {
       return <Title><div>No User. Log In.</div></Title>
     }
-    // let user = this.props.data.user
-    let user = this.props.userGQL
+    if (!this.props.userGQL) {
+      return <Title><div>No User. Log In.</div></Title>
+    }
+
+    let user = this.props.data.user
+    // let user = this.props.userGQL
     if (!user.predictions.length) {
       var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
-    } else {
-      var predictionListings = user.predictions.map(p => {
-        let unitStreetNum = p.house.unitNum
-          ? `${p.house.unitNum}/${p.house.streetNum}`
-          : `${p.house.streetNum}`
-        return (
-          <CarouselTile key={p.id}
-            onClick={() => this.gotoPredictionLocation(p.house)}
-            img={undefined}
-          >
-            <div>
-              {
-                p.house.unitNum
-                  ? `${p.house.unitNum}/${p.house.streetNum}`
-                  : `${p.house.streetNum}`
-              }
-              { " " + p.house.streetName }
-              { " " + p.house.streetType }
-            </div>
-            <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
-              { p.house.lotPlan }
-            </Link>
-            <Popconfirm className='child'
-              title={`Delete prediction for ${p.house.address}?`}
-              onConfirm={() => this.deletePrediction({ predictionId: p.id })}
-              onCancel={() => console.log(`Kept ${p.house.address}.`)}
-              okText="Yes" cancelText="No">
-              <a href="#">Delete</a>
-            </Popconfirm>
-          </CarouselTile>
-        )
-      })
-
-
-      return (
-        <div className='prediction__listings__container'>
-          {(
-            this.props.data.loading &&
-            <SpinnerRectangle height='36px' width='8px' dark/>
-          )}
-          <Carousel className='prediction__carousel'>
-            { predictionListings }
-          </Carousel>
-        </div>
-      )
     }
+
+    var predictionListings = user.predictions.map(p => {
+      let unitStreetNum = p.house.unitNum
+        ? `${p.house.unitNum}/${p.house.streetNum}`
+        : `${p.house.streetNum}`
+      return (
+        <CarouselTile key={p.id}
+          onClick={() => this.gotoPredictionLocation(p.house)}
+          img={undefined}
+        >
+          <div>
+            {
+              p.house.unitNum
+                ? `${p.house.unitNum}/${p.house.streetNum}`
+                : `${p.house.streetNum}`
+            }
+            { " " + p.house.streetName }
+            { " " + p.house.streetType }
+          </div>
+          <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
+            { p.house.lotPlan }
+          </Link>
+          <Popconfirm className='child'
+            title={`Delete prediction for ${p.house.address}?`}
+            onConfirm={() => this.deletePrediction({ predictionId: p.id })}
+            onCancel={() => console.log(`Kept ${p.house.address}.`)}
+            okText="Yes" cancelText="No">
+            <a href="#">Delete</a>
+          </Popconfirm>
+        </CarouselTile>
+      )
+    })
+
+    return (
+      <div className='prediction__listings__container'>
+        {(
+          this.props.data.loading
+          ? <SpinnerRectangle height='36px' width='8px' dark/>
+          : <div className="prediction__listings__heading">My Predictions</div>
+        )}
+        <Carousel className='prediction__listings__carousel'>
+          { predictionListings }
+        </Carousel>
+      </div>
+    )
   }
 }
 
@@ -216,8 +227,8 @@ const mapDispatchToProps = ( dispatch ) => {
     updateUserProfileRedux: (userProfile: userGQL) => dispatch(
       { type: A.User.USER_GQL, payload: userProfile }
     ),
-    isUpdatingPredictions: (bool: boolean) => dispatch(
-      { type: A.User.UPDATING_MY_PREDICTIONS, payload: bool }
+    isUpdatingMyPredictions: (bool: boolean) => dispatch(
+      { type: A.User.IS_UPDATING_MY_PREDICTIONS, payload: bool }
     ),
     updateLngLat: (lngLat: mapboxgl.LngLat) => dispatch(
       { type: A.Mapbox.UPDATE_LNGLAT, payload: lngLat }

@@ -34,11 +34,11 @@ onerror = (e) => {
 // }
 
 export const L2Norm = (
-  { longitude, latitude }: { longitude: number, latitude: number  },
+  { lng, lat }: { lng: number, lat: number  },
   { lngCenter, latCenter }: { lngCenter: number, latCenter: number }
   ): number => {
   // calculates the L2 Norm for 2 geolocations
-  return sqrt((abs(lngCenter) - abs(longitude))**2 + (abs(latitude) - abs(latCenter))**2)
+  return sqrt((abs(lngCenter) - abs(lng))**2 + (abs(lat) - abs(latCenter))**2)
 }
 
 export const isParcelNear = (
@@ -49,7 +49,7 @@ export const isParcelNear = (
     radiusMin: number
   ) => {
   let { lngCenter, latCenter } = geoJsonFeature.properties
-  let L2Distance = L2Norm({ longitude: longitude, latitude: latitude }, { lngCenter: lngCenter, latCenter: latCenter })
+  let L2Distance = L2Norm({ lng: longitude, lat: latitude }, { lngCenter: lngCenter, latCenter: latCenter })
   return ((radiusMin || 0) <= L2Distance) && (L2Distance <= radiusMax)
 }
 
