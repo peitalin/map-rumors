@@ -9,6 +9,7 @@ import 'antd/lib/card/style/css'
 import Flipcard from './FlipCard'
 import HouseStats from './HouseStats'
 import ModalMap from './ModalMap'
+import 'styles/HouseCard.scss'
 
 
 interface HouseCardProps {
@@ -71,16 +72,12 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
     let houseProps = this.props.houseProps
 
     let cardStyle = {
-      backgroundColor: '#fff',
-      position: 'fixed',
-      top: '6vw',
-      left: 10,
       opacity: houseCardOpacity,
       houseCardZIndex,
     }
 
     return (
-      <div id={this.props.id} style={cardStyle}>
+      <div id={this.props.id} className="housecard__container" style={cardStyle}>
         <Flipcard disabled={true} flipped={this.state.isFlipped} >
 
           {/* Front side of clip-card */}

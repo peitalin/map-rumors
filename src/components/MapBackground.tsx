@@ -145,15 +145,11 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
   }
 
   componentWillUpdate(nextProps: MapBackgroundProps) {
-    let map: mapboxgl.Map = this.state.map
-    if (map && this.props.flyingTo && this.props.userGQL.predictions) {
-      // this.props.updateGeoRadius({ lng: nextProps.longitude, lat: nextProps.latitude })
-      // this.props.updateGeoRadiusWide({ lng: nextProps.longitude, lat: nextProps.latitude })
-    }
   }
 
   componentDidUpdate(prevProps: MapBackgroundProps) {
     let map: mapboxgl.Map = this.state.map
+    //// Trigger: flyingTo event in "MyPredictionListing.tsx" and "LocalPredictions.tsx"
     if (map && this.props.flyingTo) {
       map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
@@ -190,7 +186,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
 
       let clickedParcel: geoParcel[] = this.props.gData.features
         .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
-      // add purple parcel, visited parcel
+      // add purple parcel: visited parcel
       this.props.updateGeoClickedParcels({
         ...this.props.gClickedParcels,
         features: [...clickedParcel]
@@ -208,20 +204,24 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     }
   }
 
+  private getParcelFeatures = (
+    { event, map, mapboxlayerId, filterFn }: { event: MapMouseEvent, map: mapboxl.Map, mapboxlayerid: string, filterFn: (any): boolean }
+  ): Array<mapboxFeature> => {
+    return map.queryRenderedFeatures(event.point, { layer: [mapboxlayerId] }).filter(filterFn)
+  }
+
   private onClick = (map: mapboxgl.Map, event: MapMouseEvent): void => {
     // requires redux-thunk to dispatch 2 actions at the same time
     let lngLat: mapboxgl.LngLat = event.lngLat
     this.props.updateLngLat(lngLat)
-    // var bearings = [-30, -15, 0, 15, 30]
-    // map.flyTo({
-    //   center: lngLat,
-    //   speed: 2,
-    //   // bearing: bearings[parseInt(Math.random()*4)],
-    //   // pitch: parseInt(40+Math.random()*20)
-    // })
 
-    let features: mapboxFeature[] = map.queryRenderedFeatures(event.point, { layer: [mapboxHostedLayers.parkinsonParcelsFill.id] })
-      .filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
+    let features = this.getParcelFeatures({
+      event: event,
+      map: map,
+      mapboxlayerId: mapboxHostedLayers.parkinsonParcelsFill.id,
+      filterFn: f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN')
+    })
+
     if (!features.length) {
       this.setState({ showHouseCard: false })
       return
@@ -234,7 +234,6 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     // update parcels near mouse click
     this.props.updateGeoRadius(lngLat)
     this.props.updateGeoRadiusWide(lngLat)
-
     map.getSource('gRadius').setData(this.props.gRadius)
     map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', mapboxlayerColors.radiusBorders)
     map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', mapboxlayerColors.radiusBordersWide)
@@ -266,7 +265,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
     let lngLat: mapboxgl.LngLat = map.getCenter()
     this.props.updateLngLat(lngLat)
 
-    // IMPLEMENT a "APPROX CURRENT LOCATION" reducer
+    // "APPROX CURRENT LOCATION" reducer:
     // checks current location, compares to see if you have moved outside radius,
     // then updates position if you are more than a radius away from previous location.k
     let L2Distance = L2Norm(this.props.gLngLat, { lngCenter: lngLat.lng, latCenter: lngLat.lat })
@@ -358,7 +357,7 @@ export class MapBackground extends React.Component<MapBackgroundProps, MapBackgr
           containerStyle={{
             position: "absolute",
             top: 0,
-            height: "100vh",
+            height: "calc(100vh - 175px)", // 175px for carousel height
             width: "100vw",
         }}>
 
