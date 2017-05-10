@@ -24,20 +24,6 @@ import Loadable from 'react-loadable'
 // import Parallax from './components/Parallax'
 
 //////// Lazy-loading Components by Route /////////
-// const Title = asyncComponent({ resolve: () => System.import('./components/Title.tsx') })
-// const LandingPage = asyncComponent({ resolve: () => System.import('./components/LandingPage.tsx') })
-// const LoginAuth0 = asyncComponent({ resolve: () => System.import('./components/LoginAuth0.tsx') })
-// const Navbar = asyncComponent({ resolve: () => System.import('./components/Navbar.tsx') })
-//
-// const MapSubscriptions = asyncComponent({ resolve: () => System.import('./components/MapSubscriptions.tsx') })
-// const LocalPredictions = asyncComponent({ resolve: () => System.import('./components/LocalPredictions.tsx') })
-// const MyPredictionListings = asyncComponent({ resolve: () => System.import('./components/MyPredictionListings.tsx') })
-// const PredictionStats = asyncComponent({ resolve: () => System.import('./components/PredictionStats.tsx') })
-//
-// // const DraggableGrid = asyncComponent({ resolve: () => System.import('./components/DraggableGrid.tsx') })
-// const CardExpander = asyncComponent({ resolve: () => System.import('./components/CardExpander.tsx') })
-// const Parallax = asyncComponent({ resolve: () => System.import('./components/Parallax.tsx') })
-
 const asyncComponent = ({ resolve }) => {
   return (
     Loadable({
