@@ -111,6 +111,7 @@
     "auth0-lock": "^10.15.1",
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
+    "geojson-validation": "^0.1.6",
     "google-map-react": "^0.22.3",
     "graphql": "^0.9.3",
     "graphql-subscriptions": "^0.3.1",
