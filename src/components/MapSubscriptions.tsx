@@ -132,7 +132,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
         <div className="map__subscriptions">
           <div className="map__subscriptions--loading">
             Loading Map Subscriptions
-            <SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/>
+            <SpinnerRectangle height='48px' width='6px' style={{ padding: '2rem' }}/>
           </div>
         </div>
       )

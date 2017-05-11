@@ -93,7 +93,6 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     //////// REFACTOR WITH REDUX-SAGA
     // Redux optimistic update first
     this.props.isUpdatingMyPredictions(true)
-
     // do graphql Mutation
     try {
       let deletePredictionResponse: mutationResponse = await this.props.deletePrediction({
@@ -101,7 +100,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
       })
     } catch(e) {
       console.warn(e)
-      // if graphql mutataion fails (already delete entry) proceed to remove from userGQL as well
+      // if graphql mutataion fails (already deleted entry) proceed to remove from userGQL as well
     }
     // then update userGQL predictions
     let newPredictions = this.props.userGQL.predictions.filter(p => p.id !== predictionId)
@@ -120,11 +119,11 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
       return
     }
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
-    message.info(`Going to ${house.address}`)
+    // message.info(`Going to ${house.address}`)
+    this.props.updateFlyingTo('MyPredictionListings')
+    this.props.updateLngLat(lngLat)
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)
-    this.props.updateLngLat(lngLat)
-    this.props.updateFlyingTo('MyPredictionListings')
     this.props.updateGeoRadius(lngLat)
     this.props.updateGeoRadiusWide(lngLat)
   }

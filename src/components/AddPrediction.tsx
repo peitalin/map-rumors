@@ -12,10 +12,10 @@ import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
-
 import { iHouse, iPrediction, userGQL,
   mutationResponsePrediction as mutationResponse
 } from '../typings/interfaceDefinitions'
+
 
 
 interface AddPredictionProps {

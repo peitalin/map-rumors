@@ -155,6 +155,7 @@ const initialReduxStateParcels = {
 //     }
 //   }
 // }
+const reduxWorker = new MyWorker()
 
 export const reduxReducerParcels = (
     state: ReduxStateParcels = initialReduxStateParcels,
@@ -170,6 +171,23 @@ export const reduxReducerParcels = (
 
     case A.UPDATE_GEO_DATA: {
       let { lng, lat } = action.payload
+
+      //// REDUX SAGA
+      // reduxWorker.postMessage({
+      //   features: localData.features,
+      //   longitude: lng,
+      //   latitude: lat,
+      //   radiusMax: 0.0080,
+      // })
+      // let gData = reduxWorker.onmessage = (m) => {
+      //   return {
+      //     ...state,
+      //     gData: {
+      //       ...localData,
+      //       features: m.data
+      //     }
+      //   }
+      // }
       return {
         ...state,
         gData: {

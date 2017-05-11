@@ -50,16 +50,12 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
     return true
   }
 
-  componentDidMount() {
-    this.props.data.refetch()
-  }
-
   render() {
     if (this.props.data.error) {
       return <Title><div>PredictionStats: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
-      return <Title><SpinnerRectangle height='48px' width='6px' style={{ margin: '2rem' }}/></Title>
+      return <div style={{ positoin: 'fixed' }}><SpinnerRectangle height='48px' width='6px' style={{ padding: '2rem' }}/></div>
     }
     if (!!this.props.data.allPredictions.length) {
       return (

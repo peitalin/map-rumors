@@ -6,6 +6,7 @@ import { BrowserRouter, HashRouter, Route, NavLink } from 'react-router-dom'
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import 'styles/AppRoutes.scss'
 //// Lazyload
+import { SpinnerRectangle } from './components/Spinners'
 import Loadable from 'react-loadable'
 
 //// Components
@@ -29,9 +30,12 @@ export const asyncComponent = ({ loader }) => {
     Loadable({
       loader: loader,
       LoadingComponent: ({ isLoading, error, pastDelay }) => {
+        let delayLoadingComponent = pastDelay
+          ? <div style={{ position: 'fixed', top: 10, right: 10 }}><SpinnerRectangle height='23px' width='6px'/></div>
+          : null
         return isLoading
-          ? (pastDelay ? <div>Loading...</div> : null)
-          : (<div>Error! Component failed to load</div>)
+          ? delayLoadingComponent
+          : (<div>asynComponent Error! Component failed to load</div>)
       },
       delay: 200, // show loader only after 200ms
     })
@@ -87,7 +91,7 @@ export default class AppRoutes extends React.Component {
           <Route path="/map" component={ MapSubscriptions } />
           <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
           <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
-          <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
+          <Route path="/map/parallax/mypredictionlistings/:houseId" component={ RouterFader(PredictionStats) } />
           <Route path="/map/parallax" component={ Parallax } />
 
           <Route path="/test" component={ CardExpander } />

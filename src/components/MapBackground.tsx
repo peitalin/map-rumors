@@ -158,8 +158,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     if (map && this.props.flyingTo) {
       map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
-        speed: 2, // make flying speed 2x fast
-        curve: 1.2, // make zoom intensity 1.1x as fast
+        speed: 1, // make flying speed 2x fast
+        curve: 1, // make zoom intensity 1.1x as fast
       })
       switch (this.props.flyingTo) {
         case 'MyPredictionListings': {

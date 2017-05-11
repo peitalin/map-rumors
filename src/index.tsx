@@ -100,7 +100,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
     ///// MUST CLEAR STORE WHEN  MODIFYING REDUCERS
     //// otherwise old state shape is persisted
     console.info("Purging redux-persist store!")
-    persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels' ]) // only purges redux store, not apollo-client
+    persistor.purge([ 'apollo', 'reduxMapbox', 'reduxParcels', 'reduxUser' ]) // only purges redux store, not apollo-client
     localforage.clear()
     ////// must login again after purge to get user profile
   }
