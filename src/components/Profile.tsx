@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { ReduxStateUser } from '../reducer'
 import { userGQL } from '../typings/interfaceDefinitions'
 
+import Title from './Title'
 
 
 interface DispatchProps {
-  updateLngLat?(lngLat: any): Dispatch<A>
 }
 interface StateProps {
   userGQL: userGQL
@@ -17,12 +17,14 @@ interface ReactProps {
 }
 
 export class Profile extends React.Component<StateProps & DispatchProps & ReactProps, any> {
-
   render() {
+    console.info(this.props.userGQL)
     return (
-      <div>
-				 ROFILE
-      </div>
+      <Title>
+        <div style={{ color: '#eee' }}>
+           PROFILE
+        </div>
+      </Title>
     )
   }
 }
@@ -34,5 +36,5 @@ const mapStateToProps = ( state: ReduxStateUser ): ReduxStateUser => {
   }
 }
 
-export default connect(mapStatetoProps, null)( Profile )
+export default connect(mapStateToProps, null)( Profile )
 

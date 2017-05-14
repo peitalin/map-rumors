@@ -30,7 +30,7 @@ export default class CardExpander extends React.Component<StateProps & DispatchP
   componentDidMount() {
     document.getElementsByClassName('card__expander__img')[0].addEventListener('click', this.handleClickImg)
     document.getElementsByClassName('card__expander__info')[0].addEventListener('click', this.handleClickInfo)
-    TweenLite.from('.card__container', 0.4, { autoAlpha: 0, height: '0vh' })
+    TweenLite.from('.card__container', 0.4, { autoAlpha: 0 })
   }
 
   handleClickImg = (e) => {

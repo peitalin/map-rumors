@@ -9,21 +9,6 @@ import 'styles/AppRoutes.scss'
 import { SpinnerRectangle } from './components/Spinners'
 import Loadable from 'react-loadable'
 
-//// Components
-// import Title from './components/Title'
-// import LandingPage from './components/LandingPage'
-// import LoginAuth0 from './components/LoginAuth0'
-// import Navbar from './components/Navbar'
-//
-// import MapSubscriptions from './components/MapSubscriptions'
-// import LocalPredictions from './components/LocalPredictions'
-// import MyPredictionListings from './components/MyPredictionListings'
-// import PredictionStats from './components/PredictionStats'
-//
-// import DraggableGrid from './components/DraggableGrid'
-// import CardExpander from './components/CardExpander'
-// import Parallax from './components/Parallax'
-
 //////// Lazy-loading Components by Route /////////
 export const asyncComponent = ({ loader }) => {
   return (
@@ -35,7 +20,7 @@ export const asyncComponent = ({ loader }) => {
           : null
         return isLoading
           ? delayLoadingComponent
-          : (<div>asynComponent Error! Component failed to load</div>)
+          : (<div style={{ position: 'fixed', top:10, right: 10 }}>asyncComponent Error! Component failed to load</div>)
       },
       delay: 200, // show loader only after 200ms
     })
@@ -95,12 +80,12 @@ export default class AppRoutes extends React.Component {
           <Route path="/map/parallax" component={ Parallax } />
           <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
           <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
-          <Route path="/map/parallax/mypredictionlistings/:houseId" component={ RouterFader(PredictionStats) } />
+          <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
+
           <Route path="/map/parallax/profile" component={ Profile } />
-
           <Route path="/map/parallax/SarahDrasner" component={ SarahDrasner } />
-
           <Route path="/test" component={ CardExpander } />
+
         </div>
       </HashRouter>
     )

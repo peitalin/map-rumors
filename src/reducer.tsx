@@ -87,6 +87,9 @@ export interface ReduxStateUser {
 
 const initialReduxStateUser: ReduxStateUser = {
   userGQL: {
+    emailAddress: 'j@armada.com',
+    name: 'John Smith',
+    id: 'c1234',
     bids: [],
     predictions: [],
   },
