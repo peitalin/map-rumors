@@ -132,15 +132,19 @@ $slider-color: #96616B;
   }
 }
 
+
+
 .world-map-container {
-  height: 50vh;
-  padding: 5% 5%;
+  height: 60vw;
+  padding: 0% 0%;
   border-top: 2px solid #565A5C;
   border-bottom: 2px solid #565A5C;
   transition: background-color 0.4s ease;
   background-color: #444444;
   display: flex;
   justify-content: center;
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('https://images.fineartamerica.com/images-medium-large/london-map-art-steel-blue-michael-tompsett.jpg');
+
 
   svg.worldmap {
     width: 100%;

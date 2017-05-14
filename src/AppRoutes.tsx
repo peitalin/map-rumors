@@ -55,6 +55,9 @@ const PredictionStats = asyncComponent({ loader: () => System.import('./componen
 const CardExpander = asyncComponent({ loader: () => System.import('./components/CardExpander.tsx') })
 const Parallax = asyncComponent({ loader: () => System.import('./components/Parallax.tsx') })
 
+const Profile = asyncComponent({ loader: () => System.import('./components/Profile.tsx') })
+const SarahDrasner = asyncComponent({ loader: () => System.import('./components/SarahDrasner.tsx') })
+
 
 
 const Login = (): JSX.Element => {
@@ -89,10 +92,13 @@ export default class AppRoutes extends React.Component {
           <Route exact path="/" component={ LandingPage } />
 
           <Route path="/map" component={ MapSubscriptions } />
+          <Route path="/map/parallax" component={ Parallax } />
           <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
           <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
           <Route path="/map/parallax/mypredictionlistings/:houseId" component={ RouterFader(PredictionStats) } />
-          <Route path="/map/parallax" component={ Parallax } />
+          <Route path="/map/parallax/profile" component={ Profile } />
+
+          <Route path="/map/parallax/SarahDrasner" component={ SarahDrasner } />
 
           <Route path="/test" component={ CardExpander } />
         </div>

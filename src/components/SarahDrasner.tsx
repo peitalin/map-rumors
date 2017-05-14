@@ -17,10 +17,10 @@ class Page extends React.Component {
   }
 
   componentDidMount() {
-    // var splitText = new SplitText(this.staggerP.childNodes, {type:"lines"});
-    // this.setState({
-    //   splitText: splitText
-    // });
+    var splitText = new SplitText(this.staggerP.childNodes, {type:"lines"});
+    this.setState({
+      splitText: splitText
+    });
     TweenMax.set([this.g1, this.g2, this.g3, this.g4], {
       visibility: 'visible'
     })
@@ -111,7 +111,7 @@ class Page extends React.Component {
       scaleX: 0.5,
       scaleY: 1.2,
       x: -35,
-      y: -50,
+      y: 0,
       transformOrigin: '50% 50%',
       ease: Sine.easeInOut
     }, 'start+=2');
@@ -140,7 +140,7 @@ class Page extends React.Component {
     }, 'start+=2');
     tl.to(this.text, 0.5, {
       top: '30vh',
-      x: -50,
+      x: 0,
       ease: Sine.easeInOut
     }, 'start+=2');
     tl.to(this.button, 0.5, {
@@ -369,7 +369,8 @@ class Page extends React.Component {
           <title>change-shape2</title>
           <g style={{clipPath:'url(#clip-path)'}}>
             <image ref={c => this.map = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/persp-map.gif"/>
-            <image className="gray" ref={c => this.gray = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/blog-hero2.jpg"/>
+            {/* <image className="gray" ref={c => this.gray = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/blog-hero2.jpg"/> */}
+            <image className="gray" ref={c => this.gray = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://images.fineartamerica.com/images-medium-large/london-map-art-steel-blue-michael-tompsett.jpg"/>
           </g>
           <rect id="square" x="417.9" y="268.9" width="217" height="217" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
           <polygon id="triangle" points="525.6 271.6 650 487 401.2 487 525.6 271.6" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
@@ -398,15 +399,13 @@ class Page extends React.Component {
         </svg>
 
       <div className="textarea" ref={c => this.text = c}>
-        <h1>Lorem Ipsum.</h1>
         <button className="button" ref={c => this.button = c} onClick={this.toggleShape}>
           <span className="read">Read More ></span>
           <span className="share"><IconMap /> See Map</span>
           <span className="home">Return Home</span>
         </button>
         <div className="staggerP" ref={c => this.staggerP = c}>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam illum repellendus, molestiae excepturi quo, ab possimus perspiciatis sunt quis. Magni impedit hic culpa, ea. Praesentium facilis dicta excepturi magnam perferendis?</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam illum repellendus, molestiae excepturi quo, ab possimus perspiciatis sunt quis. Magni impedit hic culpa, ea. Praesentium facilis dicta excepturi magnam perferendis?</p>
+          <p>Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen. Sarah Drasner's codepen.</p>
         </div>
       </div>
     </div>
@@ -439,9 +438,6 @@ export default class SarahDrasner extends React.Component {
   render() {
     return (
       <div className="external">
-        <header>
-          <IconBrand />
-        </header>
         <Page />
       </div>
     );

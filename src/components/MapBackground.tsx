@@ -156,10 +156,20 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     let map: mapboxgl.Map = this.state.map
     //// Trigger: flyingTo event in "MyPredictionListing.tsx" and "LocalPredictions.tsx"
     if (map && this.props.flyingTo) {
+      ///// fade parcels out before flying
+      map.once('movestart', () => {
+        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.3)
+        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.3)
+      })
       map.flyTo({
         center: { lng: this.props.longitude, lat: this.props.latitude }
-        speed: 1, // make flying speed 2x fast
+        speed: 0.8, // make flying speed 2x fast
         curve: 1, // make zoom intensity 1.1x as fast
+      })
+      ///// fade parcels in after flying
+      map.once('moveend', () => {
+        map.setPaintProperty(mapboxlayers.radiusBorders, 'line-opacity', 0.6)
+        map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-opacity', 0.6)
       })
       switch (this.props.flyingTo) {
         case 'MyPredictionListings': {
@@ -410,12 +420,12 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           <Layer sourceId="gClickedParcels"
             id={ mapboxlayers.clickedParcelsBorders }
             type="line"
-            paint={{ 'line-color': mapboxlayerColors.clickedParcelsFill, 'line-opacity': 0.7, 'line-width': 1 }}
+            paint={{ 'line-color': mapboxlayerColors.clickedParcelsFill, 'line-opacity': 0.7, 'line-width': 2 }}
           />
           <Layer sourceId="gClickedParcels"
             id={ mapboxlayers.clickedParcelsFill }
             type="fill"
-            paint={{ 'fill-color': mapboxlayerColors.clickedParcelsFill, 'fill-opacity': 0.3 }}
+            paint={{ 'fill-color': mapboxlayerColors.clickedParcelsFill, 'fill-opacity': 0.2 }}
           />
 
           <Source id="gMyPredictions"

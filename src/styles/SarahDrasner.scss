@@ -1,30 +1,39 @@
 
 
+g path {
+  mix-blend-mode: screen;
+}
+
 .external {
-  position: relative;
+  // position: relative;
   overflow: hidden;
   min-height: 800px;
 }
 
 .hero-area {
-  width: 60%;
+  width: 70%;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .textarea {
-  margin-top: -40px;
+  margin-top: 0px;
   text-align: right;
   width: 100%;
   position: absolute;
+  color: #f1f1f1;
+
+  h1 {
+    color: #f1f1f1;
+  }
   button {
     float: right;
   }
   .staggerP {
-    padding-top: 40px;
+    padding-top: 50px;
     max-width: 300px;
-    right: -10px;
+    right: -20px;
     opacity: 0;
     position: absolute;
     p {
@@ -37,13 +46,6 @@
   }
 }
 
-h1 {
-  font-size: 50px;
-}
-
-g path {
-  mix-blend-mode: screen;
-}
 
 .bookmark {
   writing-mode: vertical-rl;
@@ -107,63 +109,63 @@ g path {
 
 //button
 .button {
-	display: block;
-	padding: 10px 30px;
-	border: none;
+  display: block;
+  padding: 10px 30px;
+  border: none;
   width: 170px;
-	background: none;
-	color: inherit;
-	vertical-align: middle;
-	position: relative;
-	z-index: 1;
+  background: none;
+  color: inherit;
+  vertical-align: middle;
+  position: relative;
+  z-index: 1;
   border: 3px solid white;
   font-family: 'Poppins', sans-serif;
-	-webkit-backface-visibility: hidden;
-	-moz-osx-font-smoothing: grayscale;
-  margin-top: -15px;
+  -webkit-backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  margin-top: 0px;
   overflow: hidden;
-	-webkit-transition: border-color 0.3s, color 0.3s;
-	transition: border-color 0.3s, color 0.3s;
-	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  -webkit-transition: border-color 0.3s, color 0.3s;
+  transition: border-color 0.3s, color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 .button:focus {
-	outline: none;
+  outline: none;
 }
 .button > span {
-	vertical-align: top;
+  vertical-align: top;
   svg {
     vertical-align: top;
   }
 }
 .button::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 150%;
-	height: 100%;
-	background: #37474f;
-	z-index: -1;
-	-webkit-transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
-	transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
-	-webkit-transform-origin: 0% 100%;
-	transform-origin: 0% 100%;
-	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s, background-color 0.3s;
-	transition: transform 0.3s, opacity 0.3s, background-color 0.3s;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 100%;
+  background: #37474f;
+  z-index: -1;
+  -webkit-transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+  transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+  -webkit-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+  -webkit-transition: -webkit-transform 0.3s, opacity 0.3s, background-color 0.3s;
+  transition: transform 0.3s, opacity 0.3s, background-color 0.3s;
 }
 .button:hover {
-	color: black;
-	border-color: white;
+  color: black;
+  border-color: white;
   cursor: pointer;
 }
 .button:hover::before {
-	opacity: 1;
-	background-color: white;
-	-webkit-transform: rotate3d(0, 0, 1, 0deg);
-	transform: rotate3d(0, 0, 1, 0deg);
-	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  opacity: 1;
+  background-color: white;
+  -webkit-transform: rotate3d(0, 0, 1, 0deg);
+  transform: rotate3d(0, 0, 1, 0deg);
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 @media screen and (max-width:600px) {
