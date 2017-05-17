@@ -40,6 +40,7 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
   lotPlan: '',
   localPredictions: [],
+  currentCard: 'King',
 }
 
 export const reduxReducerMapbox = (
@@ -72,6 +73,9 @@ export const reduxReducerMapbox = (
     case A.UPDATE_LOCAL_PREDICTION_LISTINGS:
       return { ...state, localPredictions: action.payload }
 
+    case A.UPDATE_CURRENT_CARD:
+      return { ...state, currentCard: action.payload }
+
     default: {
       return state
     }
@@ -89,7 +93,10 @@ const initialReduxStateUser: ReduxStateUser = {
   userGQL: {
     emailAddress: 'j@armada.com',
     name: 'John Smith',
-    id: 'c1234',
+    id: 'cxj1234',
+    upvotes: 100,
+    downvotes: 20,
+    cards: ['ace'],
     bids: [],
     predictions: [],
   },

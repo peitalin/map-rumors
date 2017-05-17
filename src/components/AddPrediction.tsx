@@ -19,6 +19,24 @@ import { iHouse, iPrediction, userGQL,
 
 
 interface AddPredictionProps {
+}
+
+
+
+interface DispatchProps {
+  updateUserGQL?(userGQL: userGQL): void // redux
+  isUpdatingMyPredictions?(bool: boolean): void // redux
+  dispatch?(action: { type: string, payload: any }): void // redux
+}
+interface StateProps {
+  userGQL: userGQL // redux
+}
+interface ReactProps {
+  data?: {
+    loading: boolean
+    error: any
+    House: iHouse
+  } // graphql-data
   createPrediction?({
     variables: {
       prediction: number
@@ -26,24 +44,19 @@ interface AddPredictionProps {
       predictionId: string
     }
   }): void // graphql-mutation
-  data?: {
-    loading: boolean
-    error: any
-    House: iHouse
-  }
-  userGQL: userGQL // redux
-  updateUserGQL?(userGQL: userGQL): void // redux
-  isUpdatingMyPredictions?(bool: boolean): void // redux
-  dispatch?(action: { type: string, payload: any }): void // redux
+  updateUserUpvotesCards?({
+    variables: {
+      cards: string[]
+      upvotes: number
+    }
+  }): void // graphql-mutation
 }
-
-
 interface AddPredictionState {
   prediction: number
 }
 
 
-export class AddPrediction extends React.Component<AddPredictionProps, AddPredictionState> {
+export class AddPrediction extends React.Component<StateProps & DispatchProps & ReactProps, AddPredictionState> {
 
   state = {
     prediction: 1000 * Math.round(500 + Math.random() * 500)
@@ -76,7 +89,7 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
     }
   }
 
-  private createPrediction = async(prediction: number): void => {
+  private makePrediction = async(prediction: number): void => {
     this.props.isUpdatingMyPredictions(true)
     // Redux optimistic update
     this.updatePredictionsRedux()
@@ -90,6 +103,15 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
     })
     this.updatePredictionsRedux(createPredictionResponse.data.createPrediction.id)
     this.props.isUpdatingMyPredictions(false)
+  }
+
+  private updateUserUpvoteCards = async(cards: string[], upvote: number) {
+    this.props.updateUserUpvotesCards({
+      variables: {
+        cards: [...this.props.userGQL.cards, this.props.currentCard],
+        upvotes: this.props.userGQL.upvotes + 1
+      }
+    })
   }
 
   render() {
@@ -107,7 +129,7 @@ export class AddPrediction extends React.Component<AddPredictionProps, AddPredic
         {(
             maxPredictionLimitReached
               ? <div style={{ color: '#C55' }}>Max Prediction Limit Reached: {this.props.userGQL.predictions.length}/9</div>
-              : <Button type='primary' onClick={this.createPrediction}>Place Prediction</Button>
+              : <Button type='primary' onClick={this.makePrediction}>Place Prediction</Button>
         )}
       </div>
     )
@@ -128,6 +150,22 @@ mutation($prediction: Float, $userId: ID!, $houseId: ID!) {
   }
 }
 `
+
+const updateUserUpvoteCards = gql `
+mutation($id: ID!, $cards: [String!], $upvotes: Float) {
+  updateUser(
+    id: $id,
+    cards: $cards,
+    upvotes: $upvotes,
+  ) {
+    id
+    cards
+    upvotes
+    emailAddress
+  }
+}
+`
+
 
 
 const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
@@ -153,6 +191,7 @@ const mapDispatchToProps = ( dispatch ) => {
 }
 
 export default compose(
+  graphql(updateUserUpvoteCards, { name: 'updateUserUpvotesCards' }),
   graphql(createPredictionMutation, { name: 'createPrediction' }),
   connect(mapStateToProps, mapDispatchToProps)
 )( AddPrediction )

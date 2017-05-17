@@ -9,6 +9,7 @@ export const Actions: ActionsInterface = {
     UPDATE_FLYING_TO: "UPDATE_FLYING_TO",
     SHOW_MODAL: "SHOW_MODAL",
     UPDATE_LOTPLAN: "UPDATE_LOTPLAN",
+    UPDATE_CURRENT_CARD: "UPDATE_CURRENT_CARD",
     UPDATE_LOCAL_PREDICTION_LISTINGS: "UPDATE_LOCAL_PREDICTION_LISTINGS",
   },
   User: {
@@ -33,6 +34,7 @@ interface ActionsInterface {
     UPDATE_FLYING_TO: string | boolean
     SHOW_MODAL: string
     UPDATE_LOTPLAN: string
+    UPDATE_CURRENT_CARD: string
     UPDATE_LOCAL_PREDICTION_LISTINGS: string
   }
   User: {

@@ -62,7 +62,7 @@ export default class LandingPage extends React.Component<any, any> {
           </CSSTransitionGroup>
 
           <div className='world-map-container'>
-            <SarahDrasner/>
+            <SarahDrasner language={this.state.language} />
           </div>
 
           { switchLanguageHeader2(this.state.language) }
@@ -120,6 +120,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
           </div>
           <div className='landing-page-sub-header'>
             <h3>在地图上放置和分享实时预测。</h3>
+            <p><b>Card Game: 大老二 (Big Old 2).</b></p>
             <p>
             Lorem存有悲坐阿梅德，consectetur adipiscing elit，sed的tempor和活力，使勞動和悲傷，一些重要的事情要做eiusmod。
                 多年來，我會來的，誰將會nostrud aliquip了她鍛煉的優勢，使刺激措施，如果學區和長壽。
@@ -138,8 +139,8 @@ const switchLanguageHeader = (language: string): JSX.Element => {
           </div>
           <div className='landing-page-sub-header'>
             <h3>Место и доля предсказаний в реальном времени на карте.</h3>
-            <p>
-            Lorem Ipsum боль сидеть Амет, consectetur adipiscing Элит, sed Tempor и жизнеспособность, так что труд и горе, некоторые важные вещи, чтобы сделать eiusmod.
+            <p> <b>Card Game: дурак (Idiot).</b> </p>
+            <p> Lorem Ipsum боль сидеть Амет, consectetur adipiscing Элит, sed Tempor и жизнеспособность, так что труд и горе, некоторые важные вещи, чтобы сделать eiusmod.
             На протяжении многих лет я пришел, кто nostrud aliquip из нее преимущества упражнений, так что усилия по стимулированию, если школьный округ и долговечность.
             </p>
           </div>
@@ -156,6 +157,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
           </div>
           <div className='landing-page-sub-header'>
             <h3>Place and share real-time predictions on the map.</h3>
+            <p> <b>Card Game: Poker/Blackjack.</b>  </p>
             <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

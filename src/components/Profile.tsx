@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { ReduxStateUser } from '../reducer'
+import { ReduxState, ReduxStateUser } from '../reducer'
 import { userGQL } from '../typings/interfaceDefinitions'
 
 import Title from './Title'
@@ -23,6 +23,11 @@ export class Profile extends React.Component<StateProps & DispatchProps & ReactP
       <Title>
         <div style={{ color: '#eee' }}>
            PROFILE
+           <div>{ this.props.userGQL.emailAddress }</div>
+           <div>{ this.props.userGQL.name }</div>
+           <div>{ this.props.userGQL.id }</div>
+           <div>{ this.props.userGQL.upvotes }</div>
+           <div>{ this.props.userGQL.downvotes }</div>
         </div>
       </Title>
     )
@@ -30,9 +35,9 @@ export class Profile extends React.Component<StateProps & DispatchProps & ReactP
 }
 
 
-const mapStateToProps = ( state: ReduxStateUser ): ReduxStateUser => {
+const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
   return {
-    userGQL: state.userGQL
+    userGQL: state.reduxUser.userGQL
   }
 }
 

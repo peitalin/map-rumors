@@ -159,6 +159,9 @@ const UserQuery = gql`
 query {
   user {
     id
+    upvotes
+    downvotes
+    cards
     emailAddress
     predictions {
       id

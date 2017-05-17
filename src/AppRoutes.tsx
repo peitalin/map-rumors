@@ -42,6 +42,7 @@ const Parallax = asyncComponent({ loader: () => System.import('./components/Para
 
 const Profile = asyncComponent({ loader: () => System.import('./components/Profile.tsx') })
 const SarahDrasner = asyncComponent({ loader: () => System.import('./components/SarahDrasner.tsx') })
+const SarahMarker = asyncComponent({ loader: () => System.import('./components/SarahMarker.tsx') })
 
 
 
@@ -83,7 +84,8 @@ export default class AppRoutes extends React.Component {
           <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
 
           <Route path="/map/parallax/profile" component={ Profile } />
-          <Route path="/map/parallax/SarahDrasner" component={ SarahDrasner } />
+          <Route path="/SarahDrasner" component={ SarahDrasner } />
+          <Route path="/SarahMarker" component={ SarahMarker } />
           <Route path="/test" component={ CardExpander } />
 
         </div>
