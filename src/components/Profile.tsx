@@ -26,7 +26,17 @@ export class Profile extends React.Component<StateProps & DispatchProps & ReactP
         <div><b>id:</b> { this.props.userGQL.id }</div>
         <div><b>upvotes:</b> { this.props.userGQL.upvotes }</div>
         <div><b>downvotes:</b> { this.props.userGQL.downvotes }</div>
-        <div><b>cards:</b> { this.props.userGQL.cards }</div>
+        <div><b>cards:</b></div>
+        {(
+          this.props.userGQL.cards.map((card, i) => {
+            return (
+              <div key={i}style={{ height: '200px' }}>
+                <img style={{ height: '100%' }} src={`https://s3-ap-southeast-2.amazonaws.com/hayekcards/spades_${card}.svg`}>
+                </img>
+              </div>
+            )
+          })
+        )}
       </Title>
     )
   }
