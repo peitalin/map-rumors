@@ -18,17 +18,15 @@ interface ReactProps {
 
 export class Profile extends React.Component<StateProps & DispatchProps & ReactProps, any> {
   render() {
-    console.info(this.props.userGQL)
     return (
-      <Title>
-        <div style={{ color: '#eee' }}>
-           PROFILE
-           <div>{ this.props.userGQL.emailAddress }</div>
-           <div>{ this.props.userGQL.name }</div>
-           <div>{ this.props.userGQL.id }</div>
-           <div>{ this.props.userGQL.upvotes }</div>
-           <div>{ this.props.userGQL.downvotes }</div>
-        </div>
+      <Title style={{ padding: '5%', position: 'absolute', color: '#f1f1f1', display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor: '#222', width: '100%' }}>
+        <b>User Profile:</b>
+        <div><b>email:</b> { this.props.userGQL.emailAddress }</div>
+        <div><b>name:</b> { this.props.userGQL.name }</div>
+        <div><b>id:</b> { this.props.userGQL.id }</div>
+        <div><b>upvotes:</b> { this.props.userGQL.upvotes }</div>
+        <div><b>downvotes:</b> { this.props.userGQL.downvotes }</div>
+        <div><b>cards:</b> { this.props.userGQL.cards }</div>
       </Title>
     )
   }

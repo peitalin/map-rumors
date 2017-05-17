@@ -79,7 +79,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
           reduxUser: reduxReducerUser,
           apollo: this.apolloClient.reducer(),
         }),
-        rehydratedState,
+        {},
         compose(
           this.registerReduxDevtools(),
           applyMiddleware(thunk),
@@ -87,10 +87,14 @@ class AppApollo extends React.Component<any, AppApolloState> {
           // applyMiddleware(this.apolloClient.middleware()), // Apollo-client: wrong state shape
         )
       );
-      // const persistor = createPersistor(reduxStore, { storage: localforage })
+
+      const persistor = createPersistor(reduxStore, { storage: localforage })
       // this.clearStore(persistor)
-      // console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
-      console.info('Rehydrating OFF')
+      if (persistor) {
+        console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
+      } else {
+        console.info('Rehydrating OFF')
+      }
       this.reduxStore = reduxStore
       this.setState({ rehydrated: true })
     })

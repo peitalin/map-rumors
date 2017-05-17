@@ -78,7 +78,6 @@ interface DispatchProps {
   onZoomChange?(zoom: number[]): void
   toggleShowModal?(showModal: boolean): void
   updateLotPlan?(lotPlan: string): void
-  updateCurrentCard?(card: string): void
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
@@ -548,9 +547,6 @@ const mapDispatchToProps = ( dispatch ) => {
     ),
     updateLotPlan: (lotPlan: string) => dispatch(
       { type: A.Mapbox.UPDATE_LOTPLAN, payload: lotPlan }
-    ),
-    updateCurrentCard: (card: string) => dispatch(
-      { type: A.Mapbox.UPDATE_CURRENT_CARD, payload: card }
     ),
     updateLocalPredictionListings: (localPredictions: iLocalPrediction[]) => dispatch(
       { type: A.Mapbox.UPDATE_LOCAL_PREDICTION_LISTINGS, payload: localPredictions }

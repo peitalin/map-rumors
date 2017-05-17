@@ -8,6 +8,9 @@ export interface userGQL {
   id?: string
   name?: string
   emailAddress?: string
+  upvotes?: number
+  downvotes?: number
+  cards?: string[]
   bids?: iBid[]
   predictions?: iPrediction[]
 }

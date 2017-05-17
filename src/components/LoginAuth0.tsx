@@ -72,6 +72,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
           resolve(this.props.data.refetch())
         }).then(res => {
           if (this.props.data.user) {
+            console.info("Updating redux userGQL with user profile from graphQL.")
             this.props.updateUserProfileRedux(this.props.data.user)
           } else {
             console.info("New user! Making a new GraphCool User account.")

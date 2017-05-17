@@ -15,27 +15,32 @@ import 'styles/HouseCard.scss'
 interface HouseCardProps {
   id: string
   houseProps: {
-    LOT: string,
+    LOT: string
     PLAN: string
+    lotPlan: string
   }
   showHouseCard: boolean
   lotPlan: string
 }
+interface HouseCardState {
+  isFlipped: boolean
+}
 
 
-export class HouseCard extends React.Component<HouseCardProps, any> {
+
+export class HouseCard extends React.Component<HouseCardProps, HouseCardState> {
 
   state = {
     isFlipped: this.props.isFlipped ? this.props.isFlipped : false,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: HouseCardProps, nextState: HouseCardState) {
     if (this.state.isFlipped !== nextState.isFlipped) {
       return true
     }
     if ((this.props.houseProps.LOT !== nextProps.houseProps.LOT) ||
        (this.props.houseProps.PLAN !== nextProps.houseProps.PLAN) ||
-       (this.props.houseProps.landArea !== nextProps.houseProps.landArea)) {
+       (this.props.houseProps.lotPlan !== nextProps.houseProps.lotPlan) {
       return true
     }
     if (this.props.showHouseCard !== nextProps.showHouseCard) {
@@ -48,7 +53,7 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
     this.setState({ isFlipped: !this.state.isFlipped })
   }
 
-  randHouse = () => {
+  randHouseCard = () => {
     let houses = [
       'house_baratheon',
       'house_stark',
@@ -58,22 +63,24 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
       'house_tyrell',
       'house_greyjoy'
     ]
-    return houses[Math.floor(Math.random() * houses.length)]
-  }
-
-  handleTabChange = (event) => {
-    console.info(event)
+    let cards = [
+      'Two', 'Three', 'Four', 'Five', 'Six',
+      'Seven', 'Eight', 'Nine', 'Ten',
+      'Jack', 'Queen', 'King', 'Ace'
+    ]
+    let img = houses[ Math.floor(Math.random() * houses.length) ]
+    let cardIndex = Math.floor(Math.random() * cards.length)
+    return {
+      imgSrc: `https://s3-ap-southeast-2.amazonaws.com/housestyles/${img}.svg`,
+      currentCard: cards[cardIndex],
+      upvotes: 2 + cardIndex, // points based on card
+    }
   }
 
   render() {
-    let imgSrc = 'https://s3-ap-southeast-2.amazonaws.com/housestyles/'
-    let houseCardOpacity = this.props.showHouseCard ? 1 : 0
-    let houseCardZIndex = this.props.showHouseCard ? 1 : -1
-    let houseProps = this.props.houseProps
-
+    let { imgSrc, currentCard, upvotes } = this.randHouseCard()
     let cardStyle = {
-      opacity: houseCardOpacity,
-      houseCardZIndex,
+      opacity: this.props.showHouseCard ? 1 : 0,
     }
 
     return (
@@ -82,8 +89,8 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
 
           {/* Front side of clip-card */}
           <div onClick={this.flipCard}>
-            <Card title={`${houseProps.PLAN}`} bodyStyle={{ padding: 0 }} >
-              <img src={imgSrc + `${this.randHouse()}.svg`}/>
+            <Card title={this.props.houseProps.PLAN} bodyStyle={{ padding: 0 }} >
+              <img src={imgSrc}/>
               <ModalMap id='modalmap' longitude={this.props.longitude} latitude={this.props.latitude} />
             </Card>
           </div>
@@ -91,7 +98,12 @@ export class HouseCard extends React.Component<HouseCardProps, any> {
           {/* Back-side of flip-card */}
           <div>
             <Card bodyStyle={{ padding: 25 }} >
-              <HouseStats flipCard={this.flipCard} lotPlan={this.props.lotPlan} houseProps={this.props.houseProps} />
+              <HouseStats flipCard={this.flipCard}
+                lotPlan={this.props.lotPlan}
+                houseProps={this.props.houseProps}
+                currentCard={currentCard}
+                upvotes={upvotes}
+              />
             </Card>
           </div>
 

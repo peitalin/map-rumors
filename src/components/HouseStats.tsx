@@ -42,6 +42,8 @@ interface HouseStatsProps {
     LOT_AREA: number
   }
   flipCard: Function
+  currentCard: string
+  upvotes: number
 }
 
 interface HouseStatsState {
@@ -118,7 +120,10 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
               <Col span={12}>Lot No:</Col>
             </Row>
           </div>
-          <AddPrediction data={this.props.data} />
+          <AddPrediction data={this.props.data}
+            currentCard={this.props.currentCard}
+            upvotes={this.props.upvotes}
+          />
         </div>
       )
     }
@@ -186,7 +191,10 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
             </Row>
           </div>
 
-          <AddPrediction data={this.props.data} />
+          <AddPrediction data={this.props.data}
+            currentCard={this.props.currentCard}
+            upvotes={this.props.upvotes}
+          />
         </div>
       )
     } else if (!this.props.data.House) {

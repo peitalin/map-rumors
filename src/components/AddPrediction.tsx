@@ -32,6 +32,8 @@ interface StateProps {
   userGQL: userGQL // redux
 }
 interface ReactProps {
+  currentCard: string
+  upvotes: number
   data?: {
     loading: boolean
     error: any
@@ -62,7 +64,7 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
     prediction: 1000 * Math.round(500 + Math.random() * 500)
   }
 
-  private updatePredictionsRedux = (newPredictionId = 'tempId'): void => {
+  private updateMyPredictionParcels = (newPredictionId = 'tempId'): void => {
     let predictions: iPrediction[] = this.props.userGQL.predictions
     let House: iHouse = this.props.data.House
     let newPrediction = predictions.filter((prediction: iPrediction) => prediction.id === 'tempId')
@@ -89,32 +91,42 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
     }
   }
 
+  private updateUserUpvoteCards = async(): void => {
+    let graphqlResponse = await this.props.updateUserUpvotesCards({
+      variables: {
+        userId: this.props.userGQL.id,
+        cards: [...this.props.userGQL.cards, this.props.currentCard],
+        upvotes: this.props.upvotes,
+      }
+    })
+    this.props.updateUserGQL({
+      ...this.props.userGQL,
+      cards: [...this.props.userGQL.cards, this.props.currentCard],
+      upvotes: this.props.upvotes,
+    })
+  }
+
   private makePrediction = async(prediction: number): void => {
     this.props.isUpdatingMyPredictions(true)
     // Redux optimistic update
-    this.updatePredictionsRedux()
+    this.updateMyPredictionParcels()
     // GraphQL createBid
-    let createPredictionResponse: mutationResponse = await this.props.createPrediction({
+    let graphqlResponse: mutationResponse = await this.props.createPrediction({
       variables: {
         prediction: this.state.prediction
         userId: this.props.userGQL.id,
         houseId: this.props.data.House.id,
       }
     })
-    this.updatePredictionsRedux(createPredictionResponse.data.createPrediction.id)
+    this.updateMyPredictionParcels(graphqlResponse.data.createPrediction.id)
+    this.updateUserUpvoteCards()
     this.props.isUpdatingMyPredictions(false)
   }
 
-  private updateUserUpvoteCards = async(cards: string[], upvote: number) {
-    this.props.updateUserUpvotesCards({
-      variables: {
-        cards: [...this.props.userGQL.cards, this.props.currentCard],
-        upvotes: this.props.userGQL.upvotes + 1
-      }
-    })
-  }
 
   render() {
+    console.info(this.props)
+
     if (!this.props.userGQL) {
       return <div>Login to make a prediction.</div>
     }
@@ -152,9 +164,9 @@ mutation($prediction: Float, $userId: ID!, $houseId: ID!) {
 `
 
 const updateUserUpvoteCards = gql `
-mutation($id: ID!, $cards: [String!], $upvotes: Float) {
+mutation($userId: ID!, $cards: [String!], $upvotes: Int) {
   updateUser(
-    id: $id,
+    id: $userId,
     cards: $cards,
     upvotes: $upvotes,
   ) {
