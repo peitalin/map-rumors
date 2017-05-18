@@ -5,12 +5,12 @@ var CACHE_NAME = 'hayek-cache';
 // works in browser console.
 var urlsToCache = [
   '/index.html',
-  // '/styles.css',
-  // '/overrides.css',
+  '/styles.css',
+  '/overrides.css',
   // '/stylesSSR.css',
-  // '/vendor.js',
-  // '/manifest.json',
-  // '/bundle.js',
+  '/vendor.js',
+  '/manifest.json',
+  '/bundle.js',
   '/localforage.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.min.js',

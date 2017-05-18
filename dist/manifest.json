@@ -6,6 +6,7 @@
   "start_url": "/",
   "background_color": "#D4AFDF",
   "theme_color": "#222",
+  "display": "standalone",
   "icons": [{
     "src": "./pwa_icon.png",
     "sizes": "256x256",
