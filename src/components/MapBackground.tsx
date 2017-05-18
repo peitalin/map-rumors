@@ -26,7 +26,6 @@ import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
 import HouseStats from './HouseStats'
 import GeoSearchBar from './GeoSearchBar'
-import Subscriptions from './Subscriptions'
 
 import * as Button from 'antd/lib/button'
 import 'antd/lib/button/style/css'
@@ -41,7 +40,6 @@ declare var geojsonValidation: geojsonValidate
 
 import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')
-
 
 
 

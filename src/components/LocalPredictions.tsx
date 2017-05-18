@@ -5,11 +5,13 @@ import { connect, Dispatch } from 'react-redux'
 import { ReduxState, ReduxStateUser, ReduxStateParcels } from '../reducer'
 import { Actions as A } from '../reduxActions'
 
+import { Link } from 'react-router-dom'
+
 import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import { iPrediction, iHouse, iLocalPrediction, userGQL, geoData } from '../typings/interfaceDefinitions'
+import { iPrediction, iHouse, userGQL, geoData } from '../typings/interfaceDefinitions'
 
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'
@@ -21,6 +23,7 @@ import 'styles/LocalPredictions.scss'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 let message: { success: Function, error: Function, warning: Function, info: Function }
+const LOCALPREDICTIONS_ROUTE = "/map/parallax/localpredictions"
 
 
 
@@ -35,7 +38,7 @@ interface DispatchProps {
   updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<{ type: string, payload: any }>
 }
 interface StateProps {
-  localPredictions: iLocalPrediction
+  localPredictions: iPrediction[]
 }
 interface ReactProps {
   data: {
@@ -44,7 +47,6 @@ interface ReactProps {
 }
 
 export class LocalPredictions extends React.Component<DispatchProps & StateProps & ReactProps, any> {
-
 
   constructor(props: any) {
     super(props)
@@ -68,7 +70,6 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
 
   render() {
     if (this.props.localPredictions) {
-
       let localPredictions = this.props.localPredictions.map((p: iPrediction) => {
         return (
           <CarouselTile key={p.id}
@@ -77,6 +78,9 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
           >
             <div>{ p.user.emailAddress }</div>
             <Price price={p.prediction}/>
+            <Link to={`${LOCALPREDICTIONS_ROUTE}/${p.id}`} className="router-link">
+              { p.house.lotPlan }
+            </Link>
             <div>{ p.house.address }</div>
           </CarouselTile>
         )
@@ -95,7 +99,6 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
     }
   }
 }
-
 
 const mapStateToProps = ( state: ReduxState ): ReduxStateParcels => {
   return {

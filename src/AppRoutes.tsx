@@ -31,8 +31,8 @@ const LandingPage = asyncComponent({ loader: () => System.import('./components/L
 const LoginAuth0 = asyncComponent({ loader: () => System.import('./components/LoginAuth0.tsx') })
 const Navbar = asyncComponent({ loader: () => System.import('./components/Navbar.tsx') })
 
-const MapSubscriptions = asyncComponent({ loader: () => System.import('./components/MapSubscriptions.tsx') })
 const LocalPredictions = asyncComponent({ loader: () => System.import('./components/LocalPredictions.tsx') })
+const LocalPredictionSubscriptions = asyncComponent({ loader: () => System.import('./components/LocalPredictionSubscriptions.tsx') })
 const MyPredictionListings = asyncComponent({ loader: () => System.import('./components/MyPredictionListings.tsx') })
 const PredictionStats = asyncComponent({ loader: () => System.import('./components/PredictionStats.tsx') })
 
@@ -77,9 +77,12 @@ export default class AppRoutes extends React.Component {
           <Route path="/" component={ Navbar } />
           <Route exact path="/" component={ LandingPage } />
 
-          <Route path="/map" component={ MapSubscriptions } />
+          <Route path="/map" component={ LocalPredictionSubscriptions } />
           <Route path="/map/parallax" component={ Parallax } />
+
           <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
+          <Route path="/map/parallax/localpredictions/:houseId" component={ PredictionStats } />
+
           <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
           <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
 

@@ -18,7 +18,7 @@ import { SpinnerRectangle } from './Spinners'
 import Title from './Title'
 import MapBackground from './MapBackground'
 
-import 'styles/MapSubscriptions.scss'
+import 'styles/LocalPredictionSubscriptions.scss'
 
 
 

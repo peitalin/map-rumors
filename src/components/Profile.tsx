@@ -19,7 +19,16 @@ interface ReactProps {
 export class Profile extends React.Component<StateProps & DispatchProps & ReactProps, any> {
   render() {
     return (
-      <Title style={{ padding: '5%', position: 'absolute', color: '#f1f1f1', display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor: '#222', width: '100%' }}>
+      <div style={{
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '5%',
+        color: '#f1f1f1',
+        backgroundColor: '#222',
+        width: '100%'
+      }}>
         <b>User Profile:</b>
         <div><b>email:</b> { this.props.userGQL.emailAddress }</div>
         <div><b>name:</b> { this.props.userGQL.name }</div>
@@ -30,14 +39,14 @@ export class Profile extends React.Component<StateProps & DispatchProps & ReactP
         {(
           this.props.userGQL.cards.map((card, i) => {
             return (
-              <div key={i}style={{ height: '200px' }}>
+              <div key={i} style={{ height: '200px' }}>
                 <img style={{ height: '100%' }} src={`https://s3-ap-southeast-2.amazonaws.com/hayekcards/spades_${card}.svg`}>
                 </img>
               </div>
             )
           })
         )}
-      </Title>
+      </div>
     )
   }
 }

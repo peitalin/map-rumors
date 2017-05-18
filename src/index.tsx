@@ -89,7 +89,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
       );
 
       const persistor = createPersistor(reduxStore, { storage: localforage })
-      this.clearStore(persistor)
+      // this.clearStore(persistor)
       if (persistor) {
         console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
       } else {
