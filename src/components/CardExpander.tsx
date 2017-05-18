@@ -2,7 +2,7 @@
 import * as React from 'react'
 import 'styles/CardExpander.scss'
 import * as classnames from 'classnames'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 import { TweenLite, TweenMax } from 'gsap'
 
 const PREDICTIONLISTINGS_ROUTE = '/map/parallax/mypredictionlistings'
@@ -19,12 +19,13 @@ interface ReactProps {
 }
 
 
-export default class CardExpander extends React.Component<StateProps & DispatchProps & ReactProps, any> {
+export class CardExpander extends React.Component<StateProps & DispatchProps & ReactProps, any> {
 
   state = {
     imgClicked: false,
     infoClicked: false,
     underlayClicked: false,
+    goBackToRoute: '/map/parallax/mypredictionlistings'
   }
 
   componentDidMount() {
@@ -63,6 +64,7 @@ export default class CardExpander extends React.Component<StateProps & DispatchP
   }
 
   render() {
+    console.info(this.props)
     return (
       <div className={classnames({
         "card__container": true,
@@ -107,3 +109,6 @@ export default class CardExpander extends React.Component<StateProps & DispatchP
     )
   }
 }
+
+
+export default withRouter( CardExpander )

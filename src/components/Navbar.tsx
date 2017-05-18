@@ -2,11 +2,17 @@
 
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
+import { ReduxStateUser, ReduxState } from '../reducer'
+
 import { Link, withRouter, Location, Redirect } from 'react-router-dom'
+
 import { slide as Menu } from 'react-burger-menu'
 
 import * as Breadcrumb from 'antd/lib/breadcrumb'
 import 'antd/lib/breadcrumb/style/css'
+
+import * as Badge from 'antd/lib/badge'
+import 'antd/lib/badge/style/css'
 
 import 'styles/Navbar.scss'
 
@@ -14,6 +20,8 @@ import 'styles/Navbar.scss'
 
 interface NavbarProps {
   location?: Location
+  upvotes: number
+  downvotes: number
 }
 interface NavbarState {
   menuOpen: boolean
@@ -89,6 +97,13 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
               { crumbs }
             </Breadcrumb>
           </div>
+          <div>
+            <Badge count={this.props.downvotes} overflowCount={100000} style={{ backgroundColor: '#BB4959' }} />
+          </div>
+          <div>
+            <Badge count={this.props.upvotes} overflowCount={100000} style={{ backgroundColor: '#1BD1C1' }} />
+          </div>
+          <br/>
           <Link className="menu-item" to='/'>Home</Link>
           <Link className="menu-item" to='/map'>Map</Link>
           <Link className="menu-item" to='/map/parallax/localpredictions'>Local Predictions</Link>
@@ -104,7 +119,13 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
 }
 
 
+const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
+  return {
+    upvotes: state.reduxUser.userGQL.upvotes,
+    downvotes: state.reduxUser.userGQL.downvotes
+  }
+}
 
-export default withRouter( Navbar )
+export default connect(mapStateToProps, null)(withRouter( Navbar ))
 
 
