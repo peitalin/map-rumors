@@ -415,7 +415,7 @@
 
 .world-map-container {
   height: 60vw;
-  min-height: 60vh;
+  min-height: 40vh;
   padding: 0% 0%;
   border-top: 2px solid #565A5C;
   border-bottom: 2px solid #565A5C;
@@ -450,7 +450,7 @@
   /* landscape */
 
   .world-map-container {
-    height: 60vh;
+    height: 100vh;
   }
 }
 
@@ -571,6 +571,26 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+@media screen and (min-aspect-ratio: 8 / 16) and (max-width: 600px) {
+  /* portrait */
+
+  .hero-area {
+    width: 70%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+  }
+}
+
+@media screen and (min-aspect-ratio: 16 / 10) and (max-width: 780px) {
+  /* landscape */
+
+  .hero-area {
+    height: 50vw;
+    transform: translateX(-50%) scale(0.8);
+  }
 }
 
 .textarea {

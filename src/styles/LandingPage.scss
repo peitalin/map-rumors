@@ -136,7 +136,7 @@ $slider-color: #96616B;
 
 .world-map-container {
   height: 60vw;
-  min-height: 60vh;
+  min-height: 40vh;
   padding: 0% 0%;
   border-top: 2px solid #565A5C;
   border-bottom: 2px solid #565A5C;
@@ -170,7 +170,7 @@ $slider-color: #96616B;
 @media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
   /* landscape */
   .world-map-container {
-    height: 60vh;
+    height: 100vh;
   }
 }
 

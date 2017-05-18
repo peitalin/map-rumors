@@ -16,6 +16,22 @@ g path {
   left: 50%;
   transform: translateX(-50%);
 }
+@media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
+  /* portrait */
+  .hero-area {
+    width: 70%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+  }
+}
+@media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
+  /* landscape */
+  .hero-area {
+    height: 50vw;
+    transform: translateX(-50%) scale(0.8);
+  }
+}
 
 .textarea {
   margin-top: 0px;
