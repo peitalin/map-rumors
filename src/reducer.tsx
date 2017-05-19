@@ -96,7 +96,7 @@ const initialReduxStateUser: ReduxStateUser = {
     id: 'cxj1234',
     upvotes: 100,
     downvotes: 20,
-    cards: ['ace'],
+    cards: ['Ace'],
     bids: [],
     predictions: [],
   },

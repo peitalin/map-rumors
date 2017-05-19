@@ -5,8 +5,6 @@ import * as classnames from 'classnames'
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { TweenLite, TweenMax } from 'gsap'
 
-const PREDICTIONLISTINGS_ROUTE = '/map/parallax/mypredictionlistings'
-
 
 interface DispatchProps {
 }
@@ -25,7 +23,6 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
     imgClicked: false,
     infoClicked: false,
     underlayClicked: false,
-    goBackToRoute: '/map/parallax/mypredictionlistings'
   }
 
   componentDidMount() {
@@ -64,7 +61,6 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
   }
 
   render() {
-    console.info(this.props)
     return (
       <div className={classnames({
         "card__container": true,
@@ -74,7 +70,7 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
         <div className="card__underlay" onClick={this.handleClickUnderlay}>
           {(
             this.state.underlayClicked &&
-            <Redirect to={PREDICTIONLISTINGS_ROUTE}/>
+            <Redirect to={this.props.history.location.pathname}/>
           )}
         </div>
 
