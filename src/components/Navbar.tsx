@@ -52,7 +52,7 @@ var styles = {
   },
   bmItemList: {
     color: '#b8b7ad',
-    padding: '1rem;'
+    padding: '1rem'
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.3)'
