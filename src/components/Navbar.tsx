@@ -11,9 +11,6 @@ import { slide as Menu } from 'react-burger-menu'
 import * as Breadcrumb from 'antd/lib/breadcrumb'
 import 'antd/lib/breadcrumb/style/css'
 
-import * as Badge from 'antd/lib/badge'
-import 'antd/lib/badge/style/css'
-
 import 'styles/Navbar.scss'
 
 
@@ -39,23 +36,23 @@ var styles = {
     background: '#96616B'
   },
   bmCrossButton: {
-    height: '24px',
-    width: '24px'
+    height: '32px',
+    width: '32px'
   },
   bmCross: {
     background: '#888'
   },
   bmMenu: {
     background: '#EEEEEE',
-    padding: '2.5em 1.5em 0',
-    fontSize: '1.15em'
+    padding: '5rem 2rem 0',
+    fontSize: '1.2rem'
   },
   bmMorphShape: {
     fill: '#37505C'
   },
   bmItemList: {
     color: '#b8b7ad',
-    padding: '0.8em'
+    padding: '1rem;'
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.3)'
@@ -97,12 +94,6 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
               { crumbs }
             </Breadcrumb>
           </div>
-          <div>
-            <Badge count={this.props.downvotes} overflowCount={100000} style={{ backgroundColor: '#BB4959' }} />
-          </div>
-          <div>
-            <Badge count={this.props.upvotes} overflowCount={100000} style={{ backgroundColor: '#1BD1C1' }} />
-          </div>
           <br/>
           <Link className="menu-item" to='/'>Home</Link>
           <Link className="menu-item" to='/map'>Map</Link>
@@ -112,6 +103,13 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
           <Link className="menu-item" to='/SarahDrasner'>SarahDrasner</Link>
           <Link className="menu-item" to='/SarahMarker'>SarahMarker</Link>
           <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
+          <br/>
+          <div className="Nav__upvotes">
+            Upvotes: <span>{ this.props.upvotes }</span>
+          </div >
+          <div className="Nav__downvotes">
+            Downvotes: <span>{ this.props.downvotes }</span>
+          </div>
         </Menu>
       </div>
     )

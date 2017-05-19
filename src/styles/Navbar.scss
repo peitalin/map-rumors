@@ -9,17 +9,36 @@
 }
 
 div.Nav.Breadcrumb {
-  position: fixed;
-  top: 1%;
-  left: 1%;
-  padding: 4px;
-  padding-right: 8px;
-  background-color: #444444;
-  border: 1px solid #444444;
+  padding: 4%;
+  background-color: #96616B;
+  border: 1px solid lighten(#96616B, 10%);
   color: #f8f8f8;
 }
 div.Nav.Breadcrumb:hover {
   border: 1px solid RGBA(212, 175, 223, 1.00);
+}
+
+.ant-breadcrumb {
+  max-width: 240px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Nav__upvotes {
+  padding: 2%;
+  background-color: #37505C;
+  color: #87D068;
+}
+.Nav__downvotes {
+  padding: 2%;
+  background-color: #37505C;
+  color: #D17B88;
+}
+
+a[class^='menu-item'] {
+  margin: 4% 0%;
 }
 
 span.ant-breadcrumb-separator {
