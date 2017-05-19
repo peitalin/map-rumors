@@ -33,6 +33,11 @@ h3 {
   font-size: 1.2rem;
 }
 
+input:focus {
+  outline-offset: 0px;
+  outline: none;
+  color: #E0BAF0;
+}
 
 // antd override
 ::selection {

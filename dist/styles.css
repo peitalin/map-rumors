@@ -799,8 +799,8 @@
   opacity: 0;
 }.login-auth0 {
   position: fixed;
-  top: 1%;
-  right: 1%;
+  top: 10px;
+  right: 10px;
   z-index: 2;
 }
 
@@ -809,12 +809,12 @@
   display: flex;
   justify-content: center;
   width: 40px;
-  transition: all 0.6s ease-in-out;
+  transition: width 0.6s ease-in-out;
 }
 
 .login-auth0-loader.login-loading {
   width: 70px;
-  transition: all 0.6s ease-in-out;
+  transition: width 0.6s ease-in-out;
 }
 
 .login-loading::after {
@@ -826,9 +826,10 @@
 }
 
 button#antd-login {
+  height: 32px;
   border-radius: 0px;
-  background-color: #444444;
-  border-color: #4a4a4a;
+  background-color: #96616B;
+  border-color: #ac7e87;
   color: #eee;
 }
 
@@ -4893,202 +4894,6 @@ samp {
 .ant-breadcrumb-link > .anticon + span {
   margin-left: 4px;
 }
-@font-face {
-  font-family: "Helvetica Neue For Number";
-  src: local("Helvetica Neue");
-  unicode-range: U+30-39;
-}
-.ant-badge {
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-  vertical-align: middle;
-}
-.ant-badge-count {
-  position: absolute;
-  -webkit-transform: translateX(-50%);
-      -ms-transform: translateX(-50%);
-          transform: translateX(-50%);
-  top: -10px;
-  height: 20px;
-  border-radius: 10px;
-  min-width: 20px;
-  background: #f04134;
-  color: #fff;
-  line-height: 20px;
-  text-align: center;
-  padding: 0 6px;
-  font-size: 12px;
-  white-space: nowrap;
-  -webkit-transform-origin: -10% center;
-      -ms-transform-origin: -10% center;
-          transform-origin: -10% center;
-  font-family: tahoma;
-  box-shadow: 0 0 0 1px #fff;
-}
-.ant-badge-count a,
-.ant-badge-count a:hover {
-  color: #fff;
-}
-.ant-badge-dot {
-  position: absolute;
-  -webkit-transform: translateX(-50%);
-      -ms-transform: translateX(-50%);
-          transform: translateX(-50%);
-  -webkit-transform-origin: 0 center;
-      -ms-transform-origin: 0 center;
-          transform-origin: 0 center;
-  top: -4px;
-  height: 8px;
-  width: 8px;
-  border-radius: 100%;
-  background: #f04134;
-  z-index: 10;
-  box-shadow: 0 0 0 1px #fff;
-}
-.ant-badge-status {
-  line-height: inherit;
-  vertical-align: baseline;
-}
-.ant-badge-status-dot {
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  border-radius: 50%;
-}
-.ant-badge-status-success {
-  background-color: #00a854;
-}
-.ant-badge-status-processing {
-  background-color: #108ee9;
-  position: relative;
-}
-.ant-badge-status-processing:after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 1px solid #108ee9;
-  content: '';
-  -webkit-animation: antStatusProcessing 1.2s infinite ease-in-out;
-          animation: antStatusProcessing 1.2s infinite ease-in-out;
-}
-.ant-badge-status-default {
-  background-color: #d9d9d9;
-}
-.ant-badge-status-error {
-  background-color: #f04134;
-}
-.ant-badge-status-warning {
-  background-color: #ffbf00;
-}
-.ant-badge-status-text {
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 12px;
-  margin-left: 8px;
-}
-.ant-badge-zoom-appear,
-.ant-badge-zoom-enter {
-  -webkit-animation: antZoomBadgeIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
-          animation: antZoomBadgeIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-.ant-badge-zoom-leave {
-  -webkit-animation: antZoomBadgeOut 0.3s cubic-bezier(0.71, -0.46, 0.88, 0.6);
-          animation: antZoomBadgeOut 0.3s cubic-bezier(0.71, -0.46, 0.88, 0.6);
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-.ant-badge-not-a-wrapper .ant-badge-count {
-  top: auto;
-  display: block;
-  position: relative;
-  -webkit-transform: none!important;
-      -ms-transform: none!important;
-          transform: none!important;
-}
-@-webkit-keyframes antStatusProcessing {
-  0% {
-    -webkit-transform: scale(0.8);
-            transform: scale(0.8);
-    opacity: 0.5;
-  }
-  100% {
-    -webkit-transform: scale(2.4);
-            transform: scale(2.4);
-    opacity: 0;
-  }
-}
-@keyframes antStatusProcessing {
-  0% {
-    -webkit-transform: scale(0.8);
-            transform: scale(0.8);
-    opacity: 0.5;
-  }
-  100% {
-    -webkit-transform: scale(2.4);
-            transform: scale(2.4);
-    opacity: 0;
-  }
-}
-.ant-scroll-number {
-  overflow: hidden;
-}
-.ant-scroll-number-only {
-  display: inline-block;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  height: 20px;
-}
-.ant-scroll-number-only > p {
-  height: 20px;
-}
-@-webkit-keyframes antZoomBadgeIn {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0) translateX(-50%);
-            transform: scale(0) translateX(-50%);
-  }
-  100% {
-    -webkit-transform: scale(1) translateX(-50%);
-            transform: scale(1) translateX(-50%);
-  }
-}
-@keyframes antZoomBadgeIn {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0) translateX(-50%);
-            transform: scale(0) translateX(-50%);
-  }
-  100% {
-    -webkit-transform: scale(1) translateX(-50%);
-            transform: scale(1) translateX(-50%);
-  }
-}
-@-webkit-keyframes antZoomBadgeOut {
-  0% {
-    -webkit-transform: scale(1) translateX(-50%);
-            transform: scale(1) translateX(-50%);
-  }
-  100% {
-    opacity: 0;
-    -webkit-transform: scale(0) translateX(-50%);
-            transform: scale(0) translateX(-50%);
-  }
-}
-@keyframes antZoomBadgeOut {
-  0% {
-    -webkit-transform: scale(1) translateX(-50%);
-            transform: scale(1) translateX(-50%);
-  }
-  100% {
-    opacity: 0;
-    -webkit-transform: scale(0) translateX(-50%);
-            transform: scale(0) translateX(-50%);
-  }
-}
 .navigation-bar {
   position: absolute;
   top: 0;
@@ -5097,18 +4902,38 @@ samp {
 }
 
 div.Nav.Breadcrumb {
-  position: fixed;
-  top: 1%;
-  left: 1%;
-  padding: 4px;
-  padding-right: 8px;
-  background-color: #444444;
-  border: 1px solid #444444;
+  padding: 4%;
+  background-color: #96616B;
+  border: 1px solid #ac7e87;
   color: #f8f8f8;
 }
 
 div.Nav.Breadcrumb:hover {
   border: 1px solid RGBA(212, 175, 223, 1);
+}
+
+.ant-breadcrumb {
+  max-width: 240px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Nav__upvotes {
+  padding: 2%;
+  background-color: #37505C;
+  color: #87D068;
+}
+
+.Nav__downvotes {
+  padding: 2%;
+  background-color: #37505C;
+  color: #D17B88;
+}
+
+a[class^='menu-item'] {
+  margin: 4% 0%;
 }
 
 span.ant-breadcrumb-separator {
@@ -5135,6 +4960,7 @@ span.ant-breadcrumb-link a:hover {
   overflow-x: scroll;
   overflow-y: hidden;
   width: 100%;
+  height: 175px;
 }
 
 .row__inner {
@@ -5192,12 +5018,12 @@ span.ant-breadcrumb-link a:hover {
 }
 
 .tile__details:hover .tile__title {
-  transform: scale(0.7);
+  transform: scale(0.8);
   transition: transform 0.2s ease;
 }
 
 .row__inner:hover {
-  transform: translate3d(-25px, 0, 0) scale(1.1);
+  transform: translate3d(-12.5px, 0, 0) scale(1.1);
   transition: transform 0.2s ease-in;
   transform-origin: bottom;
 }
@@ -5208,13 +5034,13 @@ span.ant-breadcrumb-link a:hover {
 }
 
 .row__inner:hover .tile__container:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   transition: transform 0.2s ease-in;
   opacity: 1;
 }
 
 .tile__container:hover ~ .tile__container {
-  transform: translate3d(50px, 0, 0);
+  transform: translate3d(25px, 0, 0);
 }.local__predictions__container {
   position: absolute;
   width: 100vw;
@@ -5230,14 +5056,18 @@ span.ant-breadcrumb-link a:hover {
 }
 
 .local__predictions__container .local__predictions__heading {
+  position: absolute;
+  top: 0px;
   padding: 4px;
 }
 
-.local__predictions__container:hover {
+.local__predictions__carousel {
   position: absolute;
-  height: 100vh;
-  top: calc(100vh - 175px);
-  transition: height 0.5s ease-in;
+  background-color: rgba(22, 22, 22, 0.4);
+}
+
+.local__predictions__spacer {
+  height: 175px;
   background: -moz-linear-gradient(top, rgba(11, 11, 11, 0) 0%, rgba(11, 11, 11, 0.65) 10%, #0b0b0b 23%, #0b0b0b 82%);
   background: -webkit-linear-gradient(top, rgba(11, 11, 11, 0) 0%, rgba(11, 11, 11, 0.65) 10%, #0b0b0b 23%, #0b0b0b 82%);
   background: linear-gradient(to bottom, rgba(11, 11, 11, 0) 0%, rgba(11, 11, 11, 0.65) 10%, #0b0b0b 23%, #0b0b0b 82%);
@@ -5245,10 +5075,20 @@ span.ant-breadcrumb-link a:hover {
   /* IE6-9 */
 }
 
-.local__predictions__carousel {
-  position: absolute;
-  top: 0px;
-  background-color: rgba(22, 22, 22, 0.4);
+.local__predictions__suburb-info {
+  top: 200px;
+  padding: 10%;
+  height: 100vh;
+  color: #96616B;
+  background-color: #ECC6B1;
+}
+
+.local__predictions__suburb-info h1 {
+  color: #FFEAD0;
+}
+
+.local__predictions__suburb-info h2 {
+  color: #FFEAD0;
 }@font-face {
   font-family: "Helvetica Neue For Number";
   src: local("Helvetica Neue");
@@ -11106,15 +10946,11 @@ textarea.ant-time-picker-input {
   align-items: center;
   justify-content: center;
   background: #fff;
-  height: 30px;
+  height: 32px;
   width: 50vw;
-  margin: auto;
   position: fixed;
-  z-index: 0;
-  left: 0;
-  right: 0;
-  top: 1%;
-  box-shadow: 0px 2px 6px #d8d8d8;
+  right: 10px;
+  top: 10px;
   transition: 0.2s;
   animation-name: positionIt;
   animation-duration: 1.0s;
@@ -11158,6 +10994,7 @@ textarea.ant-time-picker-input {
 
 .searchBox__expand {
   top: 0;
+  right: 0px;
   height: 130px;
   width: 100%;
   padding: 0 20px 10px;
@@ -11186,6 +11023,7 @@ textarea.ant-time-picker-input {
 
 .searchBox__expand .searchBox__destination__input,
 .searchBox__expand .searchBox__source__input {
+  outline: none;
   background: #EDEDED;
   flex-grow: 1;
   height: 30px;

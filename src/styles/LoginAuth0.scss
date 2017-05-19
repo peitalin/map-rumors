@@ -2,8 +2,8 @@
 
 .login-auth0 {
   position: fixed;
-  top: 1%;
-  right: 1%;
+  top: 10px;
+  right: 10px;
   z-index: 2;
 }
 
@@ -12,11 +12,11 @@
   display: flex;
   justify-content: center;
   width: 40px;
-  transition: all 0.6s ease-in-out;
+  transition: width 0.6s ease-in-out;
 }
 .login-auth0-loader.login-loading {
   width: 70px;
-  transition: all 0.6s ease-in-out;
+  transition: width 0.6s ease-in-out;
 }
 .login-loading::after {
   content: 'Loading';
@@ -26,9 +26,10 @@
 }
 
 button#antd-login {
+  height: 32px;
   border-radius: 0px;
-  background-color: #444444;
-  border-color: #4a4a4a;
+  background-color: #96616B;
+  border-color: lighten(#96616B, 10%);
   color: #eee;
 }
 

@@ -27,8 +27,8 @@ export class Parallax extends React.Component<ReactProps, any> {
     let scrollY = window.scrollY
     // console.info(scrollY)
     document.getElementById('parallax1').style.transform = `translate3d(0, ${scrollY/2}px, 0)`
-    TweenLite.to('#GeoSearchBar', 0.3, { y: 10+scrollY/2 })
-    TweenLite.to('.mapboxgl-ctrl-top-right', 0.3, { y: scrollY/2 })
+    TweenLite.to('#GeoSearchBar', 0.2, { y: scrollY/2 })
+    TweenLite.to('.mapboxgl-ctrl-top-right', 0.2, { y: scrollY/2 })
     // document.getElementById('parallax2').style.transform = `translate3d(0, ${scrollY/2.5}px, 0)`
     // document.getElementById('map__subscriptions').style.transform = `translate3d(0, ${scrollY/1.5}px, 0)`
     let mapboxContainer = document.getElementById('mapbox__container')

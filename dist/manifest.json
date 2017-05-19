@@ -1,8 +1,8 @@
 
 {
-  "name": "Arrow",
+  "name": "Hayek",
   "short_name": "Standard Listings",
-  "description": "Real-time prediction market on Maps",
+  "description": "Real-time Auctions on Maps",
   "start_url": "/",
   "background_color": "#D4AFDF",
   "theme_color": "#222",

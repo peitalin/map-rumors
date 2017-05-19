@@ -5,16 +5,15 @@
   align-items: center;
   justify-content: center;
   background: #fff;
-  height: 30px;
+  height: 32px;
   width: 50vw;
-  margin: auto;
   position: fixed;
-  z-index: 0;
+  right: 10px;
+  top: 10px;
   // position: absolute;
-  left: 0;
-  right: 0;
-  top: 1%;
-  box-shadow: 0px 2px 6px #d8d8d8;
+  // margin: auto;
+  // right: 0;
+  // box-shadow: 0px 2px 6px #d8d8d8;
   transition: 0.2s;
 
   animation-name: positionIt;
@@ -55,6 +54,7 @@
 
   &__expand {
     top: 0;
+    right: 0px;
     height: 130px;
     width: 100%;
     padding: 0 20px 10px;
@@ -80,6 +80,7 @@
         }
 
         &__input {
+          outline: none;
           background: #EDEDED;
           flex-grow: 1;
           height: 30px;
