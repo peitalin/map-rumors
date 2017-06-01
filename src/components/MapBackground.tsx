@@ -283,7 +283,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     // then updates position if you are more than a radius away from previous location.k
     let L2Distance = L2Norm(this.props.gLngLat, { lngCenter: lngLat.lng, latCenter: lngLat.lat })
     if (L2Distance > 0.006) {
-      console.info("gLntLat changed")
+      console.info("gLntLat changed:", lngLat)
       this.props.updateGeoDataLngLat({ lng: lngLat.lng, lat: lngLat.lat })
       this.props.updateGeoData(lngLat)
     }

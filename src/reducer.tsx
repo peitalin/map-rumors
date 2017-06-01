@@ -179,7 +179,7 @@ export const reduxReducerParcels = (
       return { ...state, gLngLat: action.payload }
     }
 
-    case A.UPDATE_GEO_DATA: {
+    case A.UPDATE_GEOJSON_DATA: {
       let { lng, lat } = action.payload
 
       //// REDUX SAGA
