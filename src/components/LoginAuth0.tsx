@@ -178,6 +178,26 @@ query {
         lng
         lat
       }
+      geojson {
+        lngCenter
+        latCenter
+        properties {
+          address
+          lotPlan
+          postcode
+          state
+          streetNumber
+          streetName
+          streetSuffix
+          streetType
+          suburb
+          unitNumber
+          unitType
+        }
+        geometry {
+          coordinates
+        }
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 
 
-$duration: 450ms;
+$duration: 400ms;
 $tileWidth: 250px;
 $tileHeight: ($tileWidth / (16/9));
 $iconSize: 50px;
@@ -96,18 +96,18 @@ $carousel-height: 175px;
 // First, move the whole row towards the left
 .row__inner:hover {
   transform: translate3d($moveLeft, 0, 0) scale(1.1);
-  transition: transform 0.2s ease-in;
+  transition: transform 0.2s ease;
   transform-origin: bottom;
 }
 
 .row__inner:hover .tile__container {
   // Fade out every tile
   opacity: .8;
-  transition: transform 0.2s ease-in;
+  transition: transform 0.2s ease;
   // And then grow the current tile and make it opaque again
   &:hover {
     transform: scale($growFactor);
-    transition: transform 0.2s ease-in;
+    transition: transform 0.2s ease;
     opacity: 1;
   }
 }

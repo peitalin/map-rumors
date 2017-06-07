@@ -82,6 +82,11 @@ query PredictionStatsQuery($id: ID!) {
     house {
       address
     }
+    geojson {
+      properties {
+        address
+      }
+    }
   }
 }
 `

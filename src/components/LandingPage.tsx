@@ -6,6 +6,9 @@ import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
 import DraggableList from './DraggableList'
 import ImgOverlay from './ImgOverlay'
+import Carousel from './Carousel.tsx'
+import CarouselTile from './CarouselTile.tsx'
+
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import * as gsap from 'gsap'
 
@@ -68,31 +71,62 @@ export default class LandingPage extends React.Component<any, any> {
           { switchLanguageHeader2(this.state.language) }
 
           <div className="landing-page-listings-container">
-            <div className='landing-page-listings-flex'>
-              <ImgOverlay className='landing-page-listings' src={require('../img/house11.svg')} />
-              <ImgOverlay className='landing-page-listings' src={require("../img/house12.svg")} />
-              <ImgOverlay className='landing-page-listings' src={require("../img/house13.svg")} />
-            </div>
-            <div className='landing-page-listings-flex'>
-              <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house14.svg")} />
-              <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house15.svg")} />
-            </div>
+            <Carousel className='landing-page-listings-flex vertical__carousel'>
+            {(
+              [11,12,13,14,15].map((n, i) => {
+                return (
+                  <CarouselTile key={i}
+                    onClick={() => { console.log('tile clicked') }}
+                    img={require(`../img/house${n}.svg`)}
+                    verticalTiles={true}
+                  >
+                    <div>Cool</div>
+                    <div>Beans</div>
+                  </CarouselTile>
+                )
+              })
+            )}
+            </Carousel>
+
+            <Carousel className='landing-page-listings-flex vertical__carousel'>
+            {(
+              [16,18,19,20,21,15].map((n, i) => {
+                return (
+                  <CarouselTile key={i}
+                    onClick={() => { console.log('tile clicked') }}
+                    img={require(`../img/house${n}.svg`)}
+                    verticalTiles={true}
+                  >
+                    <div>Cool</div>
+                    <div>Beans</div>
+                  </CarouselTile>
+                )
+              })
+            )}
+            </Carousel>
           </div>
 
           <div className='world-map-container'>
             <WorldMap/>
           </div>
 
+
           <div className="landing-page-listings-container">
-            <div className='landing-page-listings-flex'>
-              <ImgOverlay className='landing-page-listings' src={require("../img/house16.svg")} />
-              <ImgOverlay className='landing-page-listings' src={require("../img/house18.svg")} />
-              <ImgOverlay className='landing-page-listings' src={require("../img/house19.svg")} />
-            </div>
-            <div className='landing-page-listings-flex'>
-              <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house20.svg")} />
-              <ImgOverlay className='landing-page-listings listings-rotated' src={require("../img/house21.svg")} />
-            </div>
+            <Carousel className='landing-page-listings-flex'>
+            {(
+              [10,11,12,13,14,15].map((n, i) => {
+                return (
+                  <CarouselTile key={i}
+                    onClick={() => { console.log('tile clicked') }}
+                    randomImg={true}
+                  >
+                    <div>Cool</div>
+                    <div>Beans</div>
+                  </CarouselTile>
+                )
+              })
+            )}
+            </Carousel>
           </div>
 
           <FooterLinks/>

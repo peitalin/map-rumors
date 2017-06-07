@@ -1,15 +1,21 @@
 
 import * as React from 'react'
+import * as className from 'classnames'
 
 
 interface ReactProps {
   onClick?(): void
-  img: string
+  img?: string
+  randomImg: boolean
 }
 
 export default class CarouselTile extends React.Component<ReactProps, any> {
 
   componentDidMount() {
+  }
+
+  defaultProps = {
+    randomImg: false
   }
 
   randomImage = () => {
@@ -20,9 +26,12 @@ export default class CarouselTile extends React.Component<ReactProps, any> {
   render() {
     return (
       <div className='tile__container' onClick={this.props.onClick}>
-        <div className="tile__media">
-          <img className="tile__img" src={this.props.img ? this.props.img : this.randomImage()}/>
-        </div>
+        {(
+          (this.props.img || this.props.randomImg) &&
+          <div className="tile__media">
+            <img className="tile__img" src={this.props.randomImg ? this.randomImage() : this.props.img}/>
+          </div>
+        )}
         <div className="tile__details">
           <div className="tile__title">
             { this.props.children }
