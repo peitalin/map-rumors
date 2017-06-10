@@ -2,8 +2,11 @@
 import * as React from 'react'
 import 'styles/CardExpander.scss'
 import * as classnames from 'classnames'
+
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { TweenLite, TweenMax } from 'gsap'
+
+import { iPrediction } from '../typings/interfaceDefinitions'
 
 
 interface DispatchProps {
@@ -13,7 +16,10 @@ interface StateProps {
 }
 
 interface ReactProps {
-  data?: any
+  data?: {
+    loading: boolean,
+    allPredictions: Array<iPrediction>
+  }
 }
 
 
@@ -92,8 +98,9 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
         {(
           !!this.props.data
           ? <div>
-              <p> PREDICTION STATS </p>
-              <p> { this.props.data.allPredictions[0].house.address }</p>
+              <p>-------------</p>
+              <p> <h2>PREDICTION STATS</h2> </p>
+              <p> { this.props.data.allPredictions[0].geojson.properties.address }</p>
               <p> { this.props.data.allPredictions[0].user.emailAddress }</p>
               <p> { this.props.data.allPredictions[0].prediction }</p>
               <p>*****</p>

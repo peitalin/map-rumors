@@ -223,28 +223,6 @@ query($lotPlan: String!) {
 }
 `
 
-// let query = gql`
-// query($lotPlan: String!) {
-//   House(lotPlan: $lotPlan) {
-//     id
-//     address
-//     bedrooms
-//     bathrooms
-//     carspaces
-//     planNum
-//     lotNum
-//     unitNum
-//     streetNum
-//     streetName
-//     streetType
-//     locality
-//     lotPlan
-//     lng
-//     lat
-//   }
-// }
-// `
-
 let queryOptions = {
   options:  (ownProps) => ({
     variables: {

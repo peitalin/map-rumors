@@ -163,6 +163,21 @@ query($emailAddress: String!) {
       id
       emailAddress
     }
+    geojson {
+      id
+      lngCenter
+      latCenter
+      suburbCity
+    properties {
+    suburb
+    postcode
+    lotPlan
+    }
+      geometry {
+        coordinates
+      }
+    }
+
     house {
       id
       address

@@ -117,8 +117,6 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
 
 
   render() {
-    console.info(this.props)
-
     if (!this.props.userGQL) {
       return <div>Login to make a prediction.</div>
     }
