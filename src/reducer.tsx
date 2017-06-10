@@ -235,7 +235,7 @@ export const reduxReducerParcels = (
 
     case A.UPDATE_GEOJSON_MY_PREDICTIONS: {
       let { predictions }: { predictions: iPrediction[] }  = action.payload
-      let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
+      let predictionLotPlans = new Set(predictions.map(p => p.geojson.properties.lotPlan))
       return {
         ...state,
         gMyPredictions: {
@@ -247,7 +247,13 @@ export const reduxReducerParcels = (
 
     case A.UPDATE_GEOJSON_ALL_PREDICTIONS: {
       let { predictions }: { predictions: iPrediction[] } = action.payload
-      let predictionLotPlans = new Set(predictions.map(p => p.house.lotPlan))
+      let predictionLotPlans = new Set(predictions.map(p => {
+        if (p.geojson) {
+          return p.geojson.properties.lotPlan
+        } else {
+          return p.house.lotPlan
+        }
+      }))
       return {
         ...state,
         gAllPredictions: {

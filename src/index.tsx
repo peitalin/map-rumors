@@ -71,6 +71,8 @@ class AppApollo extends React.Component<any, AppApolloState> {
   private persistReduxStore = (GRAPHQL_PROJECT_ID) => {
 
     let persistState = true;
+    // let clearStore = true;
+    let clearStore = false;
 
     getStoredState({ storage: localforage }, (err, rehydratedState) => {
       // const initialState = { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}
@@ -79,7 +81,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
           reduxMapbox: reduxReducerMapbox,
           reduxParcels: reduxReducerParcels,
           reduxUser: reduxReducerUser,
-          apollo: this.apolloClient.reducer(),
+          // apollo: this.apolloClient.reducer(),
         }),
         persistState ? rehydratedState : {},
         compose(
@@ -90,10 +92,12 @@ class AppApollo extends React.Component<any, AppApolloState> {
         )
       );
 
-      // this.clearStore(persistor)
       if (persistState) {
         const persistor = createPersistor(reduxStore, { storage: localforage })
         console.info('Rehydrating complete. rehydratedState: ', rehydratedState)
+        if (clearStore) {
+          this.clearStore(persistor)
+        }
       } else {
         console.info('Rehydrating OFF')
       }

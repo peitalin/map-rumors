@@ -21,7 +21,7 @@ import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
-import { iHouse } from '../typings/interfaceDefinitions'
+import { iHouse, iGeojson } from '../typings/interfaceDefinitions'
 import AddPrediction from './AddPrediction'
 
 import 'styles/HouseStats.scss'
@@ -33,6 +33,7 @@ interface HouseStatsProps {
     error: any
     loading: boolean
     House: iHouse
+    allGeojsonPropertieses: Array<{ id: string geojson: iGeojson }>
   }
   lotPlan?: string
   updateClickedAddress?(): void
@@ -60,22 +61,20 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
 
   static defaultProps = {
     data: {
-      House: {
+      allGeojsons: [{
         id: '',
         address: '',
         bedrooms: '',
         bathrooms: '',
         carspaces: '',
-        planNum: '',
-        lotNum: '',
         lotPlan: '',
-        unitNum: '',
-        streetNum: '',
+        unitNumber: '',
+        streetNumber: '',
         streetName: '',
         streetType: '',
         locality: '',
       }
-    }
+    }]
     houseProps: {
       LOT: '',
       PLAN: '',
@@ -87,7 +86,6 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
     if (this.props.data.error) {
       return <Title><div onClick={this.props.flipCard}>HouseStats: GraphQL Errored.</div></Title>
     }
-
     if (this.props.data.loading) {
       return (
         <div>
@@ -114,44 +112,38 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
               <Col span={12}>Area:</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Plan No:</Col>
-            </Row>
-            <Row gutter={16}>
               <Col span={12}>Lot No:</Col>
             </Row>
+            <Row gutter={16}>
+              <Col span={12}>Plan No:</Col>
+            </Row>
           </div>
-          <AddPrediction data={this.props.data}
-            currentCard={this.props.currentCard}
-            upvotes={this.props.upvotes}
-          />
         </div>
       )
     }
 
-    if (this.props.data.House) {
+    if (!!this.props.data.allGeojsonPropertieses.length) {
       let {
         id,
         address,
-        bedrooms,
-        bathrooms,
-        carspaces,
-        planNum,
-        lotNum,
+        lot,
+        plan,
         lotPlan,
-        unitNum,
-        streetNum,
+        unitType,
+        unitNumber,
+        streetNumber,
         streetName,
         streetType,
-        locality,
-      } = this.props.data.House
-      let unitStreetNum = unitNum ? `${unitNum}/${streetNum}` : `${streetNum}`
+        suburb,
+      } = this.props.data.allGeojsonPropertieses[0].geojson.properties
+      let unitStreetNumber = (unitNumber != "None") ? `${unitNumber}/${streetNumber}` : `${streetNumber}`
       return (
         <div>
           <div className="house-stats-heading" onClick={this.props.flipCard}>
 
             <Row gutter={0}>
               <Col span={24}>
-                <h2>{ unitStreetNum }</h2>
+                <h2>{ unitStreetNumber }</h2>
               </Col>
             </Row>
             <Row gutter={0}>
@@ -167,37 +159,37 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
 
             <Row gutter={16}>
               <Col span={12}>Bedrooms:</Col>
-              <Col span={12}>{ bedrooms }</Col>
+              <Col span={12}>{ 2 }</Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>Bathrooms:</Col>
-              <Col span={12}>{ bathrooms }</Col>
+              <Col span={12}>{ 3 }</Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>Carspaces:</Col>
-              <Col span={12}>{ carspaces }</Col>
+              <Col span={12}>{ 2 }</Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>Area:</Col>
-              <Col span={12}>{(`${this.props.houseProps.LOT_AREA} sqm`)}</Col>
+              <Col span={12}>{( `${this.props.houseProps.LOT_AREA} sqm` )}</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Plan No:</Col>
-              <Col span={12}>{ planNum }</Col>
+              <Col span={12}>Lot:</Col>
+              <Col span={12}>{ lot }</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Lot No:</Col>
-              <Col span={12}>{ lotNum }</Col>
+              <Col span={12}>Plan:</Col>
+              <Col span={12}>{ plan }</Col>
             </Row>
           </div>
 
-          <AddPrediction data={this.props.data}
+          <AddPrediction Geojson={this.props.data.allGeojsonPropertieses[0].geojson}
             currentCard={this.props.currentCard}
             upvotes={this.props.upvotes}
           />
         </div>
       )
-    } else if (!this.props.data.House) {
+    } else {
       return (
         <div>no HouseStats</div>
       )
@@ -207,25 +199,51 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
 
 let query = gql`
 query($lotPlan: String!) {
-  House(lotPlan: $lotPlan) {
-    id
-    address
-    bedrooms
-    bathrooms
-    carspaces
-    planNum
-    lotNum
-    unitNum
-    streetNum
-    streetName
-    streetType
-    locality
-    lotPlan
-    lng
-    lat
+  allGeojsonPropertieses(filter: {
+    lotPlan: $lotPlan
+  }) {
+    geojson {
+      id
+      lngCenter
+      latCenter
+      properties {
+        address
+        lot
+        plan
+        lotPlan
+        unitType
+        unitNumber
+        streetNumber
+        streetName
+        streetType
+        suburb
+      }
+    }
   }
 }
 `
+
+// let query = gql`
+// query($lotPlan: String!) {
+//   House(lotPlan: $lotPlan) {
+//     id
+//     address
+//     bedrooms
+//     bathrooms
+//     carspaces
+//     planNum
+//     lotNum
+//     unitNum
+//     streetNum
+//     streetName
+//     streetType
+//     locality
+//     lotPlan
+//     lng
+//     lat
+//   }
+// }
+// `
 
 let queryOptions = {
   options:  (ownProps) => ({

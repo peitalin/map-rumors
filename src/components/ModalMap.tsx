@@ -17,9 +17,6 @@ import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
-import * as DatePicker from 'antd/lib/date-picker'
-import 'antd/lib/date-picker/style/css'
-
 
 interface ModalMapProps {
   longitude: number
@@ -113,7 +110,6 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
           <pre/>
           <span>Latitude: {this.props.latitude}</span>
           <pre/>
-          <DatePicker />
           {(
             this.props.showModal &&
             <div id='modalmap' style={{ width: this.state.mapWidth, height: this.state.mapHeight }}>

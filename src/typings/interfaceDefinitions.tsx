@@ -20,6 +20,7 @@ export interface iPrediction {
   id?: string
   user?: userGQL
   house?: iHouse
+  geojson?: iGeojson
 }
 
 export interface iHouse {
@@ -46,6 +47,33 @@ export interface iHouse {
   streetType?: string
   unitNum?: string
 }
+
+
+export interface iGeojson {
+  lngCenter?: number
+  latCenter?: number
+  id?: string
+  predictions?: iPrediction[]
+  properties: {
+    id?: string
+    area?: number
+    address?: string
+    bedrooms?: number
+    bathrooms?: number
+    carspaces?: number
+    county?: string
+    lastSalePrice?: number
+    suburb?: string
+    lotPlan?: string
+    saleDate?: any
+    streetName?: string
+    streetNumber?: string
+    streetNumSuffix?: string
+    streetType?: string
+    unitNumber?: string
+  }
+}
+
 
 
 export interface mutationResponsePrediction {

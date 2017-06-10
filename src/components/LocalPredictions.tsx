@@ -74,6 +74,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
         return (
           <CarouselTile key={p.id}
             onClick={() => this.gotoPredictionLocation(p.house)}
+            randomImg={true}
             img={undefined}
           >
             <div>{ p.user.emailAddress }</div>

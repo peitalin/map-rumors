@@ -12,14 +12,10 @@ import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
-import { iHouse, iPrediction, userGQL,
+import { iPrediction, iGeojson, userGQL,
   mutationResponsePrediction as mutationResponse
 } from '../typings/interfaceDefinitions'
 
-
-
-interface AddPredictionProps {
-}
 
 
 
@@ -34,11 +30,7 @@ interface StateProps {
 interface ReactProps {
   currentCard: string
   upvotes: number
-  data?: {
-    loading: boolean
-    error: any
-    House: iHouse
-  } // graphql-data
+  Geojson: iGeojson
   createPrediction?({
     variables: {
       prediction: number
@@ -66,15 +58,15 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
 
   private updateMyPredictionParcels = (newPredictionId = 'tempId'): void => {
     let predictions: iPrediction[] = this.props.userGQL.predictions
-    let House: iHouse = this.props.data.House
+    let Geojson: iGeojson = this.props.Geojson
     let newPrediction = predictions.filter((prediction: iPrediction) => prediction.id === 'tempId')
 
     if (newPrediction.length > 0) {
-      // console.info(`House: ${House.address} is already in the list! Updating PredictionId.`)
+      // console.info(`Geojson: ${Geojson.properties.address} is already in the list! Updating PredictionId.`)
       let oldPredictions = predictions.filter(prediction => prediction.id !== 'tempId')
       let newPredictions = [
         ...oldPredictions,
-        { prediction: this.state.prediction, id: newPredictionId, house: House }
+        { prediction: this.state.prediction, id: newPredictionId, geojson: Geojson }
       ]
       // update userGQL and gMyPredictions
       this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
@@ -83,7 +75,7 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
       // console.info('Optimistically updating user predictions in Redux.')
       let newPredictions = [
         ...predictions,
-        { prediction: this.state.prediction, id: newPredictionId, house: House }
+        { prediction: this.state.prediction, id: newPredictionId, geojson: Geojson }
       ]
       // update userGQL and gMyPredictions
       this.props.updateUserGQL({ ...this.props.userGQL, predictions: newPredictions })
@@ -108,14 +100,14 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
 
   private makePrediction = async(prediction: number): void => {
     this.props.isUpdatingMyPredictions(true)
-    // Redux optimistic update
-    this.updateMyPredictionParcels()
+    // // Redux optimistic update
+    // this.updateMyPredictionParcels()
     // GraphQL createBid
     let graphqlResponse: mutationResponse = await this.props.createPrediction({
       variables: {
         prediction: this.state.prediction
         userId: this.props.userGQL.id,
-        houseId: this.props.data.House.id,
+        geojsonId: this.props.Geojson.id,
       }
     })
     this.updateMyPredictionParcels(graphqlResponse.data.createPrediction.id)
@@ -150,11 +142,11 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
 
 
 const createPredictionMutation = gql`
-mutation($prediction: Float, $userId: ID!, $houseId: ID!) {
+mutation($prediction: Float, $userId: ID!, $geojsonId: ID!) {
   createPrediction(
     prediction: $prediction
     userId: $userId
-    houseId: $houseId
+    geojsonId: $geojsonId
     linkComplete: true
   ) {
     id

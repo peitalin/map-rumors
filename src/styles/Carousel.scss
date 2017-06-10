@@ -97,7 +97,7 @@ $carousel-height: 175px;
 .row__inner:hover {
   transform: translate3d($moveLeft, 0, 0) scale(1.1);
   transition: transform 0.2s ease;
-  transform-origin: bottom;
+  transform-origin: left center;
 }
 
 .row__inner:hover .tile__container {

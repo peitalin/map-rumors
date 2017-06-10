@@ -12,7 +12,7 @@ import gql from 'graphql-tag'
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 
 import {
-  iHouse, userGQL, geoData, iPrediction,
+  iHouse, userGQL, geoData, iPrediction, iGeojson
   mutationResponsePrediction as mutationResponse
 } from '../typings/interfaceDefinitions'
 import 'styles/MyPredictionListings.scss'
@@ -82,7 +82,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
 
   state = {
     showCard: false
-    houseId: '',
+    GeojsonId: '',
   }
 
   componentDidMount() {
@@ -113,12 +113,12 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.isUpdatingMyPredictions(false)
   }
 
-  private gotoPredictionLocation = (house: iHouse): void => {
-    if (!house.lat || !house.lng) {
-      console.error("MyPredictionListings.tsx error: house.lat or house.lng doesn't exist", house)
+  private gotoPredictionLocation = (Geojson: iGeojson): void => {
+    if (!Geojson.latCenter || !Geojson.lngCenter) {
+      console.error("MyPredictionListings.tsx error: Geojson.latCenter or Geojson.lngCenter doesn't exist", Geojson)
       return
     }
-    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( house.lng, house.lat )
+    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( Geojson.lngCenter, Geojson.latCenter )
     // message.info(`Going to ${house.address}`)
     this.props.updateFlyingTo('MyPredictionListings')
     this.props.updateLngLat(lngLat)
@@ -128,9 +128,9 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.updateGeoRadiusWide(lngLat)
   }
 
-  private handleMouseOver = (houseId: string) => {
-    this.setState({ houseId }, () => {
-      console.info("Pre-loading Component: ", houseId)
+  private handleMouseOver = (GeojsonId: string) => {
+    this.setState({ GeojsonId }, () => {
+      console.info("Pre-loading Component: ", GeojsonId)
       PredictionStats.preload()
     })
   }
@@ -146,30 +146,37 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
 
     let user = this.props.userGQL
     if (!user.predictions.length) {
-      var predictionListings = <CarouselTile><Title>No Predictions</Title></CarouselTile>
+      return (
+        <div className='prediction__listings__container'>
+          <div className="prediction__listings__heading">My Predictions</div>
+          {(
+            this.state.showCard && <PredictionStats houseId={this.state.houseId}/>
+          )}
+          <Carousel className='prediction__listings__carousel'>
+            <CarouselTile><Title>No Predictions</Title></CarouselTile>
+          </Carousel>
+        </div>
+      )
     }
 
     var predictionListings = user.predictions.map(p => {
-      let unitStreetNum = p.house.unitNum
-        ? `${p.house.unitNum}/${p.house.streetNum}`
-        : `${p.house.streetNum}`
+      let unitStreetNumber = ( p.geojson.properties.unitNumber !== 'None' )
+        ? `Unit ${p.geojson.properties.unitNumber}/${p.geojson.properties.streetNumber}`
+        : `${p.geojson.properties.streetNumber}`
       return (
         <CarouselTile key={p.id}
-          onClick={() => this.gotoPredictionLocation(p.house)}
+          onClick={() => this.gotoPredictionLocation(p.geojson)}
+          randomImg={true}
           img={undefined}
         >
           <div>
-            {
-              p.house.unitNum
-                ? `${p.house.unitNum}/${p.house.streetNum}`
-                : `${p.house.streetNum}`
-            }
-            { " " + p.house.streetName }
-            { " " + p.house.streetType }
+            { unitStreetNumber }
+            { " " + p.geojson.properties.streetName }
+            { " " + p.geojson.properties.streetType }
           </div>
 
           <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
-            { p.house.lotPlan }
+            { p.geojson.properties.lotPlan }
           </Link>
 
           {/* <button onMouseOver={() => this.handleMouseOver(p.house.id)} onClick={this.handleClick}> */}
@@ -177,9 +184,9 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
           {/* </button> */}
 
           <Popconfirm className='child'
-            title={`Delete prediction for ${p.house.address}?`}
+            title={`Delete prediction for ${p.geojson.properties.address}?`}
             onConfirm={() => this.deletePrediction({ predictionId: p.id })}
-            onCancel={() => console.log(`Kept ${p.house.address}.`)}
+            onCancel={() => console.log(`Kept ${p.geojson.properties.address}.`)}
             okText="Yes" cancelText="No">
             <a href="#">Delete</a>
           </Popconfirm>
