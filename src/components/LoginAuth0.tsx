@@ -150,7 +150,14 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
 
 const CreateUserQuery = gql`
 mutation ($idToken: String!, $name: String!, $emailAddress: String!) {
-  createUser(authProvider: {auth0: {idToken: $idToken}}, name: $name, emailAddress: $emailAddress) {
+  createUser(
+    authProvider: {auth0: {idToken: $idToken}},
+    name: $name,
+    emailAddress: $emailAddress,
+    cards: ["Two"],
+    upvotes: 1,
+    downvotes: 0,
+  ) {
     id
   }
 }
