@@ -8,7 +8,7 @@ import { Actions as A } from '../reduxActions'
 import { Link } from 'react-router-dom'
 
 import gql from 'graphql-tag'
-import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
 
 import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { iPrediction, iHouse, userGQL, geoData } from '../typings/interfaceDefinitions'

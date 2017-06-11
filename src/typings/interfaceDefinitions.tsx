@@ -23,37 +23,12 @@ export interface iPrediction {
   geojson?: iGeojson
 }
 
-export interface iHouse {
-  area?: number
-  address?: string
-  bedrooms?: number
-  bathrooms?: number
-  carspaces?: number
-  county?: string
-  geojsonparcel: geoParcel
-  lastSalePrice?: number
-  lng?: number
-  lat?: number
-  locality?: string
-  lotNum?: string
-  lotPlan?: string
-  id?: string
-  planNum?: string
-  predictions?: iPrediction[]
-  saleDate?: any
-  streetName?: string
-  streetNum?: string
-  streetNumSuffix?: string
-  streetType?: string
-  unitNum?: string
-}
-
-
 export interface iGeojson {
   lngCenter?: number
   latCenter?: number
   id?: string
   predictions?: iPrediction[]
+  type: string
   properties: {
     id?: string
     area?: number
@@ -72,6 +47,17 @@ export interface iGeojson {
     streetType?: string
     unitNumber?: string
   }
+  geometry?: {
+    type?: string
+    coordinates?: number[][][] | number[][][][]
+  }
+}
+
+
+export interface geoData {
+  type?: string
+  crs?: Object
+  features?: Immutable.List<iGeojson> | Array<iGeojson>
 }
 
 
@@ -105,38 +91,6 @@ export interface mutationResponsePrediction {
       prediction: number
     }
 
-  }
-}
-
-
-export interface geoData {
-  type?: string
-  crs?: Object
-  features?: Immutable.List<geoParcel> | Array<geoParcel>
-}
-
-export interface geoParcel {
-  city?: string
-  house?: iHouse
-  lngCenter: number
-  latCenter: number
-  locality: string
-  lotPlan: string
-  type?: string
-  properties?: {
-    LOT?: string
-    PLAN?: string
-    LOTPLAN?: string
-    SHIRE_NAME?: string
-    LOCALITY?: string
-    O_SHAPE_Length?: number
-    O_SHAPE_Area?: number
-    lngCenter?: number
-    latCenter?: number
-  }
-  geometry?: {
-    type?: string
-    coordinates?: number[][][] | number[][][][]
   }
 }
 

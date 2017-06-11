@@ -32,15 +32,13 @@ interface HouseStatsProps {
   data?: {
     error: any
     loading: boolean
-    House: iHouse
-    allGeojsonPropertieses: Array<{ id: string geojson: iGeojson }>
+    Geojson: iGeojson
   }
-  lotPlan?: string
-  updateClickedAddress?(): void
+  graphql_id?: string
   houseProps?: {
     LOT: string
     PLAN: string
-    LOT_AREA: number
+    CA_AREA_SQM: number
   }
   flipCard: Function
   currentCard: string
@@ -78,7 +76,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
     houseProps: {
       LOT: '',
       PLAN: '',
-      LOT_AREA: 0,
+      CA_AREA_SQM: 0,
     }
   }
 
@@ -90,7 +88,6 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
       return (
         <div>
           <div className='house-stats-heading' onClick={this.props.flipCard}>
-
             <Row gutter={0}>
               <Col span={24}>
                 <div className='house-stats-heading house-stats-loader'>
@@ -98,31 +95,18 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
                 </div>
               </Col>
             </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>Bedrooms:</Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>Bathrooms:</Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>Carspaces:</Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>Area:</Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>Lot No:</Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>Plan No:</Col>
-            </Row>
+            <Row gutter={16}> <Col span={12}>Bedrooms:</Col> </Row>
+            <Row gutter={16}> <Col span={12}>Bathrooms:</Col> </Row>
+            <Row gutter={16}> <Col span={12}>Carspaces:</Col> </Row>
+            <Row gutter={16}> <Col span={12}>Area:</Col> </Row>
+            <Row gutter={16}> <Col span={12}>Lot No:</Col> </Row>
+            <Row gutter={16}> <Col span={12}>Plan No:</Col> </Row>
           </div>
         </div>
       )
     }
 
-    if (!!this.props.data.allGeojsonPropertieses.length) {
+    if (this.props.data.Geojson) {
       let {
         id,
         address,
@@ -135,7 +119,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
         streetName,
         streetType,
         suburb,
-      } = this.props.data.allGeojsonPropertieses[0].geojson.properties
+      } = this.props.data.Geojson.properties
       let unitStreetNumber = (unitNumber != "None") ? `${unitNumber}/${streetNumber}` : `${streetNumber}`
       return (
         <div>
@@ -171,7 +155,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
             </Row>
             <Row gutter={16}>
               <Col span={12}>Area:</Col>
-              <Col span={12}>{( `${this.props.houseProps.LOT_AREA} sqm` )}</Col>
+              <Col span={12}>{( `${this.props.houseProps.CA_AREA_SQM} sqm` )}</Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>Lot:</Col>
@@ -183,7 +167,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
             </Row>
           </div>
 
-          <AddPrediction Geojson={this.props.data.allGeojsonPropertieses[0].geojson}
+          <AddPrediction Geojson={this.props.data.Geojson}
             currentCard={this.props.currentCard}
             upvotes={this.props.upvotes}
           />
@@ -198,35 +182,31 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
 }
 
 let query = gql`
-query($lotPlan: String!) {
-  allGeojsonPropertieses(filter: {
-    lotPlan: $lotPlan
-  }) {
-    geojson {
-      id
-      lngCenter
-      latCenter
-      properties {
-        address
-        lot
-        plan
-        lotPlan
-        unitType
-        unitNumber
-        streetNumber
-        streetName
-        streetType
-        suburb
-      }
+query($graphql_id: ID!) {
+  Geojson(id: $graphql_id) {
+    id
+    lngCenter
+    latCenter
+    properties {
+      address
+      lot
+      plan
+      lotPlan
+      unitType
+      unitNumber
+      streetNumber
+      streetName
+      streetType
+      suburb
     }
   }
 }
 `
 
 let queryOptions = {
-  options:  (ownProps) => ({
+  options: (ownProps) => ({
     variables: {
-      lotPlan: ownProps.lotPlan
+      graphql_id: ownProps.graphql_id
     }
   })
 }

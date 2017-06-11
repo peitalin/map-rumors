@@ -28,7 +28,7 @@ export interface ReduxStateMapbox {
   showModal: boolean
   flyingTo: boolean | string
   mapboxZoom: number[]
-  lotPlan: string
+  GRAPHQL_ID: string
   localPredictions: Array<iLocalPrediction>
 }
 
@@ -38,7 +38,7 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   showModal: false,
   flyingTo: false,
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
-  lotPlan: '',
+  GRAPHQL_ID: 'cj2t1hge40i1u0132ahagibrl',
   localPredictions: [],
   currentCard: 'King',
 }
@@ -67,8 +67,8 @@ export const reduxReducerMapbox = (
     case A.SHOW_MODAL:
       return { ...state, showModal: action.payload }
 
-    case A.UPDATE_LOTPLAN:
-      return { ...state, lotPlan: action.payload }
+    case A.UPDATE_GRAPHQL_ID:
+      return { ...state, GRAPHQL_ID: action.payload }
 
     case A.UPDATE_LOCAL_PREDICTION_LISTINGS:
       return { ...state, localPredictions: action.payload }
@@ -234,31 +234,31 @@ export const reduxReducerParcels = (
     }
 
     case A.UPDATE_GEOJSON_MY_PREDICTIONS: {
-      let { predictions }: { predictions: iPrediction[] }  = action.payload
-      let predictionLotPlans = new Set(predictions.map(p => p.geojson.properties.lotPlan))
+      // predictions from graph.cool
+      let { predictions }: { predictions: iPrediction[] } = action.payload
       return {
         ...state,
         gMyPredictions: {
           ...state.gData,
-          features: state.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+          features: predictions.map(p => {
+            return {
+              geometry: p.geojson.geometry,
+              properties: p.geojson.properties,
+              type: p.geojson.type,
+            }
+          })
         }
       }
     }
 
     case A.UPDATE_GEOJSON_ALL_PREDICTIONS: {
       let { predictions }: { predictions: iPrediction[] } = action.payload
-      let predictionLotPlans = new Set(predictions.map(p => {
-        if (p.geojson) {
-          return p.geojson.properties.lotPlan
-        } else {
-          return p.house.lotPlan
-        }
-      }))
+      let predictionGeojsonIds = new Set(predictions.map(p => p.geojson.id))
       return {
         ...state,
         gAllPredictions: {
           ...state.gData
-          features: state.gData.features.filter(g => predictionLotPlans.has(g.properties.LOTPLAN))
+          features: state.gData.features.filter(g => predictionGeojsonIds.has(g.id))
         }
       }
     }

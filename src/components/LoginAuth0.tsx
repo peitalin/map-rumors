@@ -167,17 +167,6 @@ query {
     predictions {
       id
       prediction
-      house {
-        id
-        address
-        unitNum
-        streetNum
-        streetName
-        streetType
-        lotPlan
-        lng
-        lat
-      }
       geojson {
         lngCenter
         latCenter
@@ -196,7 +185,9 @@ query {
         }
         geometry {
           coordinates
+          type
         }
+        type
       }
     }
   }

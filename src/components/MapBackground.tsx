@@ -24,7 +24,6 @@ import 'styles/MapBackground.scss'
 import Title from './Title'
 import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
-import HouseStats from './HouseStats'
 import GeoSearchBar from './GeoSearchBar'
 
 import * as Button from 'antd/lib/button'
@@ -75,7 +74,7 @@ interface DispatchProps {
   updateFlyingTo?(flyingTo: boolean | string): void
   onZoomChange?(zoom: number[]): void
   toggleShowModal?(showModal: boolean): void
-  updateLotPlan?(lotPlan: string): void
+  updateGraphQLId?(GRAPHQL_ID: string): void
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
   updateGeoData?(lngLat: mapboxgl.LngLat): void
@@ -92,7 +91,7 @@ interface MapBackgroundState {
   houseProps: {
     LOT: string
     PLAN: string
-    LOT_AREA: number
+    CA_AREA_SQM: number
   }
   map: mapboxgl.Map
 }
@@ -115,7 +114,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     this.state = {
       isSearch: false,
       showHouseCard: false,
-      houseProps: { LOT: '', PLAN: '', LOT_AREA: 0 },
+      houseProps: { LOT: '', PLAN: '', CA_AREA_SQM: 0 },
       map: undefined,
     }
   }
@@ -194,8 +193,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     // features: are property parcels (polygons)
     if (features.length > 1) {
       // hover layer and parcel layer == 2 layers
-      let { LOT, PLAN, LOTPLAN, LOT_AREA, O_SHAPE_Area, O_SHAPE_Length, LOCALITY } = features[0].properties
-      this.props.updateLotPlan(LOTPLAN)
+      let { LOT, PLAN, LOTPLAN, CA_AREA_SQM, GRAPHQL_ID } = features[0].properties
+      this.props.updateGraphQLId(GRAPHQL_ID)
 
       let clickedParcel: geoParcel[] = this.props.gData.features
         .filter(parcel => (parcel.properties.LOT === LOT) && (parcel.properties.PLAN === PLAN))
@@ -205,7 +204,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
         features: [...clickedParcel]
       })
       this.setState({
-        houseProps: { LOT: LOT, PLAN: PLAN, LOT_AREA: LOT_AREA },
+        houseProps: { LOT: LOT, PLAN: PLAN, CA_AREA_SQM: CA_AREA_SQM },
         showHouseCard: true
       })
 
@@ -543,8 +542,8 @@ const mapDispatchToProps = ( dispatch ) => {
     toggleShowModal: (showModal: boolean) => dispatch(
       { type: A.Mapbox.SHOW_MODAL, payload: showModal }
     ),
-    updateLotPlan: (lotPlan: string) => dispatch(
-      { type: A.Mapbox.UPDATE_LOTPLAN, payload: lotPlan }
+    updateGraphQLId: (GRAPHQL_ID: string) => dispatch(
+      { type: A.Mapbox.UPDATE_GRAPHQL_ID, payload: GRAPHQL_ID }
     ),
     updateLocalPredictionListings: (localPredictions: iLocalPrediction[]) => dispatch(
       { type: A.Mapbox.UPDATE_LOCAL_PREDICTION_LISTINGS, payload: localPredictions }

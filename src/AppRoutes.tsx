@@ -20,7 +20,7 @@ export const asyncComponent = ({ loader }) => {
           : null
         return isLoading
           ? delayLoadingComponent
-          : (<div style={{ position: 'fixed', top:10, right: 10 }}>asyncComponent Error! Component failed to load</div>)
+          : (<div style={{ position: 'fixed', top: 5, right: 10 }}>asyncComponent Error! Component failed to load</div>)
       },
       delay: 200, // show loader only after 200ms
     })

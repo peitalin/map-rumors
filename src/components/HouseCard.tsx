@@ -20,7 +20,7 @@ interface HouseCardProps {
     lotPlan: string
   }
   showHouseCard: boolean
-  lotPlan: string
+  graphql_id: string
 }
 interface HouseCardState {
   isFlipped: boolean
@@ -39,8 +39,7 @@ export class HouseCard extends React.Component<HouseCardProps, HouseCardState> {
       return true
     }
     if ((this.props.houseProps.LOT !== nextProps.houseProps.LOT) ||
-       (this.props.houseProps.PLAN !== nextProps.houseProps.PLAN) ||
-       (this.props.houseProps.lotPlan !== nextProps.houseProps.lotPlan) {
+       (this.props.houseProps.PLAN !== nextProps.houseProps.PLAN) {
       return true
     }
     if (this.props.showHouseCard !== nextProps.showHouseCard) {
@@ -99,7 +98,7 @@ export class HouseCard extends React.Component<HouseCardProps, HouseCardState> {
           <div>
             <Card bodyStyle={{ padding: 25 }} >
               <HouseStats flipCard={this.flipCard}
-                lotPlan={this.props.lotPlan}
+                graphql_id={this.props.graphql_id}
                 houseProps={this.props.houseProps}
                 currentCard={currentCard}
                 upvotes={upvotes}
@@ -115,7 +114,7 @@ export class HouseCard extends React.Component<HouseCardProps, HouseCardState> {
 
 const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox => {
   return {
-    lotPlan: state.reduxMapbox.lotPlan,
+    graphql_id: state.reduxMapbox.GRAPHQL_ID,
     longitude: state.reduxMapbox.longitude,
     latitude: state.reduxMapbox.latitude,
   }

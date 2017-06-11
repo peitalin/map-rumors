@@ -17,6 +17,7 @@ import { iPrediction, iHouse, userGQL, geoData } from '../typings/interfaceDefin
 import { SpinnerRectangle } from './Spinners'
 import Title from './Title'
 import MapBackground from './MapBackground'
+import GraphCoolData from './GraphCoolData'
 
 import 'styles/LocalPredictionSubscriptions.scss'
 
@@ -141,6 +142,7 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
       return (
         <div id="map__subscriptions" className="map__subscriptions">
           <MapBackground data={this.props.data}/>
+          <GraphCoolData gLngLat={this.props.gLngLat}/>
         </div>
       )
     }
@@ -168,31 +170,13 @@ query($emailAddress: String!) {
       lngCenter
       latCenter
       suburbCity
-    properties {
-    suburb
-    postcode
-    lotPlan
-    }
+      properties {
+        suburb
+        postcode
+        lotPlan
+      }
       geometry {
         coordinates
-      }
-    }
-
-    house {
-      id
-      address
-      lotPlan
-      lng
-      lat
-      geojsonparcel {
-        geometry
-        properties
-        type
-        city
-        locality
-        lotPlan
-        lngCenter
-        latCenter
       }
     }
   }
@@ -244,6 +228,7 @@ subscription($emailAddress: String!) {
 const mapStateToProps = ( state: ReduxState ): ReduxStateUser & ReduxStateParcels => {
   return {
     userGQL: state.reduxUser.userGQL,
+    gLngLat: state.reduxParcels.gLngLat,
   }
 }
 
