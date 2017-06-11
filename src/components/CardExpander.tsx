@@ -66,6 +66,11 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
     }, 400)
   }
 
+  goBackToLastURL = (url: string) => {
+    let a = url.split('/')
+    return a.slice(0, a.length-1).join('/')
+  }
+
   render() {
     return (
       <div className={classnames({
@@ -76,7 +81,7 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
         <div className="card__underlay" onClick={this.handleClickUnderlay}>
           {(
             this.state.underlayClicked &&
-            <Redirect to={this.props.history.location.pathname}/>
+            <Redirect to={this.goBackToLastURL(this.props.history.location.pathname)}/>
           )}
         </div>
 

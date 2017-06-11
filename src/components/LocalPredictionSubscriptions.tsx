@@ -153,12 +153,14 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
 
 const query = gql`
 query($emailAddress: String!) {
-  allPredictions(filter: {
-    AND: [
-      { geojson: { suburbCity_in: "Parkinson, Brisbane City" } },
-      { user: { emailAddress_not_in: [$emailAddress] } }
-    ]
-  }) {
+  allPredictions(
+    filter: {
+      AND: [
+        { user: { emailAddress_not_in: [$emailAddress] } }
+      ]
+    },
+    first: 100
+  ) {
     id
     prediction
     user {
