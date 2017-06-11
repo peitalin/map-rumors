@@ -187,6 +187,7 @@ query($graphql_id: ID!) {
     id
     lngCenter
     latCenter
+    type
     properties {
       address
       lot
@@ -198,6 +199,10 @@ query($graphql_id: ID!) {
       streetName
       streetType
       suburb
+    }
+    geometry {
+      coordinates
+      type
     }
   }
 }
