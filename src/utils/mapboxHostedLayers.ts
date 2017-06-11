@@ -38,14 +38,14 @@ export const mapboxHostedLayers = {
       // source -> sourceId
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.dah4s0rb'
+        url: 'mapbox://peitalin.75vduift'
       },
       // paint: { 'line-opacity': 0.3, 'line-color': '#ddd' },
       paint: { 'line-opacity': 0.3, 'line-color': '#555' },
       layout: {},
       // source-layer wrapped in layerOptions
       layerOptions: {
-        'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez'
+        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
       }
     },
 
@@ -54,12 +54,12 @@ export const mapboxHostedLayers = {
       type: 'fill',
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.dah4s0rb'
+        url: 'mapbox://peitalin.75vduift'
       },
       paint: { 'fill-opacity': 0, 'fill-color': '#222' },
       layout: {},
       layerOptions: {
-        'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez',
+        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
       }
     },
 
@@ -68,13 +68,13 @@ export const mapboxHostedLayers = {
       type: 'fill',
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.dah4s0rb'
+        url: 'mapbox://peitalin.75vduift'
       },
       paint: { 'fill-opacity': 0.5, 'fill-color': '#90E0F3' },
       layout: {},
       layerOptions: {
         filter:['==', 'name', ''],
-        'source-layer': 'brisbane_gis_parcels_cleaned-8i4iez',
+        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
       }
     },
 
