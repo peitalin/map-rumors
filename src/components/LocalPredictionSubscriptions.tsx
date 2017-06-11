@@ -11,7 +11,7 @@ import gql from 'graphql-tag'
 import { graphql, ApolloProvider, withApollo, compose } from 'react-apollo'
 
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import { iPrediction, iHouse, userGQL, geoData } from '../typings/interfaceDefinitions'
+import { iPrediction, iGeojson, userGQL, geoData } from '../typings/interfaceDefinitions'
 
 
 import { SpinnerRectangle } from './Spinners'
@@ -57,8 +57,8 @@ interface SubscriptionResponse {
         node?: {
           prediction: number
           id: string
-          user: { id: string, emailAddress: string }
-          house: { id: string, address: string }
+          user: userGQL
+          geojson: iGeojson
         }
         previousValues?: { id: string }
       }
@@ -203,21 +203,21 @@ subscription($emailAddress: String!) {
         id
         emailAddress
       }
-    }
-    geojson {
-      id
-      lngCenter
-      latCenter
-      suburbCity
-      type
-      properties {
-        suburb
-        postcode
-        lotPlan
-      }
-      geometry {
-        coordinates
+      geojson {
+        id
+        lngCenter
+        latCenter
+        suburbCity
         type
+        properties {
+          suburb
+          postcode
+          lotPlan
+        }
+        geometry {
+          coordinates
+          type
+        }
       }
     }
     previousValues {
