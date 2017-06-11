@@ -155,7 +155,7 @@ const query = gql`
 query($emailAddress: String!) {
   allPredictions(filter: {
     AND: [
-      { house: { locality_in: "PARKINSON" } },
+      { geojson: { suburbCity_in: "Parkinson, Brisbane City" } },
       { user: { emailAddress_not_in: [$emailAddress] } }
     ]
   }) {
@@ -170,6 +170,7 @@ query($emailAddress: String!) {
       lngCenter
       latCenter
       suburbCity
+      type
       properties {
         suburb
         postcode
@@ -177,6 +178,7 @@ query($emailAddress: String!) {
       }
       geometry {
         coordinates
+        type
       }
     }
   }
@@ -199,22 +201,21 @@ subscription($emailAddress: String!) {
         id
         emailAddress
       }
-      house {
-        id
-        address
+    }
+    geojson {
+      id
+      lngCenter
+      latCenter
+      suburbCity
+      type
+      properties {
+        suburb
+        postcode
         lotPlan
-        lng
-        lat
-        geojsonparcel {
-          geometry
-          properties
-          type
-          city
-          locality
-          lotPlan
-          lngCenter
-          latCenter
-        }
+      }
+      geometry {
+        coordinates
+        type
       }
     }
     previousValues {

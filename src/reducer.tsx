@@ -253,12 +253,17 @@ export const reduxReducerParcels = (
 
     case A.UPDATE_GEOJSON_ALL_PREDICTIONS: {
       let { predictions }: { predictions: iPrediction[] } = action.payload
-      let predictionGeojsonIds = new Set(predictions.map(p => p.geojson.id))
       return {
         ...state,
         gAllPredictions: {
           ...state.gData
-          features: state.gData.features.filter(g => predictionGeojsonIds.has(g.id))
+          features: predictions.map(p => {
+            return {
+              geometry: p.geojson.geometry,
+              properties: p.geojson.properties,
+              type: p.geojson.type,
+            }
+          })
         }
       }
     }
