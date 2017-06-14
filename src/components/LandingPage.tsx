@@ -51,7 +51,7 @@ export default class LandingPage extends React.Component<any, any> {
 
   render() {
     return (
-      <div>
+      <div className='landing-page'>
         <div className='background-color-slider'></div>
         <div className='hero-container'>
           <div> { this.languageNav() } </div>

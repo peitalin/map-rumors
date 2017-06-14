@@ -1,16 +1,25 @@
 
+import * as Immutable from 'immutable'
 
 import { ActionType, Actions } from './reduxActions'
-import { userGQL, geoData, iPrediction } from './typings/interfaceDefinitions'
+import {
+  userGQL, geoData,
+  iPrediction, LngLat
+} from './typings/interfaceDefinitions'
+import { apolloClient } from './index'
 
-import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import * as Immutable from 'immutable'
+
+import { delay } from 'redux-saga'
+import { put, takeEvery, all } from 'redux-saga/effects'
+
+
 
 let localDataRaw: geoData = require('./data/parkinson_parcels.json')
 // let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
 let localData = { ...localDataRaw, features: localDataRaw.features }
 import { isParcelNear } from './utils/worker'
 let MyWorker = require('worker-loader!./utils/worker.ts')
+
 
 
 ///// Grand Redux State Shape ////////
@@ -87,6 +96,7 @@ export const reduxReducerMapbox = (
 export interface ReduxStateUser {
   userGQL?: userGQL
   isUpdatingMyPredictions?: boolean
+  timeOut?: number
 }
 
 const initialReduxStateUser: ReduxStateUser = {
@@ -101,7 +111,9 @@ const initialReduxStateUser: ReduxStateUser = {
     predictions: [],
   },
   isUpdatingMyPredictions: false,
+  timeOut: 1
 }
+
 
 export const reduxReducerUser = (
     state: ReduxStateUser = initialReduxStateUser,
@@ -117,6 +129,9 @@ export const reduxReducerUser = (
     case A.IS_UPDATING_MY_PREDICTIONS:
       return { ...state, isUpdatingMyPredictions: action.payload }
 
+    case A.TIMEOUT:
+      return { ...state, timeOut: state.timeOut + 2 }
+
     default: {
       return state
     }
@@ -126,7 +141,7 @@ export const reduxReducerUser = (
 
 //////// geojson parcels /////////
 export interface ReduxStateParcels {
-  gLngLat?: mapboxgl.LngLat
+  gLngLat?: LngLat
   gData?: geoData
   gRadius?: geoData
   gRadiusWide?: geoData
@@ -198,11 +213,48 @@ export const reduxReducerParcels = (
       //     }
       //   }
       // }
+
+      // console.info("ApolloClient:", apolloClient)
+
+      // apolloClient.query({
+      //   query: gql`
+      //     query(
+      //       $lngCenterLTE: Float, $lngCenterGTE: Float,
+      //       $latCenterLTE: Float, $latCenterGTE: Float
+      //       ) {
+      //       allGeojsons(filter: {
+      //         lngCenter_lte: $lngCenterLTE,
+      //         lngCenter_gte: $lngCenterGTE,
+      //         latCenter_lte: $latCenterLTE,
+      //         latCenter_gte: $latCenterGTE,
+      //       }, first: 400) {
+      //         id
+      //         properties {
+      //           address
+      //           lotPlan
+      //         }
+      //       }
+      //     }
+      //   `,
+      // })
+      //   .then(data => console.log(data))
+      //   .catch(error => console.error(error));
+
       return {
         ...state,
         gData: {
           ...localData,
           features: localData.features.filter(g => isParcelNear(g, lng, lat, 0.0080))
+        }
+      }
+    }
+
+    case A.UPDATE_GEOJSON_DATA_ASYNC: {
+      return {
+        ...state,
+        gData: {
+          ...localData,
+          features: action.payload
         }
       }
     }

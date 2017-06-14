@@ -96,7 +96,7 @@ $carousel-height: 175px;
 // First, move the whole row towards the left
 .row__inner:hover {
   transform: translate3d($moveLeft, 0, 0) scale(1.1);
-  transition: transform 0.2s ease;
+	transition: transform 0.2s ease, opacity 0.4s ease;
   transform-origin: left center;
 }
 
@@ -108,6 +108,7 @@ $carousel-height: 175px;
   &:hover {
     transform: scale($growFactor);
     transition: transform 0.2s ease;
+		transition: transform 0.2s ease, opacity 0.4s ease;
     opacity: 1;
   }
 }

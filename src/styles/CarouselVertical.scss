@@ -113,11 +113,11 @@ $slider-color: #96616B;
   .row__inner:hover .tile__container {
     // Fade out every tile
     opacity: .8;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.5s ease;
     // And then grow the current tile and make it opaque again
     &:hover {
       transform: scale($growFactor);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, opacity 0.5s ease;
       opacity: 1;
     }
   }

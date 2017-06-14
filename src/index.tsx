@@ -24,48 +24,45 @@ import { SpinnerRectangle } from './components/Spinners'
 // import offlineConfig from 'redux-offline/lib/defaults';
 
 
+const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
+const networkInterface = createBatchingNetworkInterface({
+  uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
+  batchInterval: 40
+});
+const middlewareAuth0 = {
+  applyBatchMiddleware: (req, next) => {
+    req.options.headers = (req.options.headers) ? req.options.headers : {}
+    req.options.headers.authorization = (window.localStorage.getItem('auth0IdToken'))
+      ? `Bearer ${window.localStorage.getItem('auth0IdToken')}`
+      : undefined // get authentication token from local storage if it exists
+    next()
+  }
+};
+networkInterface.use([middlewareAuth0])
+const wsClient = new SubscriptionClient(
+  `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
+  { reconnect: true }
+);
+
+export const apolloClient = new ApolloClient({
+  networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
+  dataIdFromObject: o => o.id, // enable object ID for better cacheing
+  queryDeduplication: true, // batch graphql queries
+  // initialState: initialState,
+  // reduxRootSelector: state => state.apollo,
+})
 
 interface AppApolloState {
   rehydrated: boolean
 }
+
 
 class AppApollo extends React.Component<any, AppApolloState> {
 
   state = { rehydrated: false }
 
   componentWillMount() {
-    const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
-    this.initApolloNetworkInterface(GRAPHQL_PROJECT_ID)
     this.persistReduxStore()
-  }
-
-  private initApolloNetworkInterface = async(GRAPHQL_PROJECT_ID) => {
-    const networkInterface = createBatchingNetworkInterface({
-      uri: `https://api.graph.cool/simple/v1/${GRAPHQL_PROJECT_ID}`,
-      batchInterval: 40
-    });
-    const middlewareAuth0 = {
-      applyBatchMiddleware: (req, next) => {
-        req.options.headers = (req.options.headers) ? req.options.headers : {}
-        req.options.headers.authorization = (window.localStorage.getItem('auth0IdToken'))
-          ? `Bearer ${window.localStorage.getItem('auth0IdToken')}`
-          : undefined // get authentication token from local storage if it exists
-        next()
-      }
-    };
-    networkInterface.use([middlewareAuth0])
-    const wsClient = new SubscriptionClient(
-      `wss://subscriptions.graph.cool/v1/${GRAPHQL_PROJECT_ID}`,
-      { reconnect: true }
-    );
-
-    this.apolloClient = new ApolloClient({
-      networkInterface: addGraphQLSubscriptions(networkInterface, wsClient),
-      dataIdFromObject: o => o.id, // enable object ID for better cacheing
-      queryDeduplication: true, // batch graphql queries
-      // initialState: initialState,
-      // reduxRootSelector: state => state.apollo,
-    })
   }
 
   private persistReduxStore = (GRAPHQL_PROJECT_ID) => {
@@ -134,7 +131,7 @@ class AppApollo extends React.Component<any, AppApolloState> {
       )
     }
     return (
-      <ApolloProvider store={this.reduxStore} client={this.apolloClient}>
+      <ApolloProvider store={this.reduxStore} client={apolloClient}>
         <AppRoutes />
       </ApolloProvider>
     )

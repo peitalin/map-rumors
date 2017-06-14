@@ -15,6 +15,8 @@ import {
   userGQL, geoData, LngLat
 } from '../typings/interfaceDefinitions'
 
+import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
@@ -25,6 +27,7 @@ import 'styles/LocalPredictions.scss'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 let message: { success: Function, error: Function, warning: Function, info: Function }
+
 const LOCALPREDICTIONS_ROUTE = "/map/parallax/localpredictions"
 
 
@@ -55,7 +58,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
   }
 
   private gotoPredictionLocation = (geojson: iGeojson): void => {
-    let lngLat: LngLat = new LngLat( geojson.lngCenter, geojson.latCenter )
+    let lngLat: LngLat = new mapboxgl.LngLat( geojson.lngCenter, geojson.latCenter )
     message.info(`Going to ${geojson.properties.address}`)
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateGeoData(lngLat)

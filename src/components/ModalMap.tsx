@@ -5,9 +5,6 @@ import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox } from '../reducer'
 import { Actions as A } from '../reduxActions'
 
-import * as message from 'antd/lib/message'
-import 'antd/lib/message/style/css'
-
 import * as Modal from 'antd/lib/modal'
 import 'antd/lib/modal/style/css'
 
@@ -57,7 +54,6 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
 
   showModal = () => {
     this.props.toggleShowModal(true)
-    message.info("Loading Google Maps Street View")
   }
 
   handleOk = () => {

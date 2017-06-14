@@ -6,6 +6,13 @@ $primary-color: #96616B;
 $slider-color: #96616B;
 
 
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .hero-container {
   background-color: #f8f8f8;
   max-width: 1440px;
