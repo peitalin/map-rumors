@@ -14,9 +14,8 @@ import { put, takeEvery, all } from 'redux-saga/effects'
 
 
 
-let localDataRaw: geoData = require('./data/parkinson_parcels.json')
-// let localData = { ...localDataRaw, features: Immutable.List(localDataRaw.features) }
-let localData = { ...localDataRaw, features: localDataRaw.features }
+// let localDataRaw: geoData = require('./data/parkinson_parcels.json')
+// let localData = { ...localDataRaw, features: localDataRaw.features }
 import { isParcelNear } from './utils/worker'
 let MyWorker = require('worker-loader!./utils/worker.ts')
 
@@ -153,8 +152,8 @@ export interface ReduxStateParcels {
 const initialReduxStateParcels = {
   gLngLat: { lng: 153.0383, lat: -27.6342 }, // keeps track of geoData location so we know when to update geoData
   gData: {
-    ...localData,
-    features: localData.features.filter(g => isParcelNear(g, 153.0383, -27.6342, 0.0080))
+    type: 'FeatureCollection',
+    features: []
   },
   // gData:            { type: "FeatureCollection", features: [] },
   gRadius:          { type: "FeatureCollection", features: [] },
@@ -166,7 +165,7 @@ const initialReduxStateParcels = {
 
 // const reduxWorker = new MyWorker()
 // reduxWorker.postMessage({
-//   features: localData.features,
+//   features: action.payload,
 //   longitude: lng,
 //   latitude: lat,
 //   radiusMax: 0.0080,
@@ -175,7 +174,7 @@ const initialReduxStateParcels = {
 //   return {
 //     ...state,
 //     gData: {
-//       ...localData,
+//       ...state.gData
 //       features: m.data
 //     }
 //   }
@@ -199,7 +198,7 @@ export const reduxReducerParcels = (
 
       //// REDUX SAGA
       // reduxWorker.postMessage({
-      //   features: localData.features,
+      //   features: action.payload,
       //   longitude: lng,
       //   latitude: lat,
       //   radiusMax: 0.0080,
@@ -208,7 +207,7 @@ export const reduxReducerParcels = (
       //   return {
       //     ...state,
       //     gData: {
-      //       ...localData,
+      //       ...state.gData
       //       features: m.data
       //     }
       //   }
@@ -243,8 +242,8 @@ export const reduxReducerParcels = (
       return {
         ...state,
         gData: {
-          ...localData,
-          features: localData.features.filter(g => isParcelNear(g, lng, lat, 0.0080))
+          ...state.gData,
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0080))
         }
       }
     }
@@ -253,7 +252,7 @@ export const reduxReducerParcels = (
       return {
         ...state,
         gData: {
-          ...localData,
+          ...state.gData,
           features: action.payload
         }
       }
@@ -265,7 +264,7 @@ export const reduxReducerParcels = (
         ...state,
         gRadius: {
           ...state.gData
-          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0015))
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0020))
         }
       }
     }
@@ -276,7 +275,7 @@ export const reduxReducerParcels = (
         ...state,
         gRadiusWide: {
           ...state.gData,
-          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0020, 0.0010))
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0030, 0.0015))
         }
       }
     }

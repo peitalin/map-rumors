@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import AppRoutes from './AppRoutes'
 
+// antd locale provider
 
 //// Graphql
 import { createBatchingNetworkInterface, ApolloClient } from 'apollo-client'
@@ -22,6 +23,7 @@ import { SpinnerRectangle } from './components/Spinners'
 /// Redux-offline
 // import { offline } from 'redux-offline';
 // import offlineConfig from 'redux-offline/lib/defaults';
+
 
 
 const GRAPHQL_PROJECT_ID = "cixfj2p7t5esw0111742t44e8"
@@ -68,8 +70,8 @@ class AppApollo extends React.Component<any, AppApolloState> {
   private persistReduxStore = (GRAPHQL_PROJECT_ID) => {
 
     let persistState = true;
-    // let clearStore = true;
-    let clearStore = false;
+    let clearStore = true;
+    // let clearStore = false;
 
     getStoredState({ storage: localforage }, (err, rehydratedState) => {
       // const initialState = { apollo: { data: rehydratedState.apollo ? rehydratedState.apollo.data : {} }}

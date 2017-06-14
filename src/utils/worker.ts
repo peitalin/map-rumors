@@ -1,5 +1,5 @@
 
-import { geoParcel, LngLat } from '../typings/interfaceDefinitions'
+import { iGeojson, LngLat } from '../typings/interfaceDefinitions'
 const { sqrt, abs } = Math
 
 // don't put let or const in front of onmessage
@@ -42,13 +42,15 @@ export const L2Norm = (
 }
 
 export const isParcelNear = (
-    geoJsonFeature: geoParcel,
+    geoJsonFeature: iGeojson,
     longitude: number,
     latitude: number,
     radiusMax: number,
     radiusMin: number
   ) => {
-  let { lngCenter, latCenter } = geoJsonFeature.properties
+  // let { lngCenter, latCenter } = geoJsonFeature
+  let lngCenter = geoJsonFeature.lngCenter || geoJsonFeature.properties.lngCenter
+  let latCenter = geoJsonFeature.latCenter || geoJsonFeature.properties.latCenter
   let L2Distance = L2Norm({ lng: longitude, lat: latitude }, { lngCenter: lngCenter, latCenter: latCenter })
   return ((radiusMin || 0) <= L2Distance) && (L2Distance <= radiusMax)
 }

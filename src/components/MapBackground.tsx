@@ -18,9 +18,13 @@ import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
 import { mapboxHostedLayers } from '../utils/mapboxHostedLayers'
 
-import 'styles/MapBackground.scss'
+// apolloClient for updating GeoData
+import { apolloClient } from '../index'
+import gql from 'graphql-tag'
 
-// Components
+
+// Components + Styles
+import 'styles/MapBackground.scss'
 import Title from './Title'
 import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
@@ -32,6 +36,7 @@ import 'antd/lib/button/style/css'
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
+// Typings and Data validation
 import { geoData, geoParcel, gplacesDestination, userGQL, mapboxFeature, iPrediction } from '../typings/interfaceDefinitions'
 import { geojsonValidate } from '../typings/geojson-validate.d'
 import * as geojsonValidation from 'geojson-validation'
@@ -77,7 +82,7 @@ interface DispatchProps {
   updateGraphQLId?(GRAPHQL_ID: string): void
   // redux parcel update dispatchers
   updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
-  updateGeoData?(lngLat: mapboxgl.LngLat): void
+  updateGeoData?(geoDataFeatures: iGeojson[]): void
   updateGeoRadius?(lngLat: mapboxgl.LngLat): void
   updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): void
   updateGeoClickedParcels?(gClickedParcels: geoData): void
@@ -122,6 +127,44 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   componentWillMount() {
     this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
+    apolloClient.query({
+      variables: {
+        "lngCenterLTE": this.props.gLngLat.lng + 0.004,
+        "lngCenterGTE": this.props.gLngLat.lng - 0.004,
+        "latCenterLTE": this.props.gLngLat.lat + 0.004,
+        "latCenterGTE": this.props.gLngLat.lat - 0.004,
+      },
+      query: gql`
+        query(
+          $lngCenterLTE: Float, $lngCenterGTE: Float,
+          $latCenterLTE: Float, $latCenterGTE: Float
+          ) {
+          allGeojsons(filter: {
+            lngCenter_lte: $lngCenterLTE,
+            lngCenter_gte: $lngCenterGTE,
+            latCenter_lte: $latCenterLTE,
+            latCenter_gte: $latCenterGTE,
+          }, first: 1000) {
+            id
+            lngCenter
+            latCenter
+            type
+            properties {
+              address
+              lotPlan
+            }
+            geometry {
+              coordinates
+              type
+            }
+          }
+        }
+      `,
+    }).then(res => {
+      // console.log(res)
+      this.props.updateGeoData(res.data.allGeojsons)
+    })
+    .catch(error => console.error(error));
   }
 
   componentDidMount() {
@@ -284,7 +327,45 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     if (L2Distance > 0.006) {
       console.info("gLntLat changed:", lngLat)
       this.props.updateGeoDataLngLat({ lng: lngLat.lng, lat: lngLat.lat })
-      this.props.updateGeoData(lngLat)
+
+      apolloClient.query({
+        variables: {
+          "lngCenterLTE": this.props.gLngLat.lng + 0.004,
+          "lngCenterGTE": this.props.gLngLat.lng - 0.004,
+          "latCenterLTE": this.props.gLngLat.lat + 0.004,
+          "latCenterGTE": this.props.gLngLat.lat - 0.004,
+        },
+        query: gql`
+          query(
+            $lngCenterLTE: Float, $lngCenterGTE: Float,
+            $latCenterLTE: Float, $latCenterGTE: Float
+            ) {
+            allGeojsons(filter: {
+              lngCenter_lte: $lngCenterLTE,
+              lngCenter_gte: $lngCenterGTE,
+              latCenter_lte: $latCenterLTE,
+              latCenter_gte: $latCenterGTE,
+            }, first: 1000) {
+              id
+              lngCenter
+              latCenter
+              type
+              properties {
+                address
+                lotPlan
+              }
+              geometry {
+                coordinates
+                type
+              }
+            }
+          }
+        `,
+      }).then(res => {
+        // console.log(res)
+        this.props.updateGeoData(res.data.allGeojsons)
+      })
+      .catch(error => console.error(error));
     }
 
     // update geojson parcel set in background worker
@@ -554,8 +635,8 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: gLngLat }
       // circle of parcels (unseen) to filter as user moves on the map
     ),
-    updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_DATA, payload: lngLat }
+    updateGeoData: (geoDataFeatures: iGeojson[]) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_ASYNC, payload: geoDataFeatures }
       // circle of parcels (invisible) to filter as user moves on the map
       // all other parcels are based on this layer (filtered from)
     ),

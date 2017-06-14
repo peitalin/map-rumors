@@ -9,20 +9,27 @@ g path {
   overflow: hidden;
   min-height: 800px;
 }
+
+.hero-area {
+  width: 70%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 @media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
   /* portrait */
   .hero-area {
     width: 60%;
     position: absolute;
     left: 50%;
-    transform: translateX(-60%) scale(0.9);
+    transform: translateX(-50%) scale(0.9);
   }
 }
 @media screen and (min-aspect-ratio: 16/10) and (max-width: 780px) {
   /* landscape */
   .hero-area {
-    height: 60%;
-    transform: translateX(-60%) scale(0.8);
+    height: 50vw;
+    transform: translateX(-50%) scale(0.8);
   }
 }
 

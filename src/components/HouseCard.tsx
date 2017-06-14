@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox, ReduxStateUser } from '../reducer'
 import { Actions as A } from '../reduxActions'
 
-import { geoData } from '../typings/interfaceDefinitions'
+import { geoData, iGeojson } from '../typings/interfaceDefinitions'
 
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
@@ -20,7 +20,7 @@ import gql from 'graphql-tag'
 
 interface DispatchProps {
   updateTimeOut(timeOut: number)?: Dispatch<A>
-  updateGeoData(lngLat: LngLat)?: Dispatch<A>
+  updateGeoData(geoDataFeatures: iGeojson[])?: Dispatch<A>
 }
 interface StateProps {
   graphql_id: string
@@ -122,9 +122,9 @@ export class HouseCard extends React.Component<StateProps & DispatchProps & Reac
           }
         }
       `,
-    }).then(data => {
-      console.log(data)
-      this.props.updateGeoData(data.allGeojsons)
+    }).then(res => {
+      console.log(res)
+      this.props.updateGeoData(res.data.allGeojsons)
     })
     .catch(error => console.error(error));
   }
@@ -184,8 +184,8 @@ const mapDispatchToProps = ( dispatch ) => {
     updateTimeOut: (timeOut: number) => dispatch(
       { type: A.User.TIMEOUT, payload: timeOut }
     ),
-    updateGeoData: (geojsonData: geoData) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_ASYNC, payload: geojsonData }
+    updateGeoData: (geoDataFeatures: iGeojson[] ) => dispatch(
+      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_ASYNC, payload: geoDataFeatures }
       // circle of parcels (invisible) to filter as user moves on the map
       // all other parcels are based on this layer (filtered from)
     ),

@@ -23,8 +23,8 @@ if (isProduction) {
       disable: false,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
+      name: 'commons',
+      minChunks: 3,
       filename: '[name].js',
     }),
     new webpack.optimize.UglifyJsPlugin({
@@ -64,8 +64,8 @@ if (isProduction) {
       disable: true, // can give css style flashes
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
+      name: 'commons',
+      minChunks: 3,
       filename: '[name].js',
     }),
   ]
@@ -76,8 +76,10 @@ if (isProduction) {
 
 const config = {
   entry: isProduction
-    ? { bundle: path.resolve(__dirname, 'src', 'index.tsx') }
-    : [
+    ? {
+      bundle: path.resolve(__dirname, 'src', 'index.tsx'),
+      vendor: ['mapbox-gl', 'react-redux', 'gsap']
+    } : [
       'react-hot-loader/patch',
       // activate HMR for React
       'webpack-dev-server/client?http://localhost:3333',
@@ -127,8 +129,8 @@ const config = {
     "react": "React",
     "react-dom": "ReactDOM",
   }: {
-    // "react": "React",
-    // "react-dom": "ReactDOM",
+    "react": "React",
+    "react-dom": "ReactDOM",
     // "auth0-lock": "Auth0Lock",
     // "mapbox-gl": "mapboxgl",
     // // must keep mapboxgl external if not using alias.

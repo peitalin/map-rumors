@@ -73,7 +73,7 @@ export default class LandingPage extends React.Component<any, any> {
           <div className="landing-page-listings-container">
             <Carousel className='landing-page-listings-flex vertical__carousel'>
             {(
-              [11,12,13,14,15].map((n, i) => {
+              [1,3,11,12,13,14,15].map((n, i) => {
                 return (
                   <CarouselTile key={i}
                     onClick={() => { console.log('tile clicked') }}
@@ -90,7 +90,7 @@ export default class LandingPage extends React.Component<any, any> {
 
             <Carousel className='landing-page-listings-flex vertical__carousel'>
             {(
-              [16,18,19,20,21,15].map((n, i) => {
+              [6,7,5,4,9,16,18,15].map((n, i) => {
                 return (
                   <CarouselTile key={i}
                     onClick={() => { console.log('tile clicked') }}
@@ -144,7 +144,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ch'>
           <div className='landing-page-header'>
-            <div> <h1>Hayek</h1> </div>
+            <div> <h1>PolyMono</h1> </div>
             <div> <h2>实时市场 /</h2> </div>
             <div> <h2>房地产投标和估值。</h2> </div>
           </div>
@@ -163,7 +163,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ru'>
           <div className='landing-page-header'>
-            <div> <h1>Hayek</h1> </div>
+            <div> <h1>PolyMono</h1> </div>
             <div> <h2>Рынок в реальном времени для /</h2> </div>
             <div> <h2>Ставки и оценки недвижимости.</h2> </div>
           </div>
@@ -181,7 +181,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='en'>
           <div className='landing-page-header'>
-            <div> <h1>Hayek</h1> </div>
+            <div> <h1>PolyMono</h1> </div>
             <div> <h2>A real-time market for /</h2> </div>
             <div> <h2>Real-estate bids and valuations.</h2> </div>
           </div>
@@ -189,8 +189,8 @@ const switchLanguageHeader = (language: string): JSX.Element => {
             <h3>Place and share real-time predictions on the map.</h3>
             <p> <b>Card Game: Poker/Blackjack.</b>  </p>
             <p>
+            Watch meta-auctions occur in real-time across the bid-scape. Polygrams.
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </p>
           </div>
         </div>
