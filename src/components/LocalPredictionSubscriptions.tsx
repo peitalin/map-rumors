@@ -17,7 +17,6 @@ import { iPrediction, iGeojson, userGQL, geoData } from '../typings/interfaceDef
 import { SpinnerRectangle } from './Spinners'
 import Title from './Title'
 import MapBackground from './MapBackground'
-import GraphCoolData from './GraphCoolData'
 
 import 'styles/LocalPredictionSubscriptions.scss'
 
@@ -142,7 +141,6 @@ export class MapSubscriptions extends React.Component<StateProps & DispatchProps
       return (
         <div id="map__subscriptions" className="map__subscriptions">
           <MapBackground data={this.props.data}/>
-          <GraphCoolData gLngLat={this.props.gLngLat}/>
         </div>
       )
     }
