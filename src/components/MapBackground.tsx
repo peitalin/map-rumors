@@ -63,12 +63,6 @@ interface StateProps {
   // ReduxStateUser
   userGQL: userGQL
   // ReduxStateParcels
-  gLngLat: mapboxgl.LngLat
-  // gLngLat: is the lngLat for geoData, not the actual map center
-  // used to calculate when we need to fetch additional geoData when moving on the map
-  gData: geoData
-  gRadius: geoData
-  gRadiusWide: geoData
   gMyPredictions: geoData
   gAllPredictions: geoData
 }
@@ -80,10 +74,6 @@ interface DispatchProps {
   toggleShowModal?(showModal: boolean): void
   updateGraphQLId?(GRAPHQL_ID: string): void
   // redux parcel update dispatchers
-  updateGeoDataLngLat?(gLngLat: mapboxgl.LngLat): void
-  updateGeoData?(geoDataFeatures: iGeojson[]): void
-  updateGeoRadius?(lngLat: mapboxgl.LngLat): void
-  updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): void
   updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): void
   updateGeoAllPredictions?(payload: { predictions: iPrediction[] }): void
 }
@@ -123,47 +113,47 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   }
 
   componentWillMount() {
-    this.worker = new MyWorker()
+    // this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
     if (this.props.gData.features.length < 10) {
-      apolloClient.query({
-        variables: {
-          "lngCenterLTE": this.props.gLngLat.lng + 0.004,
-          "lngCenterGTE": this.props.gLngLat.lng - 0.004,
-          "latCenterLTE": this.props.gLngLat.lat + 0.004,
-          "latCenterGTE": this.props.gLngLat.lat - 0.004,
-        },
-        query: gql`
-          query(
-            $lngCenterLTE: Float, $lngCenterGTE: Float,
-            $latCenterLTE: Float, $latCenterGTE: Float
-            ) {
-            allGeojsons(filter: {
-              lngCenter_lte: $lngCenterLTE,
-              lngCenter_gte: $lngCenterGTE,
-              latCenter_lte: $latCenterLTE,
-              latCenter_gte: $latCenterGTE,
-            }, first: 1000) {
-              id
-              lngCenter
-              latCenter
-              type
-              properties {
-                address
-                lotPlan
-              }
-              geometry {
-                coordinates
-                type
-              }
-            }
-          }
-        `,
-      }).then(res => {
-        // console.log(res)
-        this.props.updateGeoData(res.data.allGeojsons)
-      })
-      .catch(error => console.error(error));
+      // apolloClient.query({
+      //   variables: {
+      //     "lngCenterLTE": this.props.gLngLat.lng + 0.004,
+      //     "lngCenterGTE": this.props.gLngLat.lng - 0.004,
+      //     "latCenterLTE": this.props.gLngLat.lat + 0.004,
+      //     "latCenterGTE": this.props.gLngLat.lat - 0.004,
+      //   },
+      //   query: gql`
+      //     query(
+      //       $lngCenterLTE: Float, $lngCenterGTE: Float,
+      //       $latCenterLTE: Float, $latCenterGTE: Float
+      //       ) {
+      //       allGeojsons(filter: {
+      //         lngCenter_lte: $lngCenterLTE,
+      //         lngCenter_gte: $lngCenterGTE,
+      //         latCenter_lte: $latCenterLTE,
+      //         latCenter_gte: $latCenterGTE,
+      //       }, first: 1000) {
+      //         id
+      //         lngCenter
+      //         latCenter
+      //         type
+      //         properties {
+      //           address
+      //           lotPlan
+      //         }
+      //         geometry {
+      //           coordinates
+      //           type
+      //         }
+      //       }
+      //     }
+      //   `,
+      // }).then(res => {
+      //   // console.log(res)
+      //   this.props.updateGeoData(res.data.allGeojsons)
+      // })
+      // .catch(error => console.error(error));
     }
   }
 
@@ -204,13 +194,13 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
       })
       switch (this.props.flyingTo) {
         case 'MyPredictionListings': {
-          map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#1BD1C1')
-          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+          map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#3BD1C1')
+          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#1BD1C1')
           break;
         }
         case 'LocalPredictions': {
           map.setPaintProperty(mapboxlayers.radiusBorders, 'line-color', '#c68')
-          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#ddd')
+          map.setPaintProperty(mapboxlayers.radiusBordersWide, 'line-color', '#c8a')
           break;
         }
         default: {
@@ -343,7 +333,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   }
 
   validateGeoJsonData = () => {
-    ['gData', 'gRadius', 'gRadiusWide', 'gMyPredictions', 'gAllPredictions'].map(s => {
+    ['gMyPredictions', 'gAllPredictions'].map(s => {
       if (!geojsonValidation.valid(this.props[s])) {
         console.info(`invalid GeoJson for layer: ${s}`)
         console.info(this.props[s])
@@ -384,7 +374,14 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
 
           <LayerFilter id={ mapboxlayers.radiusBorders }
             paint={{
-              'line-color': mapboxlayerColors.radiusBorders,
+              'line-color': {
+                "property": "lngCenter",
+                "type": "exponential",
+                "stops": [
+                  [this.props.longitude - 0.001, mapboxlayerColors.radiusBordersWide],
+                  [this.props.longitude + 0.001, mapboxlayerColors.radiusBordersWide],
+                ]
+              },
               'line-width': 1,
               'line-opacity': {
                 "property": "latCenter",
@@ -407,8 +404,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
               'all',
               ['<=', 'lngCenter', this.props.longitude + 0.0017],
               ['>=', 'lngCenter', this.props.longitude - 0.0017],
-              ['<=', 'latCenter', this.props.latitude + 0.005],
-              ['>=', 'latCenter', this.props.latitude - 0.005],
+              ['<=', 'latCenter', this.props.latitude  + 0.005],
+              ['>=', 'latCenter', this.props.latitude  - 0.005],
             ]}
           />
 
@@ -445,15 +442,14 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
               'all',
               ['<=', 'lngCenter', this.props.longitude + 0.004],
               ['>=', 'lngCenter', this.props.longitude - 0.004],
-              ['<=', 'latCenter', this.props.latitude + 0.0018],
-              ['>=', 'latCenter', this.props.latitude - 0.0018],
+              ['<=', 'latCenter', this.props.latitude  + 0.0018],
+              ['>=', 'latCenter', this.props.latitude  - 0.0018],
             ]}
           />
 
 
 
           <Source id="gMyPredictions"
-            onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.props.gMyPredictions }}
           />
           <Layer sourceId="gMyPredictions"
@@ -468,7 +464,6 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           />
 
           <Source id="gAllPredictions"
-            onSourceAdded={(source) => (source)}
             geoJsonSource={{ type: 'geojson', data: this.props.gAllPredictions }}
           />
           <Layer sourceId="gAllPredictions"
@@ -559,10 +554,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateParc
     userGQL: state.reduxMapbox.userGQL,
     flyingTo: state.reduxMapbox.flyingTo,
     // reduxParcels
-    gData: state.reduxParcels.gData,
     gLngLat: state.reduxParcels.gLngLat,
-    gRadius: state.reduxParcels.gRadius,
-    gRadiusWide: state.reduxParcels.gRadiusWide,
     gMyPredictions: state.reduxParcels.gMyPredictions,
     gAllPredictions: state.reduxParcels.gAllPredictions,
   }
@@ -594,19 +586,6 @@ const mapDispatchToProps = ( dispatch ) => {
     updateGeoDataLngLat: (gLngLat: mapboxgl.LngLat) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: gLngLat }
       // circle of parcels (unseen) to filter as user moves on the map
-    ),
-    updateGeoData: (geoDataFeatures: iGeojson[]) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_ASYNC, payload: geoDataFeatures }
-      // circle of parcels (invisible) to filter as user moves on the map
-      // all other parcels are based on this layer (filtered from)
-    ),
-    updateGeoRadius: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS, payload: lngLat }
-      // circle of parcels on the map in UI
-    ),
-    updateGeoRadiusWide: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS_WIDE, payload: lngLat }
-      // circle of parcels (wide ring) on the map
     ),
     updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }

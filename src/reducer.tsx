@@ -95,7 +95,6 @@ export const reduxReducerMapbox = (
 export interface ReduxStateUser {
   userGQL?: userGQL
   isUpdatingMyPredictions?: boolean
-  timeOut?: number
 }
 
 const initialReduxStateUser: ReduxStateUser = {
@@ -110,7 +109,6 @@ const initialReduxStateUser: ReduxStateUser = {
     predictions: [],
   },
   isUpdatingMyPredictions: false,
-  timeOut: 1
 }
 
 
@@ -128,9 +126,6 @@ export const reduxReducerUser = (
     case A.IS_UPDATING_MY_PREDICTIONS:
       return { ...state, isUpdatingMyPredictions: action.payload }
 
-    case A.TIMEOUT:
-      return { ...state, timeOut: state.timeOut + 2 }
-
     default: {
       return state
     }
@@ -142,9 +137,6 @@ export const reduxReducerUser = (
 export interface ReduxStateParcels {
   gLngLat?: LngLat
   gData?: geoData
-  gRadius?: geoData
-  gRadiusWide?: geoData
-  gClickedParcels?: geoData
   gMyPredictions?: geoData
   gAllPredictions?: geoData
 }
@@ -155,10 +147,6 @@ const initialReduxStateParcels = {
     type: 'FeatureCollection',
     features: []
   },
-  // gData:            { type: "FeatureCollection", features: [] },
-  gRadius:          { type: "FeatureCollection", features: [] },
-  gRadiusWide:      { type: "FeatureCollection", features: [] },
-  gClickedParcels:  { type: "FeatureCollection", features: [] },
   gMyPredictions:   { type: "FeatureCollection", features: [] },
   gAllPredictions:  { type: "FeatureCollection", features: [] },
 }
@@ -259,32 +247,6 @@ export const reduxReducerParcels = (
           // features: newFeatures.filter(g => isParcelNear(g, state.gLngLat.lng, state.gLngLatlat, 0.008))
         }
       }
-    }
-
-    case A.UPDATE_GEOJSON_RADIUS: {
-      let { lng, lat } = action.payload
-      return {
-        ...state,
-        gRadius: {
-          ...state.gData
-          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0020))
-        }
-      }
-    }
-
-    case A.UPDATE_GEOJSON_RADIUS_WIDE: {
-      let { lng, lat } = action.payload
-      return {
-        ...state,
-        gRadiusWide: {
-          ...state.gData,
-          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0025, 0.0015))
-        }
-      }
-    }
-
-    case A.UPDATE_GEOJSON_CLICKED_PARCELS: {
-      return { ...state, gClickedParcels: action.payload }
     }
 
     case A.UPDATE_GEOJSON_MY_PREDICTIONS: {

@@ -113,7 +113,7 @@ export const mapboxHostedLayers = {
       type: 'fill-extrusion',
       source: 'composite',
       paint: {
-        'fill-extrusion-color': '#888',
+        'fill-extrusion-color': '#999',
         'fill-extrusion-height': {
           'type': 'identity',
           'property': 'height'
@@ -122,7 +122,7 @@ export const mapboxHostedLayers = {
           'type': 'identity',
           'property': 'min_height'
         },
-        'fill-extrusion-opacity': .4
+        'fill-extrusion-opacity': .3
       },
       filter: ['==', 'extrude', 'true'],
       'source-layer': 'building',

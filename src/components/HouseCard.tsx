@@ -19,12 +19,9 @@ import gql from 'graphql-tag'
 
 
 interface DispatchProps {
-  updateTimeOut(timeOut: number)?: Dispatch<A>
-  updateGeoData(geoDataFeatures: iGeojson[])?: Dispatch<A>
 }
 interface StateProps {
   graphql_id: string
-  timeOut: number
 }
 interface ReactProps {
   data?: any
@@ -89,45 +86,45 @@ export class HouseCard extends React.Component<StateProps & DispatchProps & Reac
     }
   }
 
-  timeOut = () => {
-    this.props.updateTimeOut(4)
-    apolloClient.query({
-      variables: {
-        "lngCenterLTE": 153.0397077387487,
-        "lngCenterGTE": 153.0297077387487,
-        "latCenterLTE": -27.630448824297527,
-        "latCenterGTE": -27.640448824297525
-      },
-      query: gql`
-        query(
-          $lngCenterLTE: Float, $lngCenterGTE: Float,
-          $latCenterLTE: Float, $latCenterGTE: Float
-          ) {
-          allGeojsons(filter: {
-            lngCenter_lte: $lngCenterLTE,
-            lngCenter_gte: $lngCenterGTE,
-            latCenter_lte: $latCenterLTE,
-            latCenter_gte: $latCenterGTE,
-          }, first: 400) {
-            id
-            type
-            properties {
-              address
-              lotPlan
-            }
-            geometry {
-              coordinates
-              type
-            }
-          }
-        }
-      `,
-    }).then(res => {
-      console.log(res)
-      this.props.updateGeoData(res.data.allGeojsons)
-    })
-    .catch(error => console.error(error));
-  }
+  // timeOut = () => {
+  //   this.props.updateTimeOut(4)
+  //   apolloClient.query({
+  //     variables: {
+  //       "lngCenterLTE": 153.0397077387487,
+  //       "lngCenterGTE": 153.0297077387487,
+  //       "latCenterLTE": -27.630448824297527,
+  //       "latCenterGTE": -27.640448824297525
+  //     },
+  //     query: gql`
+  //       query(
+  //         $lngCenterLTE: Float, $lngCenterGTE: Float,
+  //         $latCenterLTE: Float, $latCenterGTE: Float
+  //         ) {
+  //         allGeojsons(filter: {
+  //           lngCenter_lte: $lngCenterLTE,
+  //           lngCenter_gte: $lngCenterGTE,
+  //           latCenter_lte: $latCenterLTE,
+  //           latCenter_gte: $latCenterGTE,
+  //         }, first: 400) {
+  //           id
+  //           type
+  //           properties {
+  //             address
+  //             lotPlan
+  //           }
+  //           geometry {
+  //             coordinates
+  //             type
+  //           }
+  //         }
+  //       }
+  //     `,
+  //   }).then(res => {
+  //     console.log(res)
+  //     this.props.updateGeoData(res.data.allGeojsons)
+  //   })
+  //   .catch(error => console.error(error));
+  // }
 
   render() {
     let { imgSrc, currentCard, upvotes } = this.randHouseCard()
@@ -144,9 +141,6 @@ export class HouseCard extends React.Component<StateProps & DispatchProps & Reac
           <div onClick={this.flipCard}>
             <Card title={this.props.houseProps.PLAN} bodyStyle={{ padding: 0 }} >
               <img src={imgSrc}/>
-              <button onClick={this.timeOut} style={{ backgroundColor: '#ebf', padding: 5 }}>
-                timeOut:
-              </button>
               <ModalMap id='modalmap' longitude={this.props.longitude} latitude={this.props.latitude} />
             </Card>
           </div>
@@ -174,21 +168,11 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateUser
     graphql_id: state.reduxMapbox.GRAPHQL_ID,
     longitude: state.reduxMapbox.longitude,
     latitude: state.reduxMapbox.latitude,
-    timeOut: state.reduxUser.timeOut,
   }
 }
 
 const mapDispatchToProps = ( dispatch ) => {
-  return {
-    updateTimeOut: (timeOut: number) => dispatch(
-      { type: A.User.TIMEOUT, payload: timeOut }
-    ),
-    updateGeoData: (geoDataFeatures: iGeojson[] ) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_DATA_ASYNC, payload: geoDataFeatures }
-      // circle of parcels (invisible) to filter as user moves on the map
-      // all other parcels are based on this layer (filtered from)
-    ),
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)( HouseCard )
