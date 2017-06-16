@@ -344,10 +344,9 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
               },
               'line-width': 1,
               'line-opacity': {
-                "property": "latCenter",
+                "property": 'latCenter',
                 "type": "exponential",
                 "stops": [
-                  [this.props.latitude - 0.004, 0.02],
                   [this.props.latitude - 0.004, 0.05],
                   [this.props.latitude - 0.003, 0.1],
                   [this.props.latitude - 0.00171, 0.4],

@@ -116,7 +116,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
       return
     }
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( Geojson.lngCenter, Geojson.latCenter )
-    // message.info(`Going to ${house.address}`)
+    message.info(`Going to ${Geojson.properties.address}`)
     this.props.updateFlyingTo('MyPredictionListings')
     this.props.updateLngLat(lngLat)
     this.props.updateGeoDataLngLat(lngLat)
