@@ -32,49 +32,64 @@ const example_react_mapbox_gl_code = {
 
 export const mapboxHostedLayers = {
 
-    parkinsonParcels: {
-      id: 'parkinson-parcels',
+    brisbaneParcels: {
+      id: 'brisbane-parcels',
       type: 'line',
       // source -> sourceId
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.75vduift'
+        url: 'mapbox://peitalin.1rs9p367'
       },
       // paint: { 'line-opacity': 0.3, 'line-color': '#ddd' },
       paint: { 'line-opacity': 0.3, 'line-color': '#555' },
       layout: {},
       // source-layer wrapped in layerOptions
       layerOptions: {
-        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
+        'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
     },
 
-    parkinsonParcelsFill: {
-      id: 'parkinson-parcels-fill',
+    brisbaneParcelsFill: {
+      id: 'brisbane-parcels-fill',
       type: 'fill',
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.75vduift'
+        url: 'mapbox://peitalin.1rs9p367'
       },
       paint: { 'fill-opacity': 0, 'fill-color': '#222' },
       layout: {},
       layerOptions: {
-        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
+        'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
     },
 
-    parkinsonParcelsHover: {
-      id: 'parkinson-parcels-hover',
+    brisbaneParcelsHover: {
+      id: 'brisbane-parcels-hover',
       type: 'fill',
       sourceId: {
         type: 'vector',
-        url: 'mapbox://peitalin.75vduift'
+        url: 'mapbox://peitalin.1rs9p367'
       },
       paint: { 'fill-opacity': 0.5, 'fill-color': '#90E0F3' },
       layout: {},
       layerOptions: {
         filter:['==', 'name', ''],
-        'source-layer': 'mapbox_graphcool_brisbane-bhrfn0',
+        'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
+      }
+    },
+
+    brisbaneParcelsClicked: {
+      id: 'brisbane-parcels-clicked',
+      type: 'fill',
+      sourceId: {
+        type: 'vector',
+        url: 'mapbox://peitalin.1rs9p367'
+      },
+      paint: { 'fill-opacity': 0.3, 'fill-color': '#75F4F4' },
+      layout: {},
+      layerOptions: {
+        filter:['==', 'name', ''],
+        'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
     },
 
@@ -107,7 +122,7 @@ export const mapboxHostedLayers = {
           'type': 'identity',
           'property': 'min_height'
         },
-        'fill-extrusion-opacity': .5
+        'fill-extrusion-opacity': .4
       },
       filter: ['==', 'extrude', 'true'],
       'source-layer': 'building',

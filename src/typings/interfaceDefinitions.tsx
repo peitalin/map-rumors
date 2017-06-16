@@ -46,6 +46,8 @@ export interface iGeojson {
     streetNumSuffix?: string
     streetType?: string
     unitNumber?: string
+    lngCenter?: number
+    latCenter?: number
   }
   geometry?: {
     type?: string

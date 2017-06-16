@@ -249,11 +249,14 @@ export const reduxReducerParcels = (
     }
 
     case A.UPDATE_GEOJSON_DATA_ASYNC: {
+      // console.info(action.payload)
+      let newFeatures = [...state.gData.features, action.payload]
       return {
         ...state,
         gData: {
           ...state.gData,
           features: action.payload
+          // features: newFeatures.filter(g => isParcelNear(g, state.gLngLat.lng, state.gLngLatlat, 0.008))
         }
       }
     }
@@ -275,7 +278,7 @@ export const reduxReducerParcels = (
         ...state,
         gRadiusWide: {
           ...state.gData,
-          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0030, 0.0015))
+          features: state.gData.features.filter(g => isParcelNear(g, lng, lat, 0.0025, 0.0015))
         }
       }
     }

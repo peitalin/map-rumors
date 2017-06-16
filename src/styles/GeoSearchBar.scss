@@ -1,4 +1,8 @@
 
+
+
+$searchbar-padding-top: 200px;
+
 .searchBox {
   z-index: 0;
   display: flex;
@@ -55,7 +59,7 @@
   &__expand {
     top: 0;
     right: 0px;
-    height: 130px;
+    height: $searchbar-padding-top;
     width: 100%;
     padding: 0 20px 10px;
     flex-direction: column;
@@ -83,8 +87,8 @@
           outline: none;
           background: #EDEDED;
           flex-grow: 1;
-          height: 30px;
-          font-size: 12px;
+          height: 50px;
+          font-size: 16px;
         }
       }
 
@@ -134,13 +138,13 @@
   }
 
   &__suggests-wrapper {
-      width: 100%;
-      position: fixed;
-      left: 0;
-      height: 100%;
-      top: 0;
-      padding-top: 130px;
-      pointer-events: none;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    top: 0;
+    padding-top: $searchbar-padding-top;
+    pointer-events: none;
   }
 
   &__suggests {
@@ -157,7 +161,7 @@
 
     &--hidden {
       opacity: 0;
-      top: 100%;
+      top: calc($searchbar-padding-top - 45px);
       pointer-events: none;
     }
   }

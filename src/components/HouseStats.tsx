@@ -86,7 +86,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
     }
     if (this.props.data.loading) {
       return (
-        <div>
+        <div className="house__stats">
           <div className='house-stats-heading' onClick={this.props.flipCard}>
             <Row gutter={0}>
               <Col span={24}>

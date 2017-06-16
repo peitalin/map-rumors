@@ -134,7 +134,6 @@ export class HouseCard extends React.Component<StateProps & DispatchProps & Reac
     let cardStyle = {
       opacity: this.props.showHouseCard ? 1 : 0,
     }
-    console.info(this.props.timeOut)
 
     return (
       <div id={this.props.id} className="housecard__container" style={cardStyle}>
