@@ -84,10 +84,19 @@ a:hover {
 // auth0 end
 
 
+
 .mapboxgl-map {
-  position: 'absolute';
+  /* MapBackground.tsx, line 455: */
+  /* <ReactMapboxGl style={mapboxstyles.dark} */
+  /*   containerStyle={{ */
+  /*     position: "absolute", */
+  /*     top: 0, */
+  /*     height: "calc(100vh - 175px)", // 175px for carousel height */
+  /*     width: "100vw", */
+  /* }}> */
+  position: absolute;
   top: 0;
-  height: 100vh;
+  height: calc(100vh - 175px); // 175px for carousel height
   width: 100vw;
 }
 
@@ -119,8 +128,10 @@ a:hover {
   z-index: 1;
 }
 
+/* MAPBOX ZOOM BUTTONS */
 .mapboxgl-ctrl-top-right.mapboxgl-ctrl-top-right {
   top: 50px;
+  z-index: 2;
   /* doubling up specificity */
 }
 .mapboxgl-ctrl-icon.mapboxgl-ctrl-compass {

@@ -100,7 +100,7 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://peitalin.0s8uxvtf'
       },
-      paint: { 'line-opacity': 1, 'line-color': '#999', 'line-width': 2, 'line-blur': 2 },
+      paint: { 'line-opacity': 0.6, 'line-color': '#F8BD7F', 'line-width': 3, 'line-blur': 2 },
       layout: {},
       // layerOptions NOT layoutOptions
       layerOptions: {
@@ -136,7 +136,7 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://mapbox.mapbox-traffic-v1'
       },
-      paint: { 'line-color': '#F8BD7F', 'line-opacity': 0.3, 'line-width': 2 },
+      paint: { 'line-color': '#FFEAD0', 'line-opacity': 0.1, 'line-width': 1 },
       layerOptions: {
         'source-layer': 'traffic',
       },

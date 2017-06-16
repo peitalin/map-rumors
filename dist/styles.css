@@ -8632,6 +8632,10 @@ textarea.ant-input-number {
   color: #ccc !important;
   cursor: not-allowed;
 }
+.house__stats {
+  min-width: 150px;
+}
+
 .house-stats-heading {
   padding-bottom: 10%;
 }
@@ -8890,7 +8894,7 @@ textarea.ant-input-number {
 .searchBox__expand {
   top: 0;
   right: 0px;
-  height: 130px;
+  height: 200px;
   width: 100%;
   padding: 0 20px 10px;
   flex-direction: column;
@@ -8921,8 +8925,8 @@ textarea.ant-input-number {
   outline: none;
   background: #EDEDED;
   flex-grow: 1;
-  height: 30px;
-  font-size: 12px;
+  height: 50px;
+  font-size: 16px;
 }
 
 .searchBox__expand .searchBox__source {
@@ -8970,7 +8974,7 @@ textarea.ant-input-number {
   left: 0;
   height: 100%;
   top: 0;
-  padding-top: 130px;
+  padding-top: 200px;
   pointer-events: none;
 }
 
@@ -8989,7 +8993,7 @@ textarea.ant-input-number {
 
 .geosuggest__suggests--hidden {
   opacity: 0;
-  top: 100%;
+  top: calc($searchbar-padding-top - 45px);
   pointer-events: none;
 }
 

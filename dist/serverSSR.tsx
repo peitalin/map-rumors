@@ -72,11 +72,18 @@ const indexHtml = ({ body, title, cssStyles }) => {
     <div id="root">${body}</div>
     <!-- Dependencies -->
     <script src="./localforage.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
     <script type="text/javascript" src="./vendor.js"></script>
-    <script type="text/javascript" src="./bundle.js"></script>
+    <script async type="text/javascript" src="./bundle.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoEtrs7w3fIHSDvbPB7sAUw7tY7bIuAAU&libraries=places"></script>
+
+    <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <script async type="text/javascript" src="https://s3-ap-southeast-2.amazonaws.com/greensockfiles/ScrollToPlugin.min.js"></script>
+    <script async type="text/javascript" src="https://s3-ap-southeast-2.amazonaws.com/greensockfiles/DrawSVGPlugin.min.js"></script>
+    <script async type="text/javascript" src="https://s3-ap-southeast-2.amazonaws.com/greensockfiles/SplitText.min.js"></script>
+
+    <link rel="stylesheet" href="./overrides.css" type="text/css"/>
   </body>
 </html>
   `;

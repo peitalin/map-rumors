@@ -264,7 +264,6 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     // Spread operator creates new Array object.
   }
 
-
   private onMapStyleLoad = (map: mapboxgl.Map, event: EventData): void => {
     map.setCenter([this.props.longitude, this.props.latitude])
     map.doubleClickZoom.disable()
