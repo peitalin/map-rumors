@@ -55,10 +55,7 @@ interface DispatchProps {
   updateLngLat?(lngLat: any): Dispatch<ActionType>
   updateFlyingTo?(flyingTo: boolean | string): Dispatch<ActionType>
   updateUserGQL?(userProfile: userGQL): Dispatch<ActionType>
-  updateGeoData?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoDataLngLat?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
-  updateGeoRadius?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
-  updateGeoRadiusWide?(lngLat: mapboxgl.LngLat): Dispatch<ActionType>
   updateGeoMyPredictions?(payload: { predictions: iPrediction[] }): Dispatch<ActionType>
   isUpdatingMyPredictions?(bool: boolean): Dispatch<ActionType>
 }
@@ -115,7 +112,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
 
   private gotoPredictionLocation = (Geojson: iGeojson): void => {
     if (!Geojson.latCenter || !Geojson.lngCenter) {
-      console.error("MyPredictionListings.tsx error: Geojson.latCenter or Geojson.lngCenter doesn't exist", Geojson)
+      console.error("MyPredictionListings.tsx:115: Geojson.latCenter or Geojson.lngCenter doesn't exist", Geojson)
       return
     }
     let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( Geojson.lngCenter, Geojson.latCenter )
@@ -123,9 +120,6 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
     this.props.updateFlyingTo('MyPredictionListings')
     this.props.updateLngLat(lngLat)
     this.props.updateGeoDataLngLat(lngLat)
-    this.props.updateGeoData(lngLat)
-    this.props.updateGeoRadius(lngLat)
-    this.props.updateGeoRadiusWide(lngLat)
   }
 
   private handleMouseOver = (GeojsonId: string) => {
@@ -242,21 +236,12 @@ const mapDispatchToProps = ( dispatch ) => {
       { type: A.Mapbox.UPDATE_FLYING_TO, payload: flyingTo }
     ),
     ////// GeoJSON Action Dispatchers
-    updateGeoData: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_DATA, payload: lngLat }
-    ),
     updateGeoDataLngLat: (lngLat: mapboxgl.LngLat) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_DATA_LNGLAT, payload: lngLat }
     ),
     updateGeoMyPredictions: (payload: { predictions: iPrediction[] }) => dispatch(
       { type: A.GeoJSON.UPDATE_GEOJSON_MY_PREDICTIONS, payload: payload }
       // parcels which you've made a prediction on
-    ),
-    updateGeoRadius: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS, payload: lngLat }
-    ),
-    updateGeoRadiusWide: (lngLat: mapboxgl.LngLat) => dispatch(
-      { type: A.GeoJSON.UPDATE_GEOJSON_RADIUS_WIDE, payload: lngLat }
     ),
   }
 }
