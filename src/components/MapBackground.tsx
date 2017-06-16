@@ -115,46 +115,6 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   componentWillMount() {
     // this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
-    if (this.props.gData.features.length < 10) {
-      // apolloClient.query({
-      //   variables: {
-      //     "lngCenterLTE": this.props.gLngLat.lng + 0.004,
-      //     "lngCenterGTE": this.props.gLngLat.lng - 0.004,
-      //     "latCenterLTE": this.props.gLngLat.lat + 0.004,
-      //     "latCenterGTE": this.props.gLngLat.lat - 0.004,
-      //   },
-      //   query: gql`
-      //     query(
-      //       $lngCenterLTE: Float, $lngCenterGTE: Float,
-      //       $latCenterLTE: Float, $latCenterGTE: Float
-      //       ) {
-      //       allGeojsons(filter: {
-      //         lngCenter_lte: $lngCenterLTE,
-      //         lngCenter_gte: $lngCenterGTE,
-      //         latCenter_lte: $latCenterLTE,
-      //         latCenter_gte: $latCenterGTE,
-      //       }, first: 1000) {
-      //         id
-      //         lngCenter
-      //         latCenter
-      //         type
-      //         properties {
-      //           address
-      //           lotPlan
-      //         }
-      //         geometry {
-      //           coordinates
-      //           type
-      //         }
-      //       }
-      //     }
-      //   `,
-      // }).then(res => {
-      //   // console.log(res)
-      //   this.props.updateGeoData(res.data.allGeojsons)
-      // })
-      // .catch(error => console.error(error));
-    }
   }
 
   componentDidMount() {
