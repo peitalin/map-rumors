@@ -8,6 +8,7 @@ $carousel-height: 175px;
   z-index: 0;
   color: #eee;
   background-color: rgba(22,22,22,0.4);
+
   // box-shadow: 0px 1px 2px 3px #999;
   bottom: 0px;
   left: 0;
@@ -51,12 +52,12 @@ $carousel-height: 175px;
 }
 
 .local__predictions__suburb-info {
-  top: 200px;
+  position: relative;
   padding: 10%;
-  height: 100vh;
-  // margin: -24px;
+  // min-height: 100vh;
   color: #96616B;
-  background-color: #ECC6B1;
+  background-color: #37505C;
+
   h1 {
     color:#FFEAD0;
   }
