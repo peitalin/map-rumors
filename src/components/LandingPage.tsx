@@ -65,7 +65,8 @@ export default class LandingPage extends React.Component<any, any> {
           </CSSTransitionGroup>
 
           <div className='world-map-container'>
-            <SarahDrasner language={this.state.language} />
+            <div className="world-map-background"></div>
+            <SarahDrasner language={this.state.language}/>
           </div>
 
           { switchLanguageHeader2(this.state.language) }
@@ -87,46 +88,29 @@ export default class LandingPage extends React.Component<any, any> {
               })
             )}
             </Carousel>
-
-            <Carousel className='landing-page-listings-flex vertical__carousel'>
-            {(
-              [6,7,5,4,9,16,18,15].map((n, i) => {
-                return (
-                  <CarouselTile key={i}
-                    onClick={() => { console.log('tile clicked') }}
-                    img={require(`../img/house${n}.svg`)}
-                    verticalTiles={true}
-                  >
-                    <div>Cool</div>
-                    <div>Beans</div>
-                  </CarouselTile>
-                )
-              })
-            )}
-            </Carousel>
-          </div>
-
-          <div className='world-map-container'>
-            <WorldMap/>
           </div>
 
 
-          <div className="landing-page-listings-container">
-            <Carousel className='landing-page-listings-flex'>
-            {(
-              [10,11,12,13,14,15].map((n, i) => {
-                return (
-                  <CarouselTile key={i}
-                    onClick={() => { console.log('tile clicked') }}
-                    randomImg={true}
-                  >
-                    <div>Cool</div>
-                    <div>Beans</div>
-                  </CarouselTile>
-                )
-              })
-            )}
-            </Carousel>
+          <div className='world-map-container' style={{ position: 'relative' }}>
+            <div className="world-map-background light"></div>
+            <div className='absolute'>
+              <Carousel className='landing-page-listings-flex vertical__carousel'>
+              {(
+                [6,7,5,4,9,16,18,15].map((n, i) => {
+                  return (
+                    <CarouselTile key={i}
+                      onClick={() => { console.log('tile clicked') }}
+                      img={require(`../img/house${n}.svg`)}
+                      verticalTiles={true}
+                    >
+                      <div>Cool</div>
+                      <div>Beans</div>
+                    </CarouselTile>
+                  )
+                })
+              )}
+              </Carousel>
+            </div>
           </div>
 
           <FooterLinks/>
@@ -144,7 +128,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ch'>
           <div className='landing-page-header'>
-            <div> <h1>PolyMono</h1> </div>
+            <div> <h1>Umbre</h1> </div>
             <div> <h2>实时市场 /</h2> </div>
             <div> <h2>房地产投标和估值。</h2> </div>
           </div>
@@ -163,7 +147,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ru'>
           <div className='landing-page-header'>
-            <div> <h1>PolyMono</h1> </div>
+            <div> <h1>Umbre</h1> </div>
             <div> <h2>Рынок в реальном времени для /</h2> </div>
             <div> <h2>Ставки и оценки недвижимости.</h2> </div>
           </div>
@@ -181,9 +165,9 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='en'>
           <div className='landing-page-header'>
-            <div> <h1>PolyMono</h1> </div>
-            <div> <h2>A real-time market for /</h2> </div>
-            <div> <h2>Real-estate bids and valuations.</h2> </div>
+            <div> <h1>Umbre</h1> </div>
+            <div> <h2>Universal Market for /</h2> </div>
+            <div> <h2>Bids on Real Estate.</h2> </div>
           </div>
           <div className='landing-page-sub-header'>
             <h3>Place and share real-time predictions on the map.</h3>
@@ -244,7 +228,8 @@ const switchLanguageHeader2 = (language: string): JSX.Element => {
           </div>
           <div className='landing-page-sub-header'>
             <h3>Bid on unlisted properties</h3>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Create a crowd-funded real-estate trust, and initiate real-estate investments on blocks of land.
+            Initiate package auctions on groups of land parcels and start your own street or neighbourhood.
             <br/>
             <h4>#real+estate+rumors / #unlisted+properties / #interstellar+real+estate</h4>
           </div>

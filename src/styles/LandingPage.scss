@@ -144,14 +144,37 @@ $slider-color: #96616B;
   height: 60vw;
   min-height: 40vh;
   padding: 0% 0%;
-  border-top: 2px solid #565A5C;
-  border-bottom: 2px solid #565A5C;
+  border-top: 2px solid $primary-color;
+  border-bottom: 2px solid $primary-color;
   transition: background-color 0.4s ease;
-  background-color: #444444;
+  background-color: #222;
   display: flex;
   justify-content: center;
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('https://images.fineartamerica.com/images-medium-large/london-map-art-steel-blue-michael-tompsett.jpg');
 
+  .world-map-background {
+    height: 100%;
+    width: 100%;
+    // background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('https://images.fineartamerica.com/images-medium-large/london-map-art-steel-blue-michael-tompsett.jpg');
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-dark-min.png');
+    filter: grayscale(1) blur(1px);
+
+    background-repeat: no-repeat no-repeat;
+    background-size: auto 100%;
+    background-position: 50% 50%;
+    background-attachment: fixed;
+
+    &.light {
+      background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) ), url('https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-light-min.png');
+      filter: unset;
+      background-size: auto 100%;
+      background-position: 70% 50%;
+    }
+  }
+
+  .absolute {
+    position: absolute;
+    top: 20%;
+  }
 
   svg.worldmap {
     width: 100%;
@@ -162,11 +185,14 @@ $slider-color: #96616B;
 }
 
 .world-map-container:hover {
+  filter: unset;
+
   svg.worldmap {
     transform: scale(1.02);
     transition: transform 0.5s ease;
   }
 }
+
 @media screen and (min-aspect-ratio: 8/16) and (max-width: 600px) {
   /* portrait */
   .world-map-container {

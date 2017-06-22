@@ -29,8 +29,8 @@ var styles = {
     position: 'fixed',
     width: '36px',
     height: '30px',
-    left: '36px',
-    top: '36px'
+    left: '20px',
+    top: '20px'
   },
   bmBurgerBars: {
     background: '#96616B'
@@ -102,7 +102,6 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
           <Link className="menu-item" to='/map/parallax/profile'>My Profile</Link>
           <Link className="menu-item" to='/SarahDrasner'>SarahDrasner</Link>
           <Link className="menu-item" to='/SarahMarker'>SarahMarker</Link>
-          <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
           <br/>
           <div className="Nav__upvotes">
             Upvotes: <span>{ this.props.upvotes }</span>

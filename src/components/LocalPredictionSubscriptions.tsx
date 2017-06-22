@@ -173,6 +173,7 @@ query($emailAddress: String!) {
       type
       properties {
         suburb
+        address
         postcode
         lotPlan
       }
@@ -207,11 +208,14 @@ subscription($emailAddress: String!) {
         latCenter
         suburbCity
         type
+
         properties {
           suburb
+          address
           postcode
           lotPlan
         }
+
         geometry {
           coordinates
           type

@@ -36,7 +36,7 @@ h3 {
 input:focus {
   outline-offset: 0px;
   outline: none;
-  color: #E0BAF0;
+  color: #222;
 }
 
 // antd override

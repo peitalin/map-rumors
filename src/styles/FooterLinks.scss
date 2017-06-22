@@ -1,8 +1,10 @@
 
+$primary-color: #96616B;
+// $primary-color: #222;
 
 .footer-rights {
-  color: #666;
-  background-color: #444444;
+  color: lighten($primary-color, 15%);
+  background-color: $primary-color;
   padding-top: 2rem;
   padding-bottom: 2rem;
   font-size: 0.9rem;
@@ -33,7 +35,7 @@
   margin: 1% 0 1%;
 }
 .footer-links ul li a {
-  color: #6A6B6D;
+  color: #444;
 }
 .footer-links ul li a:hover {
   color: #E0C082;
@@ -50,12 +52,12 @@
     transition: 0.5s;
     background-size: 40% 40%;
     background-repeat: no-repeat;
-    background-color: #4f4f4f;
+    background-color: lighten($primary-color, 10%);
     background-position: center;
     border-radius: 50%;
 }
 .social-footer:hover {
-    background-color: #1BD1C1;
+    background-color: lighten($primary-color, 15%);
 }
 
 /***** SOCIAL ICONS *****/

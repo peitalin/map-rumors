@@ -86,6 +86,7 @@ interface MapBackgroundState {
     PLAN: string
     CA_AREA_SQM: number
   }
+  isMobile: boolean
   map: mapboxgl.Map
 }
 
@@ -108,16 +109,19 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
       isSearch: false,
       showHouseCard: false,
       houseProps: { LOT: '', PLAN: '', CA_AREA_SQM: 0 },
+      isMobile: false,
       map: undefined,
     }
   }
 
   componentWillMount() {
+    this.setState({ isMobile: /Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent) })
     // this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
   }
 
   componentDidMount() {
+    this.validateGeoJsonData()
     // var MapboxClient = require('mapbox')
     // const accessToken = 'pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw'
     // var client = new MapboxClient(accessToken)
@@ -281,10 +285,10 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
       map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, ["==", "LOT", ""])
     })
 
-    map.setStyle({
-      ...map.getStyle(),
-      transition: { duration: 500, delay: 0 }
-    })
+    // map.setStyle({
+    //   ...map.getStyle(),
+    //   transition: { duration: 500, delay: 0 }
+    // })
     map.addLayer(mapboxHostedLayers.threeDBuildings)
     this.setState({ map })
     // preferably, pass map as a prop to GeoSuggest component
@@ -301,7 +305,6 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   }
 
   render() {
-    this.validateGeoJsonData()
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
@@ -337,42 +340,6 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
                 "property": "lngCenter",
                 "type": "exponential",
                 "stops": [
-                  [this.props.longitude - 0.001, mapboxlayerColors.radiusBordersWide],
-                  [this.props.longitude + 0.001, mapboxlayerColors.radiusBordersWide],
-                ]
-              },
-              'line-width': 1,
-              'line-opacity': {
-                "property": 'latCenter',
-                "type": "exponential",
-                "stops": [
-                  [this.props.latitude - 0.004, 0.05],
-                  [this.props.latitude - 0.003, 0.1],
-                  [this.props.latitude - 0.00171, 0.4],
-                  [this.props.latitude - 0.0017, 0.0],
-                  [this.props.latitude + 0.0017, 0.0],
-                  [this.props.latitude + 0.00171, 0.4],
-                  [this.props.latitude + 0.003, 0.1],
-                  [this.props.latitude + 0.004, 0.05],
-                  [this.props.latitude + 0.005, 0.01],
-                ]
-              }
-            }}
-            filter={[
-              'all',
-              ['<=', 'lngCenter', this.props.longitude + 0.0017],
-              ['>=', 'lngCenter', this.props.longitude - 0.0017],
-              ['<=', 'latCenter', this.props.latitude  + 0.005],
-              ['>=', 'latCenter', this.props.latitude  - 0.005],
-            ]}
-          />
-
-          <LayerFilter id={ mapboxlayers.radiusBordersWide }
-            paint={{
-              'line-color': {
-                "property": "lngCenter",
-                "type": "exponential",
-                "stops": [
                   [this.props.longitude - 0.0015, mapboxlayerColors.radiusBorders],
                   [this.props.longitude - 0.001, mapboxlayerColors.radiusBordersWide],
                   [this.props.longitude + 0.001, mapboxlayerColors.radiusBordersWide],
@@ -398,14 +365,51 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
             }}
             filter={[
               'all',
-              ['<=', 'lngCenter', this.props.longitude + 0.004],
-              ['>=', 'lngCenter', this.props.longitude - 0.004],
+              ['<=', 'lngCenter', this.props.longitude + 0.0040],
+              ['>=', 'lngCenter', this.props.longitude - 0.0040],
               ['<=', 'latCenter', this.props.latitude  + 0.0018],
               ['>=', 'latCenter', this.props.latitude  - 0.0018],
             ]}
           />
 
-
+          {(
+            !this.state.isMobile &&
+            <LayerFilter id={ mapboxlayers.radiusBordersWide }
+              paint={{
+                'line-color': {
+                  "property": "lngCenter",
+                  "type": "exponential",
+                  "stops": [
+                    [this.props.longitude - 0.001, mapboxlayerColors.radiusBordersWide],
+                    [this.props.longitude + 0.001, mapboxlayerColors.radiusBordersWide],
+                  ]
+                },
+                'line-width': 1,
+                'line-opacity': {
+                  "property": 'latCenter',
+                  "type": "exponential",
+                  "stops": [
+                    [this.props.latitude - 0.004, 0.05],
+                    [this.props.latitude - 0.003, 0.1],
+                    [this.props.latitude - 0.00171, 0.4],
+                    [this.props.latitude - 0.0017, 0.0],
+                    [this.props.latitude + 0.0017, 0.0],
+                    [this.props.latitude + 0.00171, 0.4],
+                    [this.props.latitude + 0.003, 0.1],
+                    [this.props.latitude + 0.004, 0.05],
+                    [this.props.latitude + 0.005, 0.01],
+                  ]
+                }
+              }}
+              filter={[
+                'all',
+                ['<=', 'lngCenter', this.props.longitude + 0.0017],
+                ['>=', 'lngCenter', this.props.longitude - 0.0017],
+                ['<=', 'latCenter', this.props.latitude  + 0.005],
+                ['>=', 'latCenter', this.props.latitude  - 0.005],
+              ]}
+            />
+          )}
 
           <Source id="gMyPredictions"
             geoJsonSource={{ type: 'geojson', data: this.props.gMyPredictions }}
@@ -485,8 +489,8 @@ const mapboxlayers = {
 const mapboxlayerColors = {
   radiusBorders: '#B8B3E9',
   radiusBordersWide: '#aa88cc',
-  myPredictionsBorders: '#ddd',
-  myPredictionsFill: '#ddd',
+  myPredictionsBorders: '#1BD1C1',
+  myPredictionsFill: '#1BD1C1',
   allPredictionsBorders: '#D17B88',
   allPredictionsFill: '#D17B88',
 }

@@ -100,7 +100,7 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://peitalin.0s8uxvtf'
       },
-      paint: { 'line-opacity': 0.6, 'line-color': '#F8BD7F', 'line-width': 3, 'line-blur': 2 },
+      paint: { 'line-opacity': 0.0, 'line-color': '#F8BD7F', 'line-width': 3, 'line-blur': 2 },
       layout: {},
       // layerOptions NOT layoutOptions
       layerOptions: {

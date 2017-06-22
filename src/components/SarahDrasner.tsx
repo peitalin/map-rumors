@@ -367,9 +367,9 @@ class Page extends React.Component {
           </defs>
           <title>change-shape2</title>
           <g style={{clipPath:'url(#clip-path)'}}>
-            <image ref={c => this.map = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/persp-map.gif"/>
-            {/* <image className="gray" ref={c => this.gray = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/blog-hero2.jpg"/> */}
-            <image className="gray" ref={c => this.gray = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://images.fineartamerica.com/images-medium-large/london-map-art-steel-blue-michael-tompsett.jpg"/>
+            {/* <image ref={c => this.map = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/persp-map.gif"/> */}
+            <image ref={c => this.map = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-dark2-min.png"/>
+            <image className="gray" ref={c => this.gray = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-dark-min.png"/>
           </g>
           <rect id="square" x="417.9" y="268.9" width="217" height="217" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
           <polygon id="triangle" points="525.6 271.6 650 487 401.2 487 525.6 271.6" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
@@ -404,7 +404,7 @@ class Page extends React.Component {
           <span className="home">Return Home</span>
         </button>
         <div className="staggerP" ref={c => this.staggerP = c}>
-          <p>Sarah Drasner's codepen. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          <p>Predict when a house will sell, and how much it will sell for. Get it right you'll be rewarded with tokens. Use tokens to reveal more information about bids on the map, or trade for cryptocurrencies.</p>
         </div>
       </div>
     </div>
