@@ -17,13 +17,15 @@ if (isProduction) {
       'process.env.NODE_ENV': JSON.stringify('production'),
       ONSERVER: false,
     }),
+    // webpack 3: scope hoisting (faster js evaluation)
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin({
       filename: "styles.css", // output css file with same name as the entry point.
       allChunks: true,
       disable: false,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
+      name: 'vendor',
       minChunks: 3,
       filename: '[name].js',
     }),
@@ -56,6 +58,8 @@ if (isProduction) {
       'process.env.NODE_ENV': JSON.stringify('development'),
       ONSERVER: false,
     }),
+    // webpack 3: scope hoisting (faster js evaluation)
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // enable HMR globally, do NOT use with webpack-dev-server --hot, applied twice
     new webpack.NamedModulesPlugin(),
@@ -64,7 +68,7 @@ if (isProduction) {
       disable: true, // can give css style flashes
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
+      name: 'vendor',
       minChunks: 3,
       filename: '[name].js',
     }),
