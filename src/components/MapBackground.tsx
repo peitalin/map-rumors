@@ -259,7 +259,10 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   }
 
   private onDragEnd = (map: mapboxgl.Map, event: EventData): void => {
-    // let lngLat: mapboxgl.LngLat = map.getCenter()
+    if (this.state.isMobile) {
+      let lngLat: mapboxgl.LngLat = map.getCenter()
+      this.props.updateLngLat(lngLat)
+    }
   }
 
   private onZoom = (map: mapboxgl.Map, event: EventData): void => {
@@ -317,8 +320,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           onZoom={throttle(this.onZoom, 50)}
           onMouseMove={throttle(this.onMouseMove, 50)}
           onDragStart={this.onDragStart}
-          onDrag={throttle(this.onDrag, 100)}
-          onDragEnd={this.onDragEnd}
+          onDrag={ this.state.isMobile ? undefined : throttle(this.onDrag, 64)}
+          onDragEnd={ this.state.isMobile ? this.onDragEnd : undefined}
           onClick={this.onClick}
           containerStyle={{
             position: "absolute",
@@ -373,7 +376,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           />
 
           {(
-            !this.state.isMobile &&
+            // !this.state.isMobile &&
+            true &&
             <LayerFilter id={ mapboxlayers.radiusBordersWide }
               paint={{
                 'line-color': {

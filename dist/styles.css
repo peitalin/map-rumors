@@ -9012,8 +9012,8 @@ textarea.ant-input-number {
 }.housecard__container {
   backgroundColor: #fff;
   position: fixed;
-  top: 33vh;
-  left: 10px;
+  top: 25vh;
+  left: 5px;
 }.house__stats {
   min-width: 150px;
 }

@@ -88,29 +88,22 @@ export default class LandingPage extends React.Component<any, any> {
               })
             )}
             </Carousel>
-          </div>
-
-
-          <div className='world-map-container' style={{ position: 'relative' }}>
-            <div className="world-map-background light"></div>
-            <div className='absolute'>
-              <Carousel className='landing-page-listings-flex vertical__carousel'>
-              {(
-                [6,7,5,4,9,16,18,15].map((n, i) => {
-                  return (
-                    <CarouselTile key={i}
-                      onClick={() => { console.log('tile clicked') }}
-                      img={require(`../img/house${n}.svg`)}
-                      verticalTiles={true}
-                    >
-                      <div>Cool</div>
-                      <div>Beans</div>
-                    </CarouselTile>
-                  )
-                })
-              )}
-              </Carousel>
-            </div>
+            <Carousel className='landing-page-listings-flex vertical__carousel'>
+            {(
+              [6,7,5,4,9,16,18,15].map((n, i) => {
+                return (
+                  <CarouselTile key={i}
+                    onClick={() => { console.log('tile clicked') }}
+                    img={require(`../img/house${n}.svg`)}
+                    verticalTiles={true}
+                  >
+                    <div>Cool</div>
+                    <div>Beans</div>
+                  </CarouselTile>
+                )
+              })
+            )}
+            </Carousel>
           </div>
 
           <FooterLinks/>

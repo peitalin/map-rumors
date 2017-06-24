@@ -86,50 +86,11 @@ export class HouseCard extends React.Component<StateProps & DispatchProps & Reac
     }
   }
 
-  // timeOut = () => {
-  //   this.props.updateTimeOut(4)
-  //   apolloClient.query({
-  //     variables: {
-  //       "lngCenterLTE": 153.0397077387487,
-  //       "lngCenterGTE": 153.0297077387487,
-  //       "latCenterLTE": -27.630448824297527,
-  //       "latCenterGTE": -27.640448824297525
-  //     },
-  //     query: gql`
-  //       query(
-  //         $lngCenterLTE: Float, $lngCenterGTE: Float,
-  //         $latCenterLTE: Float, $latCenterGTE: Float
-  //         ) {
-  //         allGeojsons(filter: {
-  //           lngCenter_lte: $lngCenterLTE,
-  //           lngCenter_gte: $lngCenterGTE,
-  //           latCenter_lte: $latCenterLTE,
-  //           latCenter_gte: $latCenterGTE,
-  //         }, first: 400) {
-  //           id
-  //           type
-  //           properties {
-  //             address
-  //             lotPlan
-  //           }
-  //           geometry {
-  //             coordinates
-  //             type
-  //           }
-  //         }
-  //       }
-  //     `,
-  //   }).then(res => {
-  //     console.log(res)
-  //     this.props.updateGeoData(res.data.allGeojsons)
-  //   })
-  //   .catch(error => console.error(error));
-  // }
-
   render() {
     let { imgSrc, currentCard, upvotes } = this.randHouseCard()
     let cardStyle = {
       opacity: this.props.showHouseCard ? 1 : 0,
+      left: this.props.showHouseCard ? 5 : -120,
     }
 
     return (
