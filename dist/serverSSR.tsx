@@ -101,7 +101,7 @@ router.get('/', async(ctx) => {
 
   ctx.body = indexHtml({
     body: appString,
-    title: 'Hayek - Server Side',
+    title: 'Umbre - Server Side',
     cssStyles: '',
   }));
 })
