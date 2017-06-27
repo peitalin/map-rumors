@@ -8,32 +8,50 @@ import Title from '../Title'
 import { SpinnerRectangle } from '../Spinners'
 import { HouseStats } from '../HouseStats'
 
+import * as Row from 'antd/lib/row'
+
 const MockProps = {
   data: {
     error: undefined,
     loading: false,
-    House: {
-      id: 'test',
-      address: 'test',
-      bedrooms: 1,
-      bathrooms: 2,
-      carspaces: 3,
-      planNum: 'test',
-      lotNum: 'test',
-      lotPlan: 'test',
-      unitNum: 'test',
-      streetNum: 'test',
-      streetName: 'test',
-      streetType: 'test',
-      locality: 'test',
+    Geojson: {
+      id: '',
+      lngCenter: '',
+      latCenter: '',
+      type: '',
+      properties {
+        address: '',
+        lot: '',
+        plan: '',
+        lotPlan: '',
+        unitType: '',
+        unitNumber: '',
+        streetNumber: '',
+        streetName: '',
+        streetType: '',
+        suburb: '',
+      }
+      geometry {
+        coordinates: [[0, 0]]
+        type: "MultiPolygon"
+      }
     }
   },
+  houseProps: {
+    LOT: '',
+    PLAN: '',
+    CA_AREA_SQM: 0,
+  }
 }
 
-
-test('<HouseStats /> component should contain 1 <h1>', () => {
+test('<HouseStats /> component should contain 1 <h2>', () => {
   const el = shallow( <HouseStats {...MockProps} /> )
   expect(el.find('h2').length).toEqual(3)
+})
+
+test('<HouseStats /> component should contain 9 <Row>', () => {
+  const el = shallow( <HouseStats {...MockProps} /> )
+  expect(el.find(Row).length).toEqual(9)
 })
 
 test('<HouseStats /> component should contain 1 <Title> on error', () => {

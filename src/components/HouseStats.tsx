@@ -59,20 +59,31 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
 
   static defaultProps = {
     data: {
-      allGeojsons: [{
+      error: undefined,
+      loading: false,
+      Geojson: {
         id: '',
-        address: '',
-        bedrooms: '',
-        bathrooms: '',
-        carspaces: '',
-        lotPlan: '',
-        unitNumber: '',
-        streetNumber: '',
-        streetName: '',
-        streetType: '',
-        locality: '',
+        lngCenter: '',
+        latCenter: '',
+        type: '',
+        properties {
+          address: '',
+          lot: '',
+          plan: '',
+          lotPlan: '',
+          unitType: '',
+          unitNumber: '',
+          streetNumber: '',
+          streetName: '',
+          streetType: '',
+          suburb: '',
+        }
+        geometry {
+          coordinates: [[0,0]]
+          type: "MultiPolygon"
+        }
       }
-    }]
+    },
     houseProps: {
       LOT: '',
       PLAN: '',

@@ -41,7 +41,7 @@ export const mapboxHostedLayers = {
         url: 'mapbox://peitalin.1rs9p367'
       },
       // paint: { 'line-opacity': 0.3, 'line-color': '#ddd' },
-      paint: { 'line-opacity': 0.3, 'line-color': '#555' },
+      paint: { 'line-opacity': 0.2, 'line-color': '#aaa' },
       layout: {},
       // source-layer wrapped in layerOptions
       layerOptions: {
