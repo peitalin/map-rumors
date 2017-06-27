@@ -6,6 +6,7 @@ export const Actions: ActionsInterface = {
   Mapbox: {
     UPDATE_LNGLAT: "UPDATE_LNGLAT",
     UPDATE_MAPBOX_ZOOM: "UPDATE_MAPBOX_ZOOM",
+    UPDATE_MAPBOX_STYLE: "UPDATE_MAPBOX_STYLE",
     UPDATE_FLYING_TO: "UPDATE_FLYING_TO",
     SHOW_MODAL: "SHOW_MODAL",
     UPDATE_GRAPHQL_ID: "UPDATE_GRAPHQL_ID",
@@ -29,6 +30,7 @@ interface ActionsInterface {
   Mapbox: {
     UPDATE_LNGLAT: string
     UPDATE_MAPBOX_ZOOM: string
+    UPDATE_MAPBOX_STYLE: string
     UPDATE_FLYING_TO: string | boolean
     SHOW_MODAL: string
     UPDATE_GRAPHQL_ID: string

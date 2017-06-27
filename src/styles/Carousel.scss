@@ -64,7 +64,7 @@ $carousel-height: 175px;
   left: 0;
   right: 0;
   top: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
   transition: $duration opacity;
 }
 
@@ -82,8 +82,11 @@ $carousel-height: 175px;
   transform-origin: left;
 }
 .tile__details:hover {
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+
   .tile__title {
-    transform: scale(0.8);
+    color: #F8BD7F;
+    transform: scale(0.9);
     transition: transform 0.2s ease;
   }
 }

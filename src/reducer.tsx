@@ -7,10 +7,11 @@ import {
   iPrediction, LngLat
 } from './typings/interfaceDefinitions'
 import { apolloClient } from './index'
+import { mapboxStyles } from './utils/mapboxHostedLayers'
 
 
-import { delay } from 'redux-saga'
-import { put, takeEvery, all } from 'redux-saga/effects'
+// import { delay } from 'redux-saga'
+// import { put, takeEvery, all } from 'redux-saga/effects'
 
 
 
@@ -18,7 +19,6 @@ import { put, takeEvery, all } from 'redux-saga/effects'
 // let localData = { ...localDataRaw, features: localDataRaw.features }
 import { isParcelNear } from './utils/worker'
 let MyWorker = require('worker-loader!./utils/worker.ts')
-
 
 
 ///// Grand Redux State Shape ////////
@@ -36,6 +36,7 @@ export interface ReduxStateMapbox {
   showModal: boolean
   flyingTo: boolean | string
   mapboxZoom: number[]
+  mapboxStyle: string
   GRAPHQL_ID: string
   localPredictions: Array<iLocalPrediction>
 }
@@ -46,6 +47,7 @@ const initialReduxStateMapbox: ReduxStateMapbox = {
   showModal: false,
   flyingTo: false,
   mapboxZoom: [16], // wrapper in array for react-mapbox-gl API
+  mapboxStyle: mapboxStyles.nautical,
   GRAPHQL_ID: 'cj2t1hge40i1u0132ahagibrl',
   localPredictions: [],
   currentCard: 'King',
@@ -68,6 +70,9 @@ export const reduxReducerMapbox = (
 
     case A.UPDATE_MAPBOX_ZOOM:
       return { ...state, mapboxZoom: action.payload }
+
+    case A.UPDATE_MAPBOX_STYLE:
+      return { ...state, mapboxStyle: action.payload }
 
     case A.UPDATE_FLYING_TO:
       return { ...state, flyingTo: action.payload }

@@ -3,22 +3,40 @@
 import * as React from 'react'
 import { connect, MapStateToProps } from 'react-redux'
 import { ReduxStateUser, ReduxState } from '../reducer'
+import { compose } from 'react-apollo'
+import { Actions as A } from '../reduxActions'
 
 import { Link, withRouter, Location, Redirect } from 'react-router-dom'
+import { mapboxStyles } from '../utils/mapboxHostedLayers'
 
-import { slide as Menu } from 'react-burger-menu'
+import { slide as BurgerMenu } from 'react-burger-menu'
 
 import * as Breadcrumb from 'antd/lib/breadcrumb'
 import 'antd/lib/breadcrumb/style/css'
+
+import * as Menu from 'antd/lib/menu'
+import 'antd/lib/menu/style/css'
+
+import * as Dropdown from 'antd/lib/dropdown'
+import 'antd/lib/dropdown/style/css'
+
+import * as Icon from 'antd/lib/icon'
+import 'antd/lib/icon/style/css'
 
 import 'styles/Navbar.scss'
 
 
 
-interface NavbarProps {
+interface DispatchProps {
+  setMapboxStyle?(style: string): Dispatch<A>
+}
+interface StateProps {
   location?: Location
+  mapboxStyle: string
   upvotes: number
   downvotes: number
+}
+interface ReactProps {
 }
 interface NavbarState {
   menuOpen: boolean
@@ -59,7 +77,7 @@ var styles = {
   }
 }
 
-export class Navbar extends React.Component<NavbarProps, NavbarState> {
+export class Navbar extends React.Component<StateProps & DispatchProps & ReactProps, NavbarState> {
 
   state = {
     menuOpen: false,
@@ -72,6 +90,33 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
   showSettings = (event) => {
     event.preventDefault();
     console.info(event)
+  }
+
+  setMapboxStyle = (style: string) => {
+    this.props.setMapboxStyle(mapboxStyles[style])
+    console.info("setting style:", style)
+  }
+
+  getMenu = () => {
+    // We want the key (e.g. dark), not the style link (e.g. https:/mapbox....)
+    let currentStyle = Object.keys(mapboxStyles).filter(style => {
+      return mapboxStyles[style] === this.props.mapboxStyle
+    })
+    return (
+      <Menu>
+        <Menu.Item disabled>Current Style: { currentStyle }</Menu.Item>
+        <Menu.Divider/>
+      {(
+        Object.keys(mapboxStyles).map(style => {
+          return (
+            <Menu.Item key={style}>
+              <a onClick={() => this.setMapboxStyle(style)}>{style}</a>
+            </Menu.Item>
+          )
+        })
+      )}
+      </Menu>
+    )
   }
 
   render() {
@@ -88,7 +133,7 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     return (
       <div id="nav-bar" className="navigation-bar">
-        <Menu styles={styles} pageWrapId={"page-wrap"} outerContainerId={"nav-bar"}>
+        <BurgerMenu styles={styles} pageWrapId={"page-wrap"} outerContainerId={"nav-bar"}>
           <div className='Nav Breadcrumb'>
             <Breadcrumb>
               { crumbs }
@@ -109,20 +154,38 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
           <div className="Nav__downvotes">
             Downvotes: <span>{ this.props.downvotes }</span>
           </div>
-        </Menu>
+          <br/>
+          <Dropdown overlay={this.getMenu()}>
+            <a className="ant-dropdown-link">
+              Change Map Style <Icon type="down" />
+            </a>
+          </Dropdown>
+        </BurgerMenu>
       </div>
     )
   }
 }
 
+const mapDispatchToProps = ( dispatch ) => {
+  return {
+    setMapboxStyle: (style: string) => dispatch(
+      { type: A.Mapbox.UPDATE_MAPBOX_STYLE, payload: style }
+    ),
+  }
+}
 
 const mapStateToProps = ( state: ReduxState ): ReduxStateUser => {
   return {
     upvotes: state.reduxUser.userGQL.upvotes,
-    downvotes: state.reduxUser.userGQL.downvotes
+    downvotes: state.reduxUser.userGQL.downvotes,
+    mapboxStyle: state.reduxMapbox.mapboxStyle
   }
 }
 
-export default connect(mapStateToProps, null)(withRouter( Navbar ))
+export default compose(
+  connect<StateProps & DispatchProps & ReactProps>(mapStateToProps, mapDispatchToProps),
+  withRouter,
+)( Navbar )
+
 
 

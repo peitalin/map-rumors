@@ -96,7 +96,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
 
           <div className='local__predictions__spacer'></div>
           <div className='local__predictions__suburb-info'>
-            <div><h1>SUBURB INFORMATION</h1></div>
+            <div><h1>SUBURB INFO</h1></div>
             <br/>
 
             <div><h2>SUBURBIA INFOGRATIS</h2></div>

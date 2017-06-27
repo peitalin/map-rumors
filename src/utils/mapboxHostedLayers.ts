@@ -143,6 +143,15 @@ export const mapboxHostedLayers = {
     }
 };
 
+export const mapboxStyles = {
+  dark: 'mapbox://styles/mapbox/dark-v9',
+  light: 'mapbox://styles/mapbox/light-v9',
+  outdoors: 'mapbox://styles/mapbox/outdoors-v10',
+  streets: 'mapbox://styles/mapbox/streets-v10',
+  satellite: 'mapbox://styles/mapbox/satellite-v9',
+  satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v10',
+  nautical: 'mapbox://styles/peitalin/cj4ctcq2u0ue82rpjojz3ub9s',
+}
 
 // Original layers used with mapbox-gl api
 // export const mapboxHostedLayers = {

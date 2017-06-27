@@ -16,7 +16,7 @@ import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { MapMouseEvent, MapEvent, EventData } from 'mapbox-gl/dist/mapbox-gl'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
-import { mapboxHostedLayers } from '../utils/mapboxHostedLayers'
+import { mapboxHostedLayers, mapboxStyles } from '../utils/mapboxHostedLayers'
 
 // apolloClient for updating GeoData
 import { apolloClient } from '../index'
@@ -59,6 +59,7 @@ interface StateProps {
   longitude: number
   latitude: number
   mapboxZoom: Array<number>
+  mapboxStyle: string
   flyingTo: boolean | string
   // ReduxStateUser
   userGQL: userGQL
@@ -114,6 +115,10 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     }
   }
 
+  static defaultProps = {
+    mapboxStyle: mapboxStyles.nautical
+  }
+
   componentWillMount() {
     this.setState({ isMobile: /Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent) })
     // this.worker = new MyWorker()
@@ -144,6 +149,14 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
   }
 
   componentWillUpdate(nextProps: MapBackgroundProps) {
+    if (this.state.map) {
+      if (nextProps.mapboxStyle === mapboxStyles.dark) {
+        this.state.map.setPaintProperty(mapboxHostedLayers.brisbaneParcels.id, 'line-color', '#555')
+      }
+      if (nextProps.mapboxStyle === mapboxStyles.nautical) {
+        this.state.map.setPaintProperty(mapboxHostedLayers.brisbaneParcels.id, 'line-color', '#aaa')
+      }
+    }
   }
 
   componentDidUpdate(prevProps: MapBackgroundProps) {
@@ -298,6 +311,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     // but how? setting this.map does not work since it will be null.
   }
 
+
   validateGeoJsonData = () => {
     ['gMyPredictions', 'gAllPredictions'].map(s => {
       if (!geojsonValidation.valid(this.props[s])) {
@@ -311,8 +325,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
-
-        <ReactMapboxGl style={mapboxstyles.nautical}
+        <ReactMapboxGl style={this.props.mapboxStyle}
           accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}
@@ -499,15 +512,6 @@ const mapboxlayerColors = {
   allPredictionsBorders: '#D17B88',
   allPredictionsFill: '#D17B88',
 }
-const mapboxstyles = {
-  dark: 'mapbox://styles/mapbox/dark-v9',
-  light: 'mapbox://styles/mapbox/light-v9',
-  outdoors: 'mapbox://styles/mapbox/outdoors-v10',
-  streets: 'mapbox://styles/mapbox/streets-v10',
-  satellite: 'mapbox://styles/mapbox/satellite-v9',
-  satelliteStreets: 'mapbox://styles/mapbox/satellite-streets-v10',
-  nautical: 'mapbox://styles/peitalin/cj4ctcq2u0ue82rpjojz3ub9s',
-}
 
 
 
@@ -519,6 +523,7 @@ const mapStateToProps = ( state: ReduxState ): ReduxStateMapbox & ReduxStateParc
     latitude: state.reduxMapbox.latitude,
     longitude: state.reduxMapbox.longitude,
     mapboxZoom: state.reduxMapbox.mapboxZoom,
+    mapboxStyle: state.reduxMapbox.mapboxStyle,
     userGQL: state.reduxMapbox.userGQL,
     flyingTo: state.reduxMapbox.flyingTo,
     // reduxParcels
