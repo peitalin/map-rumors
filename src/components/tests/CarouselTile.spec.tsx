@@ -8,12 +8,12 @@ import CarouselTile from '../CarouselTile'
 
 
 test('<CarouselTile /> component should contain 1 .tile__container class', () => {
-  const el = shallow( <CarouselTile /> )
+  const el = shallow( <CarouselTile/> )
   expect(el.find('.tile__container').length).toEqual(1)
 })
 
 test('<CarouselTile /> component should contain 1 img', () => {
-  const el = shallow( <CarouselTile /> )
+  const el = shallow( <CarouselTile img={undefined} randomImg={true} /> )
   expect(el.find('img').length).toEqual(1)
 })
 
