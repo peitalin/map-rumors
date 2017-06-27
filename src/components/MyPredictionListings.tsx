@@ -29,8 +29,9 @@ let message: { success: Function, error: Function, warning: Function, info: Func
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
 import { SpinnerRectangle } from './Spinners'
-const PREDICTIONLISTINGS_ROUTE = "/map/parallax/mypredictionlistings"
+import Price from './Price'
 
+const PREDICTIONLISTINGS_ROUTE = "/map/parallax/mypredictionlistings"
 import { asyncComponent } from '../AppRoutes'
 const PredictionStats = asyncComponent({ loader: () => System.import('./PredictionStats.tsx') })
 
@@ -115,7 +116,9 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
       console.error("MyPredictionListings.tsx:115: Geojson.latCenter or Geojson.lngCenter doesn't exist", Geojson)
       return
     }
-    let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( Geojson.lngCenter, Geojson.latCenter )
+    // can't mock test mapboxgl
+    // let lngLat: mapboxgl.LngLat = new mapboxgl.LngLat( Geojson.lngCenter, Geojson.latCenter )
+    let lngLat: mapboxgl.LngLat = { lng: Geojson.lngCenter, lat: Geojson.latCenter }
     message.info(`Going to ${Geojson.properties.address}`)
     this.props.updateFlyingTo('MyPredictionListings')
     this.props.updateLngLat(lngLat)
@@ -167,6 +170,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
             { unitStreetNumber }
             { " " + p.geojson.properties.streetName }
             { " " + p.geojson.properties.streetType }
+            <Price price={p.prediction}/>
           </div>
 
           <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
