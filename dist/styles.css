@@ -487,6 +487,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  touch-action: pan-y;
+  /* Disable pull-down refresh, let mapbox handle panning*/
 }
 
 .hero-container {
@@ -6021,10 +6023,12 @@ span.ant-breadcrumb-link a:hover {
 }
 
 .local__predictions__suburb-info {
-  position: relative;
+  position: absolute;
   padding: 10%;
   color: #96616B;
   background-color: #37505C;
+  touch-action: pan-y;
+  /* Disable pull-down refresh */
 }
 
 .local__predictions__suburb-info h1 {

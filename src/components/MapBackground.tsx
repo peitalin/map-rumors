@@ -154,7 +154,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
         this.state.map.setPaintProperty(mapboxHostedLayers.brisbaneParcels.id, 'line-color', '#555')
       }
       if (nextProps.mapboxStyle === mapboxStyles.nautical) {
-        this.state.map.setPaintProperty(mapboxHostedLayers.brisbaneParcels.id, 'line-color', '#aaa')
+        this.state.map.setPaintProperty(mapboxHostedLayers.brisbaneParcels.id, 'line-color', '#bbb')
       }
     }
   }
@@ -505,6 +505,8 @@ const mapboxlayers = {
   allPredictionsFill: 'all-predictions-fill',
 }
 const mapboxlayerColors = {
+  // radiusBorders: '#c8c3f9',
+  // radiusBordersWide: '#ccaaee',
   radiusBorders: '#B8B3E9',
   radiusBordersWide: '#aa88cc',
   myPredictionsBorders: '#1BD1C1',

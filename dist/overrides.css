@@ -16,6 +16,7 @@ body {
   padding: 0px;
   margin: 0px;
   -webkit-overflow-scrolling: touch; /* scroll momentum on safari*/
+  touch-action: pan-down; /* Disable pull-down refresh, let mapbox handle panning*/
 }
 
 h1 {
@@ -85,7 +86,6 @@ a:hover {
 // auth0 end
 
 
-
 .mapboxgl-map {
   /* MapBackground.tsx, line 455: */
   /* <ReactMapboxGl style={mapboxstyles.dark} */
@@ -99,6 +99,10 @@ a:hover {
   top: 0;
   height: calc(100vh - 175px); // 175px for carousel height
   width: 100vw;
+  touch-action: none; /* Disable pull-down refresh, let mapbox handle panning*/
+}
+.mapboxgl-canvas {
+  touch-action: none; /* Disable pull-down refresh, let mapbox handle panning*/
 }
 
 .mapboxgl-popup {

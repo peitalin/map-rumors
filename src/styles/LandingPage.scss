@@ -11,6 +11,7 @@ $slider-color: #96616B;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  touch-action: pan-y; /* Disable pull-down refresh, let mapbox handle panning*/
 }
 
 .hero-container {

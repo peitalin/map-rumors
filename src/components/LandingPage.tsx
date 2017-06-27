@@ -121,7 +121,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ch'>
           <div className='landing-page-header'>
-            <div> <h1>Umbre</h1> </div>
+            <div> <h1>Empire</h1> </div>
             <div> <h2>实时市场 /</h2> </div>
             <div> <h2>房地产投标和估值。</h2> </div>
           </div>
@@ -140,7 +140,7 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='ru'>
           <div className='landing-page-header'>
-            <div> <h1>Umbre</h1> </div>
+            <div> <h1>Empire</h1> </div>
             <div> <h2>Рынок в реальном времени для /</h2> </div>
             <div> <h2>Ставки и оценки недвижимости.</h2> </div>
           </div>
@@ -158,9 +158,9 @@ const switchLanguageHeader = (language: string): JSX.Element => {
       return (
         <div className='landing-page-header-container' key='en'>
           <div className='landing-page-header'>
-            <div> <h1>Umbre</h1> </div>
-            <div> <h2>Universal Market for /</h2> </div>
-            <div> <h2>Bids on Real Estate.</h2> </div>
+            <div> <h1>Empire</h1> </div>
+            <div> <h2>Expanded Market for /</h2> </div>
+            <div> <h2>Predictions In Real Estate.</h2> </div>
           </div>
           <div className='landing-page-sub-header'>
             <h3>Place and share real-time predictions on the map.</h3>
