@@ -31,7 +31,7 @@ const MockProps = {
 }
 
 
-test('<AddPrediction /> contains 1 <Button/> when less than 6 pokemons in user profile', () => {
+test('<AddPrediction /> contains 1 <Button/> when less than 100 predictions in user profile', () => {
   const el = shallow( <AddPrediction {...MockProps} /> )
   expect(el.find(Button).length).toEqual(1)
 })

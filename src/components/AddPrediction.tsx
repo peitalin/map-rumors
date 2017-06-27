@@ -121,7 +121,7 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
       return <div>Login to make a prediction.</div>
     }
 
-    let maxPredictionLimitReached = (this.props.userGQL.predictions.length >= 9)
+    let maxPredictionLimitReached = (this.props.userGQL.predictions.length >= 100)
       ? true : false
 
     return (
