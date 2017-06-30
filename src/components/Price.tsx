@@ -8,12 +8,13 @@ interface ReactProps {
 export default class Price extends React.Component<ReactProps, any> {
 
   formatDollars = (price: number | string): string => {
-    // formats numbers into dollars: $1,000,000
-    price = price.toString()
-    price = price.split('').reverse()
+    // formats numbers into dollars: 9111000 => $9,111,000
+    return '$' + price.toString().split('').reverse()
+      // split number into str-characters & reverse: ['0', '0', '0', '1', '1', '1', '9']
       .map((x, i) => (i % 3 == 0) ? x+',' : x)
+      // add comma every 3rd digit (starting from reverse): ['0,', '0', '0', '1,', '1', '1,', '9,']
       .reverse().join('').slice(0, -1)
-    return  '$' + price
+      // undo reverse and join chars, then slive off trailing comma: '9,111,000'
   }
 
   render() {

@@ -62,10 +62,11 @@ class Page extends React.Component {
   animFire(splitText) {
     const tl = new TimelineMax,
           lines = splitText.lines,
-          dur = 1.75,
+          dur = 0.4,
           stD = 0.08,
           stA = 'start';
 
+    // triangle -> square lines
     TweenMax.set([this.g1.childNodes, this.g2.childNodes, this.g3.childNodes, this.g4.childNodes], {
       clearProps:'svgOrigin'
     });
@@ -98,10 +99,12 @@ class Page extends React.Component {
       drawSVG: "28.5% 0%",
       ease: Back.easeOut
     }, stD, stA);
-    tl.add( turn(this.g1), 'start+=2');
-    tl.add( turn(this.g2), 'start+=2');
-    tl.add( turn(this.g3), 'start+=2');
-    tl.add( turn(this.g4), 'start+=2');
+    tl.add( turn(this.g1), 'start+=0');
+    tl.add( turn(this.g2), 'start+=0');
+    tl.add( turn(this.g3), 'start+=0');
+    tl.add( turn(this.g4), 'start+=0');
+
+    // resize rectangle map
     tl.fromTo(this.crect, 0.5, {
       scaleX: 1,
       scaleY: 1,
@@ -114,7 +117,8 @@ class Page extends React.Component {
       y: 0,
       transformOrigin: '50% 50%',
       ease: Sine.easeInOut
-    }, 'start+=2');
+    }, 'start+=0');
+
     tl.fromTo(this.shapes, 0.5, {
       scale: 1,
       x: 0,
@@ -126,48 +130,48 @@ class Page extends React.Component {
       opacity: 0.25,
       transformOrigin: '50% 50%',
       ease: Sine.easeInOut
-    }, 'start+=2');
+    }, 'start+=0');
     if (window.matchMedia("(max-width: 600px)").matches) {
       tl.to(this.heroarea, 0.5, {
         x: -30,
         ease: Sine.easeInOut
-      }, 'start+=2');
+      }, 'start+=0');
     }
     tl.to(this.hero, 0.5, {
       x: -125,
       y: 70,
       ease: Sine.easeInOut
-    }, 'start+=2');
+    }, 'start+=0');
     tl.to(this.text, 0.5, {
       top: '30vh',
       x: 0,
       ease: Sine.easeInOut
-    }, 'start+=2');
+    }, 'start+=0');
     tl.to(this.button, 0.5, {
       x: -112,
       ease: Sine.easeIn
-    }, 'start+=2');
+    }, 'start+=0');
     tl.to(this.button.childNodes[0], 0.25, {
       opacity: 0,
       display: 'none',
       ease: Sine.easeIn
-    }, 'start+=2');
+    }, 'start+=0');
     tl.to(this.button.childNodes[1], 0.25, {
       display: 'block',
       opacity: 1,
       ease: Sine.easeOut
-    }, 'start+=2.25');
+    }, 'start+=0.25');
     tl.to(this.staggerP, 0.1, {
       opacity: 1,
-    }, 'start+=2.5');
+    }, 'start+=0.5');
     tl.staggerFromTo(lines, 3, {
       opacity: 0
     }, {
       opacity: 1,
       ease: Sine.easeOut
-    }, 0.06, 'start+=2.5');
+    }, 0.06, 'start+=0.5');
 
-    tl.timeScale(1.7);
+    tl.timeScale(0.7);
 
     //helper for turning the rect
     function turn(group) {

@@ -117,8 +117,8 @@ const config = {
   resolve: {
     extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
     alias: {
-      // 'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl/dist/mapbox-gl.js'),
-      'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl'),
+      'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl/dist/mapbox-gl.js'),
+      // 'mapbox-gl': path.resolve(__dirname, 'node_modules/mapbox-gl'),
       'styles': path.resolve(__dirname, 'src', 'styles'),
     },
     modules: [

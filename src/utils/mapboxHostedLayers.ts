@@ -47,6 +47,7 @@ export const mapboxHostedLayers = {
       layerOptions: {
         'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
+      minzoom: 14,
     },
 
     brisbaneParcelsFill: {
@@ -61,6 +62,7 @@ export const mapboxHostedLayers = {
       layerOptions: {
         'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
+      minzoom: 14,
     },
 
     brisbaneParcelsHover: {
@@ -76,6 +78,7 @@ export const mapboxHostedLayers = {
         filter:['==', 'name', ''],
         'source-layer': 'mapbox_graphcool_brisbane-ax7zqf',
       }
+      minzoom: 14,
     },
 
     brisbaneParcelsClicked: {
@@ -100,10 +103,41 @@ export const mapboxHostedLayers = {
         type: 'vector',
         url: 'mapbox://peitalin.0s8uxvtf'
       },
-      paint: { 'line-opacity': 0.0, 'line-color': '#F8BD7F', 'line-width': 3, 'line-blur': 2 },
+      paint: { 'line-opacity': 0.3, 'line-color': '#F99575', 'line-width': 4 },
       layout: {},
       // layerOptions NOT layoutOptions
       layerOptions: {
+        'source-layer': 'brisbane_suburbs-9nr08i'
+      }
+    },
+
+    brisbaneSuburbsFill: {
+      id: 'brisbane-suburbs-fill',
+      type: 'fill',
+      sourceId: {
+        type: 'vector',
+        url: 'mapbox://peitalin.0s8uxvtf'
+      },
+      paint: { 'fill-opacity': 0.1, 'fill-color': '#F99575' },
+      layout: {},
+      // layerOptions NOT layoutOptions
+      layerOptions: {
+        'source-layer': 'brisbane_suburbs-9nr08i'
+      }
+    },
+
+    brisbaneSuburbsHover: {
+      id: 'brisbane-suburbs-hover',
+      type: 'fill',
+      sourceId: {
+        type: 'vector',
+        url: 'mapbox://peitalin.0s8uxvtf'
+      },
+      paint: { 'fill-opacity': 0.2, 'fill-color': '#F99575' },
+      layout: {},
+      // layerOptions NOT layoutOptions
+      layerOptions: {
+        filter:['==', 'name', ''],
         'source-layer': 'brisbane_suburbs-9nr08i'
       }
     },
