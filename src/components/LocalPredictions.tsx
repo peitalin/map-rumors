@@ -15,7 +15,8 @@ import {
   userGQL, geoData, LngLat
 } from '../typings/interfaceDefinitions'
 
-import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+// import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import * as mapboxgl from 'mapbox-gl'
 
 import { SpinnerRectangle } from './Spinners'
 import Carousel from './Carousel'

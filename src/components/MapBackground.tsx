@@ -12,7 +12,8 @@ import * as debounce from 'lodash/debounce'
 import * as Immutable from 'immutable'
 
 // Mapboxgl
-import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import * as mapboxgl from 'mapbox-gl'
+// import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { MapMouseEvent, MapEvent, EventData } from 'mapbox-gl/dist/mapbox-gl'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { Layer, Feature, Source, GeoJSONLayer, Popup } from 'react-mapbox-gl'
@@ -194,6 +195,22 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     // requires redux-thunk to dispatch 2 actions at the same time
     let lngLat: mapboxgl.LngLat = event.lngLat
     this.props.updateLngLat(lngLat)
+    let zoom = map.getZoom()
+    console.info(zoom)
+
+    // if zoom > 15 -> click suburb
+    // then reveal screen with 2 tabs: bet agents, best predictors in area
+    // ranking screen
+
+    if (zoom > 14) {
+      let features = map.queryRenderedFeatures(
+        event.point,
+        { layer: [mapboxHostedLayers.brisbaneSuburbsFill.id] }
+      )
+      console.info(features)
+    }
+
+    // if zoom < 15 -> click parcels
 
     let features = map.queryRenderedFeatures(
       event.point,
@@ -239,17 +256,34 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
 
 
   private onMouseMove = (map: mapboxgl.Map, event: MapMouseEvent): void => {
-    //// hover highlight // destructure list to get first feature
-    let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxHostedLayers.brisbaneParcelsFill.id] })
-    if (feature) {
-      let hoverFilterOptions = [
-        'all',
-        ["==", "LOT", feature.properties.LOT],
-        ["==", "PLAN", feature.properties.PLAN],
-      ]
-      map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, hoverFilterOptions)
-    } else {
-      map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, ["==", "LOT", ""])
+    if (map.getZoom() > 15) {
+      //// hover parcels
+      //// hover highlight // destructure list to get first feature
+      let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxHostedLayers.brisbaneParcelsFill.id] })
+      if (feature) {
+        let hoverFilterOptions = [
+          'all',
+          ["==", "LOT", feature.properties.LOT],
+          ["==", "PLAN", feature.properties.PLAN],
+        ]
+        map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, hoverFilterOptions)
+      } else {
+        map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, ["==", "LOT", ""])
+      }
+    }
+
+    if (map.getZoom() <= 15) {
+      //// hover suburbs
+      let [feature] = map.queryRenderedFeatures(event.point, { layers: [mapboxHostedLayers.brisbaneSuburbsFill.id] })
+      if (feature) {
+        let hoverFilterOptions = [
+          "all",
+          ["==", "LOC_PID", feature.properties.LOC_PID],
+        ]
+        map.setFilter(mapboxHostedLayers.brisbaneSuburbsHover.id, hoverFilterOptions)
+      } else {
+        map.setFilter(mapboxHostedLayers.brisbaneSuburbsHover.id, ["==", "LOC_PID", ""])
+      }
     }
   }
 
@@ -296,15 +330,26 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     //   map.addControl(new mapboxgl.NavigationControl())
     // }
 
+    // set tile visiblity zoom ranges
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneParcels.id, 15, 22)
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneParcelsFill.id, 15, 22)
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneParcelsHover.id, 15, 22)
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneParcelsClicked.id, 15, 22)
+    map.setLayerZoomRange(mapboxlayers.radiusBorders, 15, 22)
+    map.setLayerZoomRange(mapboxlayers.radiusBordersWide, 15, 22)
+
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneSuburbs.id, 11, 18)
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneSuburbsFill.id, 11, 15)
+    map.setLayerZoomRange(mapboxHostedLayers.brisbaneSuburbsHover.id, 11, 15)
+
     map.on("mouseout", () => {
       // Reset the parcel-fills-hover layer's filter when the mouse leaves the map
       map.setFilter(mapboxHostedLayers.brisbaneParcelsHover.id, ["==", "LOT", ""])
     })
-
-    // map.setStyle({
-    //   ...map.getStyle(),
-    //   transition: { duration: 500, delay: 0 }
-    // })
+    map.setStyle({
+      ...map.getStyle(),
+      transition: { duration: 500, delay: 0 }
+    })
     map.addLayer(mapboxHostedLayers.threeDBuildings)
     this.setState({ map })
     // preferably, pass map as a prop to GeoSuggest component
@@ -348,7 +393,10 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           <Layer {...mapboxHostedLayers.brisbaneParcelsFill}/>
           <Layer {...mapboxHostedLayers.brisbaneParcelsHover}/>
           <Layer {...mapboxHostedLayers.brisbaneParcelsClicked}/>
+
           <Layer {...mapboxHostedLayers.brisbaneSuburbs}/>
+          <Layer {...mapboxHostedLayers.brisbaneSuburbsFill}/>
+          <Layer {...mapboxHostedLayers.brisbaneSuburbsHover}/>
           <Layer {...mapboxHostedLayers.traffic}/>
 
           <LayerFilter id={ mapboxlayers.radiusBorders }
@@ -496,7 +544,7 @@ let LayerFilter = ({ id, paint, filter }) => {
 
 ///// MAPBOX PARCEL LAYER //////////
 // Each parcel layer used on mapbox
-const mapboxlayers = {
+export const mapboxlayers = {
   radiusBorders: 'radius-borders',
   radiusBordersWide: 'radius-borders-wide',
   myPredictionsBorders: 'my-predictions-borders',
@@ -504,7 +552,7 @@ const mapboxlayers = {
   allPredictionsBorders: 'all-predictions-borders',
   allPredictionsFill: 'all-predictions-fill',
 }
-const mapboxlayerColors = {
+export const mapboxlayerColors = {
   // radiusBorders: '#c8c3f9',
   // radiusBordersWide: '#ccaaee',
   radiusBorders: '#B8B3E9',

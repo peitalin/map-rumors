@@ -6010,7 +6010,7 @@ span.ant-breadcrumb-link a:hover {
 
 .local__predictions__spacer {
   height: 175px;
-  background-color: #fce2c8;
+  background-color: #fdefe0;
   -webkit-box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
   box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
@@ -10059,7 +10059,7 @@ textarea.ant-input-number {
 .prediction__listings__carousel {
   position: absolute;
   top: 0px;
-  background-color: #fce2c8;
+  background-color: #fdefe0;
   -webkit-box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
   box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.65);
