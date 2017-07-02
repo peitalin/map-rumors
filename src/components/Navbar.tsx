@@ -144,7 +144,7 @@ export class Navbar extends React.Component<StateProps & DispatchProps & ReactPr
           <Link className="menu-item" to='/map'>Map</Link>
           <Link className="menu-item" to='/map/parallax/localpredictions'>Local Predictions</Link>
           <Link className="menu-item" to='/map/parallax/mypredictionlistings'>My Predictions</Link>
-          <Link className="menu-item" to='/map/parallax/profile'>My Profile</Link>
+
           <Link className="menu-item" to='/SarahDrasner'>SarahDrasner</Link>
           <Link className="menu-item" to='/SarahMarker'>SarahMarker</Link>
           <br/>

@@ -92,8 +92,9 @@ interface MapBackgroundState {
   map: mapboxgl.Map
 }
 
-
-
+const MapboxGL = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
+});
 
 
 export class MapBackground extends React.Component<StateProps & DispatchProps & ReactProps, MapBackgroundState> {
@@ -198,33 +199,35 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     let zoom = map.getZoom()
     console.info(zoom)
 
-    // if zoom > 15 -> click suburb
+    // if zoom < 15 -> click parcels
+    if (map.getZoom() >= 15) {
+      let features = map.queryRenderedFeatures(
+        event.point,
+        { layer: [mapboxHostedLayers.brisbaneParcelsFill.id] }
+      ).filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
+
+      if (!features.length) {
+        this.setState({ showHouseCard: false })
+        return
+      } else {
+        console.info('features: ', features)
+        this.handleClickedParcel(features, map)
+        // add to visited parcels + show parcel stats
+      }
+    }
+
+    // if (map.getZoom() >= 15) {
     // then reveal screen with 2 tabs: bet agents, best predictors in area
     // ranking screen
-
-    if (zoom > 14) {
+    if (map.getZoom() < 15) {
       let features = map.queryRenderedFeatures(
         event.point,
         { layer: [mapboxHostedLayers.brisbaneSuburbsFill.id] }
       )
       console.info(features)
+			location.replace('/#/map/parallax/localpredictions/topplayers')
     }
 
-    // if zoom < 15 -> click parcels
-
-    let features = map.queryRenderedFeatures(
-      event.point,
-      { layer: [mapboxHostedLayers.brisbaneParcelsFill.id] }
-    ).filter(f => f.properties.hasOwnProperty('LOT') && f.properties.hasOwnProperty('PLAN'))
-
-    if (!features.length) {
-      this.setState({ showHouseCard: false })
-      return
-    } else {
-      console.info('features: ', features)
-      this.handleClickedParcel(features, map)
-      // add to visited parcels + show parcel stats
-    }
   }
 
   private handleClickedParcel = (features: mapboxFeature[], map: mapboxgl): void => {
@@ -370,8 +373,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     return (
       <div id="mapbox__container" className="Mapbox__MapBackground">
 
-        <ReactMapboxGl style={this.props.mapboxStyle}
-          accessToken="pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
+        <MapboxGL style={this.props.mapboxStyle}
           pitch={50} bearing={0}
           zoom={this.props.mapboxZoom}
           movingMethod="easeTo"
@@ -382,6 +384,8 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
           onDrag={ this.state.isMobile ? undefined : throttle(this.onDrag, 64)}
           onDragEnd={ this.state.isMobile ? this.onDragEnd : undefined}
           onClick={this.onClick}
+          trackResize={true}
+          attributionControl={false} // mapbox logo in corner
           containerStyle={{
             position: "absolute",
             top: 0,
@@ -505,7 +509,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
             paint={{ 'fill-color': mapboxlayerColors.allPredictionsFill, 'fill-opacity': 0.2 }}
           />
 
-        </ReactMapboxGl>
+        </MapboxGL>
 
 
         <HouseCard id='housecard1'

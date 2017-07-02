@@ -29,7 +29,7 @@ import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
 let message: { success: Function, error: Function, warning: Function, info: Function }
 
-const LOCALPREDICTIONS_ROUTE = "/map/parallax/localpredictions"
+const LOCALPREDICTIONS_ROUTE = "/map/parallax/localpredictions/houses"
 
 
 

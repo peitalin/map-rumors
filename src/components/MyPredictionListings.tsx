@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+// import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+import * as mapboxgl from 'mapbox-gl'
 
 import {
   iHouse, userGQL, geoData, iPrediction, iGeojson

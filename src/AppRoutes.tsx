@@ -39,6 +39,7 @@ const PredictionStats = asyncComponent({ loader: () => System.import('./componen
 // const DraggableGrid = asyncComponent({ loader: () => System.import('./components/DraggableGrid.tsx') })
 const CardExpander = asyncComponent({ loader: () => System.import('./components/CardExpander.tsx') })
 const Parallax = asyncComponent({ loader: () => System.import('./components/Parallax.tsx') })
+const TopPlayers = asyncComponent({ loader: () => System.import('./components/TopPlayers.tsx') })
 
 const Profile = asyncComponent({ loader: () => System.import('./components/Profile.tsx') })
 const SarahDrasner = asyncComponent({ loader: () => System.import('./components/SarahDrasner.tsx') })
@@ -81,12 +82,12 @@ export default class AppRoutes extends React.Component {
           <Route path="/map/parallax" component={ Parallax } />
 
           <Route path="/map/parallax/localpredictions" component={ LocalPredictions } />
-          <Route path="/map/parallax/localpredictions/:houseId" component={ PredictionStats } />
+          <Route path="/map/parallax/localpredictions/houses/:houseId" component={ PredictionStats } />
+          <Route path="/map/parallax/localpredictions/topplayers" component={ TopPlayers } />
 
           <Route path="/map/parallax/mypredictionlistings" component={ MyPredictionListings } />
           <Route path="/map/parallax/mypredictionlistings/:houseId" component={ PredictionStats } />
 
-          <Route path="/map/parallax/profile" component={ Profile } />
           <Route path="/SarahDrasner" component={ SarahDrasner } />
           <Route path="/SarahMarker" component={ SarahMarker } />
           <Route path="/test" component={ CardExpander } />
