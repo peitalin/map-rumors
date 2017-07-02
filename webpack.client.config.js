@@ -132,9 +132,11 @@ const config = {
   externals: isProduction ? {
     "react": "React",
     "react-dom": "ReactDOM",
+    MAPBOXGL: 'mapboxgl',
   }: {
     "react": "React",
     "react-dom": "ReactDOM",
+    MAPBOXGL: 'mapboxgl',
     // "auth0-lock": "Auth0Lock",
     // "mapbox-gl": "mapboxgl",
     // // must keep mapboxgl external if not using alias.
