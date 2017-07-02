@@ -145,6 +145,9 @@ a:hover {
 .mapboxgl-ctrl.mapboxgl-ctrl-group {
   border-radius: 0px;
 }
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+  display: none;
+}
 
 .ReactFlipCard {
   position: absolute;
