@@ -10170,6 +10170,21 @@ textarea.ant-input-number {
   background-color: #270b20;
   top: 300px;
   opacity: 0;
+}.top-players {
+  position: absolute;
+  top: 100vh;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #eee;
+  padding: 10%;
+}
+
+.top-players__title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }.marker-dialog,
 .marker-touch {
   width: 315px;
