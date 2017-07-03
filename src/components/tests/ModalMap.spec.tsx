@@ -20,7 +20,6 @@ test('<ModalMap/> component should contain 1 <Button> to toggle Modal', () => {
   expect(el.find(Button).length).toEqual(1)
 })
 
-
 test('<ModalMap/> -> <Button> -> <span> should contain text: "Open Modal Map".', () => {
   const el = shallow( <ModalMap {...MockProps} /> )
   expect(el.find(Button).first().childAt(0).text()).toEqual('Open Modal Map')
@@ -33,7 +32,6 @@ test('<ModalMap/> should contain div: "#modalmap" when visible state is true', (
   el.setProps({ showModal: true })
   expect(el.find('#modalmap').length).toEqual(1)
 })
-
 
 
 test('<ModalMap/> component should contain 2 <InputNumber> elements for lat and lng', () => {
