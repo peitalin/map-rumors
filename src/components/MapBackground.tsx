@@ -12,7 +12,7 @@ import * as debounce from 'lodash/debounce'
 import * as Immutable from 'immutable'
 
 // Mapboxgl
-import * as mapboxgl from 'mapbox-gl'
+// import * as mapboxgl from 'mapbox-gl'
 // import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl'
 import { MapMouseEvent, MapEvent, EventData } from 'mapbox-gl/dist/mapbox-gl'
 import ReactMapboxGl from 'react-mapbox-gl'
@@ -95,6 +95,7 @@ interface MapBackgroundState {
 const MapboxGL = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoicGVpdGFsaW4iLCJhIjoiY2l0bTd0dDV4MDBzdTJ4bjBoN2J1M3JzZSJ9.yLzwgv_vC7yBFn5t-BYdcw"
 });
+
 
 
 export class MapBackground extends React.Component<StateProps & DispatchProps & ReactProps, MapBackgroundState> {
@@ -225,7 +226,7 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
         { layer: [mapboxHostedLayers.brisbaneSuburbsFill.id] }
       )
       console.info(features)
-			location.replace('/#/map/parallax/localpredictions/topplayers')
+      location.replace('/#/map/parallax/localpredictions/topplayers')
     }
 
   }
