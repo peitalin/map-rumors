@@ -5,7 +5,8 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "babel:watch": "babel --presets es2015 src/server.js --watch --out-file src/server-compiled.js",
     "nodemon": "nodemon src/server-compiled.js",
     "build": "yarn build:clean; yarn build:client; yarn build:server",
