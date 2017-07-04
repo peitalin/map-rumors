@@ -8,9 +8,7 @@ import { mount, shallow } from 'enzyme'
 import { HouseCard } from '../HouseCard'
 import Flipcard from '../FlipCard'
 
-import * as Card from 'antd/lib/card'
-import 'antd/lib/card/style/css'
-
+import Card from '../Card'
 
 
 const MockProps = {

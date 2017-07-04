@@ -9,12 +9,6 @@ import Title from './Title'
 import Row from './Row'
 import Col from './Col'
 
-import * as Card from 'antd/lib/card'
-import 'antd/lib/card/style/css'
-
-import * as InputNumber from 'antd/lib/input-number'
-import 'antd/lib/input-number/style/css'
-
 import { iHouse, iGeojson } from '../typings/interfaceDefinitions'
 import AddPrediction from './AddPrediction'
 
@@ -127,7 +121,7 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
       } = this.props.data.Geojson.properties
       let unitStreetNumber = (unitNumber != "None") ? `${unitNumber}/${streetNumber}` : `${streetNumber}`
       return (
-        <div>
+        <div className="house-stats">
           <div className="house-stats-heading" onClick={this.props.flipCard}>
 
             <Row gutter={0}>

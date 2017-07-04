@@ -104,7 +104,7 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
           !!this.props.data
           ? <div>
               <p>-------------</p>
-              <p> <h2>PREDICTION STATS</h2> </p>
+              <h2>PREDICTION STATS</h2>
               <p> { this.props.data.allPredictions[0].geojson.properties.address }</p>
               <p> { this.props.data.allPredictions[0].user.emailAddress }</p>
               <p> { this.props.data.allPredictions[0].prediction }</p>

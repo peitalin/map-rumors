@@ -3,26 +3,15 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
-// import Evolutions from './Evolutions'
 import Title from './Title'
 import AddPrediction from './AddPrediction'
 import { iPrediction } from '../typings/interfaceDefinitions'
-// import { RadarGraph } from './Radar'
 
 import { Link, Redirect } from 'react-router-dom'
-
 
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import CardExpander from './CardExpander'
 
-import * as Card from 'antd/lib/card'
-import 'antd/lib/card/style/css'
-
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
-
-import * as Icon from 'antd/lib/icon'
-import 'antd/lib/icon/style/css'
 
 
 interface PredictionStatsProps {

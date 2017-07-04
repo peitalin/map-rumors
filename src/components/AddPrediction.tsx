@@ -6,11 +6,9 @@ import { connect } from 'react-redux'
 import { ReduxState, ReduxStateUser } from '../reducer'
 import { Actions as A } from '../reduxActions'
 
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
+import 'styles/AddPrediction.scss'
 
-import * as InputNumber from 'antd/lib/input-number'
-import 'antd/lib/input-number/style/css'
+import InputNumber from './InputNumber'
 
 import { iPrediction, iGeojson, userGQL,
   mutationResponsePrediction as mutationResponse
@@ -115,23 +113,30 @@ export class AddPrediction extends React.Component<StateProps & DispatchProps & 
     this.props.isUpdatingMyPredictions(false)
   }
 
+  handleInputChange = (event: number) => {
+    this.setState({ prediction: event })
+  }
 
   render() {
     if (!this.props.userGQL) {
       return <div>Login to make a prediction.</div>
     }
-
-    let maxPredictionLimitReached = (this.props.userGQL.predictions.length >= 100)
-      ? true : false
-
+    let maxPredictionLimitReached = (this.props.userGQL.predictions.length >= 100) ? true : false
     return (
-      <div>
-        <InputNumber size="large" min={50000} max={99000000} step={1000}
-          defaultValue={this.state.prediction} onChange={(event) => this.setState({ prediction: event })} />
+      <div className='add__prediction'>
+        <InputNumber min={20000} max={400300200100} step={1000}
+          predictionValue={this.state.prediction} onChange={this.handleInputChange} />
         {(
-            maxPredictionLimitReached
-              ? <div style={{ color: '#C55' }}>Max Prediction Limit Reached: {this.props.userGQL.predictions.length}/9</div>
-              : <Button type='primary' onClick={this.makePrediction}>Place Prediction</Button>
+          maxPredictionLimitReached
+          ? <div className='max-prediction-limit-reached'>
+              Max Prediction Limit Reached:
+              <span>{ this.props.userGQL.predictions.length }/100</span>
+            </div>
+          : <button className='add-prediction-button'
+              onClick={() => this.makePrediction(this.state.prediction)}
+            >
+              Place Prediction
+            </button>
         )}
       </div>
     )

@@ -4,4 +4,16 @@
   display: flex;
   flex-direction: column;
   align-content: center;
+  padding: 0px 0px;
+  font-size: 0.8rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
 }

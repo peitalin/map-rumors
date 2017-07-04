@@ -6,8 +6,8 @@ import { mount, shallow } from 'enzyme'
 import { Navbar } from '../Navbar'
 import { withRouter } from 'react-router-dom'
 
-import * as Breadcrumb from 'antd/lib/breadcrumb'
-import 'antd/lib/breadcrumb/style/css'
+// import * as Breadcrumb from 'antd/lib/breadcrumb'
+// import 'antd/lib/breadcrumb/style/css'
 
 
 const MockLocation = {
@@ -30,16 +30,16 @@ test('Navbar.getRouterPath() static method splits router paths', () => {
 })
 
 
-test('<Navbar /> component should contain 1 <Breadcrumb/>', () => {
-  beforeEach(() => {
-    Navbar.contextTypes = {
-      location: jest.fn()
-    }
-    const el = shallow( <Navbar/> )
-    expect(el.find(<Breadcrumb/>).length).toEqual(1)
-  })
-})
-
+// test('<Navbar /> component should contain 1 <Breadcrumb/>', () => {
+//   beforeEach(() => {
+//     Navbar.contextTypes = {
+//       location: jest.fn()
+//     }
+//     const el = shallow( <Navbar/> )
+//     expect(el.find(<Breadcrumb/>).length).toEqual(1)
+//   })
+// })
+//
 
 
 

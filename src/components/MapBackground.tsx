@@ -31,11 +31,6 @@ import ModalMap from './ModalMap'
 import HouseCard from './HouseCard'
 import GeoSearchBar from './GeoSearchBar'
 
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
-
-import * as Card from 'antd/lib/card'
-import 'antd/lib/card/style/css'
 
 // Typings and Data validation
 import { geoData, iGeojson, gplacesDestination, userGQL, mapboxFeature, iPrediction } from '../typings/interfaceDefinitions'
@@ -124,6 +119,22 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
 
   componentWillMount() {
     this.setState({ isMobile: /Mobi|Tablet|iPad|iPhone/.test(navigator.userAgent) })
+
+    // test if chrome browser
+    window.addEventListener('scroll', () => {
+      // remove annoying swipe-down refresh on chrome mobile browser
+      if (window.scrollY == 0) {
+        let body: HTMLElement = window.querySelector('body')
+        let mapboxglCanvas: HTMLElement = document.querySelector('canvas.mapboxgl-canvas')
+        body.setAttribute('touch-action', 'none')
+        mapboxglCanvas.setAttribute('touch-action', 'none')
+      } else {
+        let body: HTMLElement = window.querySelector('body')
+        let mapboxglCanvas: HTMLElement = document.querySelector('canvas.mapboxgl-canvas')
+        body.setAttribute('touch-action', 'initial')
+        mapboxglCanvas.setAttribute('touch-action', 'initial')
+      }
+    })
     // this.worker = new MyWorker()
     // this.worker2 = new MyWorker()
   }

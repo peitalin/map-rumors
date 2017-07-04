@@ -8,8 +8,7 @@ import { Actions as A } from '../reduxActions'
 import * as Modal from 'antd/lib/modal'
 import 'antd/lib/modal/style/css'
 
-import * as InputNumber from 'antd/lib/input-number'
-import 'antd/lib/input-number/style/css'
+import InputNumber from './InputNumber'
 
 
 interface ModalMapProps {
@@ -93,7 +92,7 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
   render() {
     return (
       <div>
-        <button id='red-login-button' onClick={this.showModal}>
+        <button id='red-login-button' onClick={this.showModal} style={{ width: '150px' }}>
           Open Modal Map
         </button>
 

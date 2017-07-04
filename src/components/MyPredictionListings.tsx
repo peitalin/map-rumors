@@ -19,8 +19,7 @@ import {
 import 'styles/MyPredictionListings.scss'
 
 import Title from './Title'
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
+
 import * as Popconfirm from 'antd/lib/popconfirm'
 import 'antd/lib/popconfirm/style/css'
 import * as message from 'antd/lib/message'

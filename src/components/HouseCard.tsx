@@ -4,18 +4,16 @@ import { connect } from 'react-redux'
 import { ReduxState, ReduxStateMapbox, ReduxStateUser } from '../reducer'
 import { Actions as A } from '../reduxActions'
 
+import { apolloClient } from '../index'
+import gql from 'graphql-tag'
 import { geoData, iGeojson } from '../typings/interfaceDefinitions'
-
-import * as Card from 'antd/lib/card'
-import 'antd/lib/card/style/css'
 
 import Flipcard from './FlipCard'
 import HouseStats from './HouseStats'
 import ModalMap from './ModalMap'
+import Card from './Card'
 import 'styles/HouseCard.scss'
 
-import { apolloClient } from '../index'
-import gql from 'graphql-tag'
 
 
 interface DispatchProps {

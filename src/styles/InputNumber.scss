@@ -1,0 +1,128 @@
+
+.ant-input-number-lg {
+  padding: 0;
+}
+.ant-input-number-lg {
+  padding: 6px 6px;
+  height: 40px;
+}
+.ant-input-number {
+  position: relative;
+  padding: 6px 6px;
+  width: 100%;
+  cursor: text;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  background-color: #fff;
+  background-image: none;
+  transition: all .2s;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  height: 40px;
+  display: inline-block;
+  border: 1px solid #d9d9d9;
+  border-radius: 0px;
+  width: 100%;
+}
+.ant-input-number-input-wrap {
+  height: 100%;
+  display: flex;
+}
+
+.ant-input-number-handler-wrap {
+  border-left: 1px solid #d9d9d9;
+  width: 22px;
+  height: 100%;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  border-radius: 0 4px 4px 0;
+  transition: opacity 0.24s linear 0.1s;
+  z-index: 2;
+}
+
+.ant-input-number-handler-up {
+  cursor: pointer;
+}
+.ant-input-number-handler {
+  text-align: center;
+  line-height: 0;
+  height: 50%;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.43);
+  position: relative;
+  transition: all 0.1s linear;
+  display: block;
+  width: 100%;
+  font-weight: bold;
+}
+
+
+
+
+:root .ant-input-number-handler-up-inner, :root .ant-input-number-handler-down-inner {
+  font-size: 12px;
+}
+:root .ant-input-number-handler-up-inner, :root .ant-input-number-handler-down-inner {
+  -webkit-filter: none;
+  filter: none;
+}
+.ant-input-number-handler-up-inner {
+  top: 50%;
+  margin-top: -6px;
+}
+.ant-input-number-handler-up-inner, .ant-input-number-handler-down-inner {
+  font-style: normal;
+  vertical-align: baseline;
+  text-align: center;
+  text-transform: none;
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  transition: all 0.1s linear;
+  display: inline-block;
+  font-size: 12px;
+  font-size: 7px \9;
+  -webkit-transform: scale(0.58333333) rotate(0deg);
+  -ms-transform: scale(0.58333333) rotate(0deg);
+  transform: scale(0.58333333) rotate(0deg);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
+  zoom: 1;
+  right: 4px;
+  color: rgba(0, 0, 0, 0.43);
+}
+
+.ant-input-number-handler-down {
+  border-top: 1px solid #d9d9d9;
+  top: -1px;
+  cursor: pointer;
+}
+
+.ant-input-number-lg input {
+    height: auto;
+}
+.ant-input-number-input {
+    width: 100%;
+    text-align: left;
+    outline: 0;
+    -moz-appearance: textfield;
+    height: 26px;
+    transition: all 0.3s linear;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    border: 0;
+    border-radius: 0px;
+    padding: 0 8px;
+}

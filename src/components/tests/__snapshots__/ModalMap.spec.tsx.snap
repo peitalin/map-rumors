@@ -5,6 +5,11 @@ exports[`<ModalMap/> component matches snapshot 1`] = `
   <button
     id="red-login-button"
     onClick={[Function]}
+    style={
+      Object {
+        "width": "150px",
+      }
+    }
   >
     Open Modal Map
   </button>

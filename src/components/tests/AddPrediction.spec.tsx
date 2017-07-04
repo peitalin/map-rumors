@@ -5,7 +5,6 @@ import { mount, shallow } from 'enzyme'
 
 import { AddPrediction } from '../AddPrediction'
 
-import * as Button from 'antd/lib/button'
 
 
 
@@ -31,9 +30,9 @@ const MockProps = {
 }
 
 
-test('<AddPrediction /> contains 1 <Button/> when less than 100 predictions in user profile', () => {
-  const el = shallow( <AddPrediction {...MockProps} /> )
-  expect(el.find(Button).length).toEqual(1)
+test('<AddPrediction /> contains 1 <button/> when less than 100 predictions in user profile', () => {
+  const el = mount( <AddPrediction {...MockProps} /> )
+  expect(el.find('button').length).toEqual(1)
 })
 
 

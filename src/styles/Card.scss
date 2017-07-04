@@ -1,0 +1,31 @@
+
+
+.ant-card-bordered {
+  border: 1px solid #e9e9e9;
+}
+.ant-card {
+  background: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all .3s;
+}
+
+.ant-card-head {
+    height: 48px;
+    line-height: 48px;
+    background: #fff;
+    border-bottom: 1px solid #e9e9e9;
+    padding: 0 24px;
+}
+.ant-card-head-title {
+    font-size: 14px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+}
