@@ -124,12 +124,12 @@ export class MapBackground extends React.Component<StateProps & DispatchProps & 
     window.addEventListener('scroll', () => {
       // remove annoying swipe-down refresh on chrome mobile browser
       if (window.scrollY == 0) {
-        let body: HTMLElement = window.querySelector('body')
+        let body: HTMLElement = document.querySelector('body')
         let mapboxglCanvas: HTMLElement = document.querySelector('canvas.mapboxgl-canvas')
         body.setAttribute('touch-action', 'none')
         mapboxglCanvas.setAttribute('touch-action', 'none')
       } else {
-        let body: HTMLElement = window.querySelector('body')
+        let body: HTMLElement = document.querySelector('body')
         let mapboxglCanvas: HTMLElement = document.querySelector('canvas.mapboxgl-canvas')
         body.setAttribute('touch-action', 'initial')
         mapboxglCanvas.setAttribute('touch-action', 'initial')
