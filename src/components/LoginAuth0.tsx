@@ -12,8 +12,10 @@ import Auth0Lock from 'auth0-lock'
 
 import Title from './Title'
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
-import * as classnames from 'classnames'
 import 'styles/LoginAuth0.scss'
+
+// import * as classNames from 'classnames'
+var classNames = require('classnames');
 
 
 interface LoginAuth0Props {
@@ -113,7 +115,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
       return (
         <div className='login-auth0'>
           <button id='red-login-button' onClick={this.handleLogout}>
-            <div className={classnames({
+            <div className={classNames({
               'login-auth0-loader': true,
               'login-logged-in': !this.props.data.loading,
               'login-loading': this.props.data.loading,
