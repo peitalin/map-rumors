@@ -38,10 +38,10 @@ test('<ModalMap/> component should contain 2 <InputNumber> elements for lat and 
 })
 
 
-test('<ModalMap/> component matches snapshot', () => {
-  const elR = renderer.create( <ModalMap {...MockProps} /> )
-  expect(elR.toJSON()).toMatchSnapshot()
-})
+// test('<ModalMap/> component matches snapshot', () => {
+//   const elR = renderer.create( <ModalMap {...MockProps} /> )
+//   expect(elR.toJSON()).toMatchSnapshot()
+// })
 
 
 
