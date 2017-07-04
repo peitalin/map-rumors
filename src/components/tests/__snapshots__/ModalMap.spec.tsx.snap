@@ -3,7 +3,7 @@
 exports[`<ModalMap/> component matches snapshot 1`] = `
 <div>
   <button
-    id="antd-login"
+    id="red-login-button"
     onClick={[Function]}
   >
     Open Modal Map

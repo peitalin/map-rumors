@@ -7,8 +7,8 @@ import { mount, shallow } from 'enzyme'
 import Title from '../Title'
 import { SpinnerRectangle } from '../Spinners'
 import { HouseStats } from '../HouseStats'
+import Row from '../Row'
 
-import * as Row from 'antd/lib/row'
 
 const MockProps = {
   data: {

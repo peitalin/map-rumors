@@ -6,18 +6,12 @@ import { graphql } from 'react-apollo'
 
 import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import Title from './Title'
+import Row from './Row'
+import Col from './Col'
 
 import * as Card from 'antd/lib/card'
 import 'antd/lib/card/style/css'
 
-import * as Row from 'antd/lib/row'
-import 'antd/lib/row/style/css'
-
-import * as Col from 'antd/lib/col'
-import 'antd/lib/col/style/css'
-
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
 import * as InputNumber from 'antd/lib/input-number'
 import 'antd/lib/input-number/style/css'
 
@@ -106,12 +100,12 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
                 </div>
               </Col>
             </Row>
-            <Row gutter={16}> <Col span={12}>Bedrooms:</Col> </Row>
-            <Row gutter={16}> <Col span={12}>Bathrooms:</Col> </Row>
-            <Row gutter={16}> <Col span={12}>Carspaces:</Col> </Row>
-            <Row gutter={16}> <Col span={12}>Area:</Col> </Row>
-            <Row gutter={16}> <Col span={12}>Lot No:</Col> </Row>
-            <Row gutter={16}> <Col span={12}>Plan No:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Bedrooms:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Bathrooms:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Carspaces:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Area:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Lot No:</Col> </Row>
+            <Row gutter={16}> <Col span={2}>Plan No:</Col> </Row>
           </div>
         </div>
       )
@@ -137,44 +131,44 @@ export class HouseStats extends React.Component<HouseStatsProps, HouseStatsState
           <div className="house-stats-heading" onClick={this.props.flipCard}>
 
             <Row gutter={0}>
-              <Col span={24}>
+              <Col span={1}>
                 <h2>{ unitStreetNumber }</h2>
               </Col>
             </Row>
             <Row gutter={0}>
-              <Col span={24}>
+              <Col span={1}>
                 <h2>{ streetName }</h2>
               </Col>
             </Row>
             <Row gutter={0}>
-              <Col span={24}>
+              <Col span={1}>
                 <div className="house-stats-heading"><h2>{ streetType }</h2></div>
               </Col>
             </Row>
 
             <Row gutter={16}>
-              <Col span={12}>Bedrooms:</Col>
-              <Col span={12}>{ 2 }</Col>
+              <Col span={2}>Bedrooms:</Col>
+              <Col span={2}>{ 2 }</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Bathrooms:</Col>
-              <Col span={12}>{ 3 }</Col>
+              <Col span={2}>Bathrooms:</Col>
+              <Col span={2}>{ 3 }</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Carspaces:</Col>
-              <Col span={12}>{ 2 }</Col>
+              <Col span={2}>Carspaces:</Col>
+              <Col span={2}>{ 2 }</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Area:</Col>
-              <Col span={12}>{( `${this.props.houseProps.CA_AREA_SQM} sqm` )}</Col>
+              <Col span={2}>Area:</Col>
+              <Col span={2}>{( `${this.props.houseProps.CA_AREA_SQM} sqm` )}</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Lot:</Col>
-              <Col span={12}>{ lot }</Col>
+              <Col span={2}>Lot:</Col>
+              <Col span={2}>{ lot }</Col>
             </Row>
             <Row gutter={16}>
-              <Col span={12}>Plan:</Col>
-              <Col span={12}>{ plan }</Col>
+              <Col span={2}>Plan:</Col>
+              <Col span={2}>{ plan }</Col>
             </Row>
           </div>
 

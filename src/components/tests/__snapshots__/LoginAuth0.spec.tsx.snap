@@ -5,7 +5,7 @@ exports[`<LoginAuth0 /> component should render snapshot 1`] = `
   className="login-auth0"
 >
   <button
-    id="antd-login"
+    id="red-login-button"
     onClick={[Function]}
   >
     <div

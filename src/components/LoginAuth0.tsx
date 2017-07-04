@@ -112,7 +112,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
     if (this.props.data.loading || this.props.data.user) {
       return (
         <div className='login-auth0'>
-          <button id='antd-login' onClick={this.handleLogout}>
+          <button id='red-login-button' onClick={this.handleLogout}>
             <div className={classNames({
               'login-auth0-loader': true,
               'login-logged-in': !this.props.data.loading,
@@ -133,7 +133,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
     } else {
       return (
       <div className='login-auth0'>
-        <button id='antd-login' onClick={this.handleLogin}>
+        <button id='red-login-button' onClick={this.handleLogin}>
           <div className='login-auth0-loader'>Login</div>
           <Redirect to="/"/>
         </button>

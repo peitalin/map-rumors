@@ -93,7 +93,7 @@ export class ModalMap extends React.Component<ModalMapProps, any> {
   render() {
     return (
       <div>
-        <button id='antd-login' onClick={this.showModal}>
+        <button id='red-login-button' onClick={this.showModal}>
           Open Modal Map
         </button>
 
