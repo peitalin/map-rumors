@@ -132,13 +132,14 @@ const config = {
   externals: isProduction ? {
     "react": "React",
     "react-dom": "ReactDOM",
-    MAPBOXGL: 'mapboxgl',
+    "mapbox-gl": "mapboxgl",
+    // MAPBOXGL: "mapboxgl",
   }: {
     "react": "React",
     "react-dom": "ReactDOM",
-    MAPBOXGL: 'mapboxgl',
     // "auth0-lock": "Auth0Lock",
-    // "mapbox-gl": "mapboxgl",
+    "mapbox-gl": "mapboxgl",
+    // MAPBOXGL: "mapboxgl",
     // // must keep mapboxgl external if not using alias.
     // "react-mapbox-gl": 'ReactMapboxGl'
   },
@@ -147,7 +148,7 @@ const config = {
   // in order to ignore built-in modules like path, fs, etc.
 
   module: {
-    noParse: /(mapbox-gl)\.js$/,
+    noParse: /(mapbox-gl)\.js$/, // ignore mapbox-gl, dont' bundle
     rules: [
       {
         test: function (fpath) {

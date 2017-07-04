@@ -15,9 +15,6 @@ import { SpinnerRectangle, SpinnerDots } from './Spinners'
 import * as classNames from 'classnames'
 import 'styles/LoginAuth0.scss'
 
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
-
 
 interface LoginAuth0Props {
   clientId: string
@@ -115,7 +112,7 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
     if (this.props.data.loading || this.props.data.user) {
       return (
         <div className='login-auth0'>
-          <Button id='antd-login' onClick={this.handleLogout}>
+          <button id='antd-login' onClick={this.handleLogout}>
             <div className={classNames({
               'login-auth0-loader': true,
               'login-logged-in': !this.props.data.loading,
@@ -130,16 +127,16 @@ export class LoginAuth0 extends React.Component<LoginAuth0Props, LoginAuth0State
                 <Redirect to={this.props.redirectOnAuth}/>
               )}
             </div>
-          </Button>
+          </button>
         </div>
       )
     } else {
       return (
       <div className='login-auth0'>
-        <Button id='antd-login' onClick={this.handleLogin}>
+        <button id='antd-login' onClick={this.handleLogin}>
           <div className='login-auth0-loader'>Login</div>
           <Redirect to="/"/>
-        </Button>
+        </button>
       </div>
       )
     }

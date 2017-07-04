@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginAuth0 /> component should render snapshot 1`] = `
+<div
+  className="login-auth0"
+>
+  <button
+    id="antd-login"
+    onClick={[Function]}
+  >
+    <div
+      className="login-auth0-loader login-logged-in"
+    />
+  </button>
+</div>
+`;

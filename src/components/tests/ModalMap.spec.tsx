@@ -5,8 +5,6 @@ import * as renderer from 'react-test-renderer'
 import { mount, shallow } from 'enzyme'
 
 import { ModalMap } from '../ModalMap'
-import * as Button from 'antd/lib/button'
-import 'antd/lib/button/style/css'
 
 
 let MockProps = {
@@ -15,14 +13,14 @@ let MockProps = {
 }
 
 
-test('<ModalMap/> component should contain 1 <Button> to toggle Modal', () => {
+test('<ModalMap/> component should contain 1 <button> to toggle Modal', () => {
   const el = shallow( <ModalMap {...MockProps} /> )
-  expect(el.find(Button).length).toEqual(1)
+  expect(el.find('button').length).toEqual(1)
 })
 
-test('<ModalMap/> -> <Button> -> <span> should contain text: "Open Modal Map".', () => {
+test('<ModalMap/> -> <button> -> <span> should contain text: "Open Modal Map".', () => {
   const el = shallow( <ModalMap {...MockProps} /> )
-  expect(el.find(Button).first().childAt(0).text()).toEqual('Open Modal Map')
+  expect(el.find('button').first().childAt(0).text()).toEqual('Open Modal Map')
 })
 
 

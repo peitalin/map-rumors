@@ -3,14 +3,10 @@
 exports[`<ModalMap/> component matches snapshot 1`] = `
 <div>
   <button
-    className="ant-btn ant-btn-primary"
+    id="antd-login"
     onClick={[Function]}
-    onMouseUp={[Function]}
-    type="button"
   >
-    <span>
-      Open Modal Map
-    </span>
+    Open Modal Map
   </button>
 </div>
 `;

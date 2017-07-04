@@ -28,9 +28,13 @@
 button#antd-login {
   height: 32px;
   border-radius: 0px;
-  background-color: #96616B;
+  border: 1px solid transparent;
   border-color: lighten(#96616B, 10%);
+  background-color: #96616B;
   color: #eee;
+	padding: 0px 15px;
+  touch-action: manipulation;
+  cursor: pointer;
 }
 
 button#antd-login:hover {
