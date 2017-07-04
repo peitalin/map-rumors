@@ -24,7 +24,7 @@ import * as Popconfirm from 'antd/lib/popconfirm'
 import 'antd/lib/popconfirm/style/css'
 import * as message from 'antd/lib/message'
 import 'antd/lib/message/style/css'
-let message: { success: Function, error: Function, warning: Function, info: Function }
+// let message: { success: Function, error: Function, warning: Function, info: Function }
 
 import Carousel from './Carousel'
 import CarouselTile from './CarouselTile'
