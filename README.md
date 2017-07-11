@@ -1,7 +1,11 @@
 
-## Building an Market for Unlisted Properties, EMPIRE
+## Building an Market for Unlisted Properties,
+EMPIRE is an Expanded Market for Predictions In Real-Estate.
+
 Crowd-sourced property valuations by local experts.
+
 Make predictions. Earn information and rewards.
+
 Bid and Buy anything you see on the map.
 
 1. [What is EMPIRE?](#what-is-empire)
@@ -14,8 +18,7 @@ Bid and Buy anything you see on the map.
 
 <a name="what-is-empire"></a>
 ### What is EMPIRE?
-EMPIRE is a new map-based marketplace for real-estate, an Expanded Market for Predictions In Real-Estate.
-EMPIRE is a map-based prediction market, options market, and auctions platform.
+EMPIRE is a map-based prediction market, options marketplace, and auctions platform for real-estate.
 There are 3 phases to creating a new way to transact real-estate:
 The first phase is to create an accurate prediction market for real-estate sales in order to establish trust.
 
