@@ -22,13 +22,15 @@ Users can make predictions about when the property will list, and how much it wi
 They earn rewards, info and reputation when they are correct and the property sells.
 Incentivizing local experts to provide accurate predictions about houses they see every day.
 
-Crowd-sourced property valuations by local experts. Make predictions. Earn information and rewards.
+- Crowd-sourced property valuations by local experts.
+- Make predictions.
+- Earn information and rewards.
 
 Once there is a liquid prediction market, we can begin to think about lettings people place indicators of interest.
 
 <a name="phase-2"></a>
 #### Phase 2: Listings Lead Generator and Options Platform
-- Users will can place indications of interest (bids) on any property on the map.
+- Users can place indications of interest (bids) on any property on the map.
 - When +3 bids land on a property, we will send an alert to local agents and homeowners who can take the next steps to make the deal happen.
 - The platform builds bidding demand first,then entices sellers to list on the platform.
 - Dealmakers, and independent agents can write options on unlisted homes. E.g:
@@ -105,27 +107,19 @@ Traditionally, people have bought and sold homes in the following way:
 3. Buyers makes an offer
 4. Agents negotiate trade.
 
-The problems that arise are:
-1. Buyers access a limited stock, 2% of the potential real-estate market
-2. Sellers are afraid of listing properties since they are unsure whether they can sell (particularly seller investors)
-3. Price discovery is slow as a result, leading to momentum in property markets, property bubbles and delayed price discovery.
-
 
 Real-estate markets are unique compared to other markets.
-
 In commodity markets: price does the matching. Identity of the traders irrelevant.
 In matching markets such as dating sites, price does not do the matching. Identity of the traders 100% relevant.
 
-Most marketplaces fall somewhere on the spectrum.
-Dating being the purest of matching markets, while markets for commodities like iron, corn, sugar, on the other extreme.
-Marketplaces for labour (like freelancer fall somewhere in the middle since both the price matters, but also the identity of the product (labour) matters.
-
-What’s interesting about property markets is that it exists outside of this spectrum.
+What's interesting about property markets is that it exists outside of this spectrum.
 1. Sellers view the market as a commodity market,
 2. But buyers (excluding investors) view the market as as a matching market.
 
-For these reasons:
-- Sellers are averse to listing first, since they are unsure about demand, listing without sale lets buyers infer that the price is too high.
-- Buyers select from a limited pool of desirable homes, settling for second best.
-- Agents have trouble finding listings since they are unsure about supply (of listings) and demand (what buyers actually want).
-
+The problems that arise from these incentives are:
+1. Sellers are afraid of listing properties since they are unsure whether they can sell (particularly seller investors)
+  - Long time-on-market without sale is dangerous, since buyers then infer that the price is too high.
+2. Buyers select from a limited pool of desirable homes, settling for second best.
+  - the ideal home may only be a few weeks away from listing.
+3. Agents have trouble finding listings since they are unsure about supply (of listings) and demand (what buyers actually want).
+4. Price discovery is slow as a result, leading to momentum in property markets, property bubbles and delayed price discovery.
