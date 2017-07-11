@@ -372,8 +372,8 @@ class Page extends React.Component {
           <title>change-shape2</title>
           <g style={{clipPath:'url(#clip-path)'}}>
             {/* <image ref={c => this.map = c} width="1000" height="667" transform="scale(1.05)" xlinkHref="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/persp-map.gif"/> */}
-            <image ref={c => this.map = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-dark2-min.png"/>
-            <image className="gray" ref={c => this.gray = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/polymono-landingpage/brisbane-dark-min.png"/>
+            <image ref={c => this.map = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/empire.haus/brisbane-dark2-min.png"/>
+            <image className="gray" ref={c => this.gray = c} width="1000" height="667" xlinkHref="https://s3-ap-southeast-2.amazonaws.com/empire.haus/brisbane-dark-min.png"/>
           </g>
           <rect id="square" x="417.9" y="268.9" width="217" height="217" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
           <polygon id="triangle" points="525.6 271.6 650 487 401.2 487 525.6 271.6" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="9"/>
