@@ -67,12 +67,15 @@ There are 3 large problems with how real-estate transactions are done currently.
 
 3) Property investing is a giant rat-race game that rewards those who accumulate and hoard properties, with little opportunity for those without properties to start. Part of the problem is the general expectation that prices will increase indefinately, and also the fact that houses are illiquid and do not quickly reflect low demand in properties prices.
 
+4) Relocating is painful because you run the risk of either having sold a home and being stuck in a rental unit for prolonged periods of time, or being stuck with two homes paying two mortgages. The matching problem is twice as severe as other matching markets like dating, since you need to find two sets of matches.
+
 
 #### Vision
 The overarching vision and core values are in direct opposition of these problems. We believe in:
 1. __Universal access__: Liberate real-estate data. Data contributed by people should be universally free and accessible for the people.
 2.  __Radical Transparency__: Property valuation and appraisals should be radically transparent and open for everyone.
 3. __All Inclusive__: Access to the real-estate market should be universal. Everyone should be able to get into the market whether they are rich or poor. It starts by providing a fair and equal footing for understanding property valuations.
+4. __Mobility and Freedom__: Owning a home shouldn't encumber one's life choices. Property should be frictionless to sell and people should be able relocate to another city in the world at a moment's notice for career, love or family.
 
 #### Outcomes
 <a name="outcomes"></a>
@@ -84,6 +87,7 @@ This provides a mechanism to price unlisted properties so that:
 3. Sellers can discover the value of their properties without exposing themselves by officially listing their property.
 4. Expand the size and liquidity of the real-estate market 10-fold.
 5. Turning Real-Estate into a product that 99% of people use, crowdsourcing localized property information.
+6. ALlowing people the freedom and mobility to move anywhere in the world at a moment's notice.
 
 
 #### What does this mean for Agents?
