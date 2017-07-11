@@ -4,12 +4,12 @@ node_js:
 env:
 cache:
   yarn: true
-deploy:
-  provider: elasticbeanstalk
-  access_key_id: AKIAIJ4TFB2OEA6DES4Q
-  secret_access_key:
-    secure: 8TNDc+drHiEXI/yEQcypLlG/irUcEocPUuzSxvvkN8BdjcA/8F9THisLWyO+v3VYZssUVz9vSHC9KWDYS5ITdvw3uMWg72gi9SrLzpA9kiTt2ykbjVWBLbAQWtVnlwfun/y0skw8CAjXsehCwyYzNWvFtjQAbJfn0siUhPJCJqrwoTjuHYR3focpCyQ+JUijxB64ln8VFqObIpFILnCBXrpe/4uVxD9eB/tai5TcfsFqoJgvR6/B2tbTgrfVtTIYaMdEA/h9ykYeSjS2aj5ZsumM2Dc8stZcGwRB44w60lMmMFY6JJwCmRlHbBrN7PxhaluoMRKuC+297OjByDcZ/rn0tqR1olbZ4X7TppEvhH81oYNYouJDKOxauKsgRLI3Jbfx1WoRAbQ0d9VtkQWM8o7e1OptWxbuxXrPPDR8I/iILX5IkPTyWAKhsMPsgpGQpnmGNp5YSUVCieb4WVjz89himjUtWant239K1CwAp9pXxNSuvm4sZ0zYZQEqcWBTtKrQSlxlRVQ41GkilD7cyaPwZaeWilFqiZK9wrhwoIlotfUypFI6lmHoh/7ywuepxacT9sPgGi/jhaMmSRHE6QNPX578d11M/rzfeBGfOYmxhs/BUThp4iYe86QjwKRUdvJ8yYUCL3+oNdYrGA+EnzhD8TcXn28clZN1ZRE395A=
-  region: southeast-2
-  app: Empire
-  env: Empire-staging
-  bucket_name: elasticbeanstalk-ap-southeast-2-658247633614
+# deploy:
+#   provider: elasticbeanstalk
+#   access_key_id: AKIAIJ4TFB2OEA6DES4Q
+#   secret_access_key:
+#     secure: 8TNDc+drHiEXI/yEQcypLlG/irUcEocPUuzSxvvkN8BdjcA/8F9THisLWyO+v3VYZssUVz9vSHC9KWDYS5ITdvw3uMWg72gi9SrLzpA9kiTt2ykbjVWBLbAQWtVnlwfun/y0skw8CAjXsehCwyYzNWvFtjQAbJfn0siUhPJCJqrwoTjuHYR3focpCyQ+JUijxB64ln8VFqObIpFILnCBXrpe/4uVxD9eB/tai5TcfsFqoJgvR6/B2tbTgrfVtTIYaMdEA/h9ykYeSjS2aj5ZsumM2Dc8stZcGwRB44w60lMmMFY6JJwCmRlHbBrN7PxhaluoMRKuC+297OjByDcZ/rn0tqR1olbZ4X7TppEvhH81oYNYouJDKOxauKsgRLI3Jbfx1WoRAbQ0d9VtkQWM8o7e1OptWxbuxXrPPDR8I/iILX5IkPTyWAKhsMPsgpGQpnmGNp5YSUVCieb4WVjz89himjUtWant239K1CwAp9pXxNSuvm4sZ0zYZQEqcWBTtKrQSlxlRVQ41GkilD7cyaPwZaeWilFqiZK9wrhwoIlotfUypFI6lmHoh/7ywuepxacT9sPgGi/jhaMmSRHE6QNPX578d11M/rzfeBGfOYmxhs/BUThp4iYe86QjwKRUdvJ8yYUCL3+oNdYrGA+EnzhD8TcXn28clZN1ZRE395A=
+#   region: southeast-2
+#   app: Empire
+#   env: Empire-staging
+#   bucket_name: elasticbeanstalk-ap-southeast-2-658247633614
