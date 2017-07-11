@@ -1,27 +1,27 @@
 
 ## Building an Market for Unlisted Properties, EMPIRE
 
-1. [What is EMPIRE?](#What-is-EMPIRE?)
-- [Phase 1: Prediction Market](#Phase-1:-Prediction-Market)
-- [Phase 2: Listings Lead Generator & Options Platform](#Phase-2:-Listings-Lead-Generator-and-Options-Platform)
-- [Phase 3: Decentralized Auction Platform](#Phase-3:-Decentralized-Auction-Platform)
+1. [What is EMPIRE?](#what-is-empire)
+- [Phase 1: Prediction Market](#phase-1)
+- [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
+- [Phase 3: Decentralized Auction Platform](#phase-3)
 
 
 
-### What is EMPIRE?
+### What is EMPIRE? <a name="what-is-empire"></a>
 EMPIRE is a new map-based marketplace for real-estate.
 EMIPRE stands for an Expanded Market for Predictions In Real-Estate.
 There are 3 phases to creating a new way to transact real-estate:
 Trust in pricing is paramount. The first phase is to create an accurate prediction market for real-estate sales.
 
-#### Phase 1: Prediction Market
+#### Phase 1: Prediction Market <a name="phase-1"></a>
 Users can make predictions about when the property will list, and how much it will sell for on the map.
 They earn rewards, info and reputation when they are correct and the property sells.
 Incentivizing local experts to provide accurate predictions about houses they see every day.
 
 Once there is a liquid prediction market, we can begin to think about lettings people place indicators of interest.
 
-#### Phase 2: Listings Lead Generator and Options Platform
+#### Phase 2: Listings Lead Generator and Options Platform<a name="phase-2"></a>
 - Users will can place indications of interest (bids) on any property on the map.
 - When +3 bids land on a property, we will send an alert to local agents and homeowners who can take the next steps to make the deal happen.
 - The platform builds bidding demand first,then entices sellers to list on the platform.
@@ -32,7 +32,7 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 - Once Phase 2 is complete, we can incentivize predictions by giving correct predictions payoffs from proceeds of sale.
 
-#### Phase 3: Decentralized Auction Platform
+#### Phase 3: Decentralized Auction Platform<a name="phase-3"></a>
 - Decentralized market for real-estate transactions, mediated by arbiters.
 - Sellers can signup to the platform and view bidding demand for comparable homes
 - They can choose to independetly list their house on the platform for private sale or auction sale based on whether they see bids land on their home.
