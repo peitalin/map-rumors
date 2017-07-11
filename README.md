@@ -1,10 +1,6 @@
 
 ## Building an Market for Unlisted Properties
 EMPIRE is an Expanded Market for Predictions In Real-Estate.
-<p>Crowd-sourced property valuations by local experts.</p>
-<p>Make predictions. Earn information and rewards.</p>
-<p>Bid and Buy anything you see on the map.</p>
-
 
 1. [What is EMPIRE?](#what-is-empire)
   - [Phase 1: Prediction Market](#phase-1)
@@ -25,6 +21,8 @@ The first phase is to create an accurate prediction market for real-estate sales
 Users can make predictions about when the property will list, and how much it will sell for on the map.
 They earn rewards, info and reputation when they are correct and the property sells.
 Incentivizing local experts to provide accurate predictions about houses they see every day.
+
+Crowd-sourced property valuations by local experts. Make predictions. Earn information and rewards.
 
 Once there is a liquid prediction market, we can begin to think about lettings people place indicators of interest.
 
