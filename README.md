@@ -5,9 +5,9 @@ Make predictions. Earn information and rewards.
 Bid and Buy anything you see on the map.
 
 1. [What is EMPIRE?](#what-is-empire)
-  1. [Phase 1: Prediction Market](#phase-1)
-  2. [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
-  3. [Phase 3: Decentralized Auction Platform](#phase-3)
+  - [Phase 1: Prediction Market](#phase-1)
+  - [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
+  - [Phase 3: Decentralized Auction Platform](#phase-3)
 2. [Vision and Outcomes](#vision-outcomes)
 3. [Buyer-driven Real-estate Marketplace](#why-buyer-first)
 
@@ -72,7 +72,6 @@ The overarching vision and core values are in direct opposition of these problem
 1. __Universal access__: Liberate real-estate data. Data contributed by people should be universally free and accessible for the people.
 2.  __Radical Transparency__: Property valuation and appraisals should be radically transparent and open for everyone.
 3. __All Inclusive__: Access to the real-estate market should be universal. Everyone should be able to get into the market whether they are rich or poor. It starts by providing a fair and equal footing for understanding property valuations.
-
 
 #### Outcomes
 <a name="outcomes"></a>
