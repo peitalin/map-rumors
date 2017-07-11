@@ -1,13 +1,18 @@
 
-## Designing a Market for Unlisted Properties
+## Building an Market for Unlisted Properties, EMPIRE
 
-### What is Real Estate Rumors?
-Real Estate Rumors is a new map-based marketplace for real-estate.
-There are 3 phases:
+
+### What is EMPIRE?
+EMPIRE is a new map-based marketplace for real-estate.
+EMIPRE stands for an Expanded Market for Predictions In Real-Estate.
+There are 3 phases to creating a new way to transact real-estate:
+Trust in pricing is paramount. The first phase is to create an accurate prediction market for real-estate sales.
 
 #### Phase 1: Prediction Market
 Users can make predictions about when the property will list, and how much it will sell for on the map.
 They earn rewards, info and reputation when they are correct and the property sells.
+Incentivizing local experts to provide accurate predictions about houses they see every day.
+
 Once there is a liquid prediction market, we can begin to think about lettings people place indicators of interest.
 
 #### Phase 2: Listings Lead Generator, and Options Platform
