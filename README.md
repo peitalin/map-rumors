@@ -1,5 +1,8 @@
 
 ## Building an Market for Unlisted Properties, EMPIRE
+Crowd-sourced property valuations by local experts.
+Make predictions. Earn information and rewards.
+Bid and Buy anything you see on the map.
 
 1. [What is EMPIRE?](#what-is-empire)
   1. [Phase 1: Prediction Market](#phase-1)
@@ -51,7 +54,28 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 
 <a name="vision-outcomes"></a>
-### Vision and Outcomes
+### Motivation, Vision and Outcomes
+
+<a name="motivation"></a>
+#### Motivation
+There are 3 large problems with how real-estate transactions are done currently.
+
+1) Existing real-estate platform platforms leverage their market power (via network effects) to extract monopoly rents from the very people who contribute to their success. Agents spend 70% of their looking for listings, in order to __pay theses platforms to list their listings__. These costs are passed onto home-buyers.
+
+2) Agents play a game of playing the buyer against the seller in order to speed up the deal and maximize dealflow, distorting local property prices when an agent finds a naive buyer who pays a premium. Agents also do not disclose who is interested and may lie about competing offers. The entire pricing and negotiation process is not transparent nor open to scrutiny.
+
+3) Property investing is a giant rat-race game that rewards those who accumulate and hoard properties, with little opportunity for those without properties to start. Part of the problem is the general expectation that prices will increase indefinately, and also the fact that houses are illiquid and do not quickly reflect low demand in properties prices.
+
+
+#### Vision
+The overarching vision and core values are in direct opposition of these problems. We believe in:
+1. __Universal access__: Liberate real-estate data. Data contributed by people should be universally free and accessible for the people.
+2.  __Radical Transparency__: Property valuation and appraisals should be radically transparent and open for everyone.
+3. __All Inclusive__: Access to the real-estate market should be universal. Everyone should be able to get into the market whether they are rich or poor. It starts by providing a fair and equal footing for understanding property valuations.
+
+
+#### Outcomes
+<a name="outcomes"></a>
 This provides a mechanism to price unlisted properties so that:
 1. Buyers can discover and express interest (bid) on any property on the map.
 2. Agents can easily find new, exclusive listings based on latent bidding demand.
@@ -61,17 +85,8 @@ This provides a mechanism to price unlisted properties so that:
 4. Expand the size and liquidity of the real-estate market 10-fold.
 5. Turning Real-Estate into a product that 99% of people use, crowdsourcing localized property information.
 
-The overarching vision and core values are:
-1. __Universal access__: Liberate real-estate data. Data contributed by people should be universally free and accessible for the people.
-2.  __Radical Transparency__: Property valuation and appraisals should be radically transparent and open for everyone.
-3. __All Inclusive__: Access to the real-estate market should be universal. Everyone should be able to get into the market whether they are rich or poor. It starts by providing a fair and equal footing for understanding property valuations.
 
-
-
-<a name="vision-outcomes"></a>
-### What does this mean for Agents?
-Existing real-estate platform platforms leverage their market power (via network effects) to extract monopoly rents from the very people who contribute to their success. Agents spend 70% of their looking for listings, in order to __pay theses platforms to list their listings__. This platform aims to change that.
-
+#### What does this mean for Agents?
 Real-estate agents charge fees for essentially three services:
 1. Reducing search frictions by finding and matching buyers to listings
 2. Mediate information asymmetries between buyer and seller (due-diligence)
