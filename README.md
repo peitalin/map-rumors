@@ -1,6 +1,6 @@
 
 ## Building an Market for Unlisted Properties
-EMPIRE is an Expanded Market for Predictions In Real-Estate.
+EMPIRE: an Expanded Market for Predictions In Real-Estate.
 
 1. [What is EMPIRE?](#what-is-empire)
   - [Phase 1: Prediction Market](#phase-1)
