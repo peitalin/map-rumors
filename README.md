@@ -79,8 +79,8 @@ The overarching vision and core values are in direct opposition of these problem
 This provides a mechanism to price unlisted properties so that:
 1. Buyers can discover and express interest (bid) on any property on the map.
 2. Agents can easily find new, exclusive listings based on latent bidding demand.
-:  - Reduce agent's time spent searching for listings (search costs).
-:  - Reduce costs/effort of property valuation for sellers.
+  - Reduce agent's time spent searching for listings (search costs).
+  - Reduce costs/effort of property valuation for sellers.
 3. Sellers can discover the value of their properties without exposing themselves by officially listing their property.
 4. Expand the size and liquidity of the real-estate market 10-fold.
 5. Turning Real-Estate into a product that 99% of people use, crowdsourcing localized property information.
