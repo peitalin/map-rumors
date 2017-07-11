@@ -27,7 +27,8 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 - They can choose to independetly list their house on the platform for private sale or auction sale based on whether they see bids land on their home.
 
 
-[Map-based prediction market, options market, and auctions platform][https://s3-ap-southeast-2.amazonaws.com/empire.haus/empirehaus-light.png]
+![Map-based prediction market, options market, and auctions platform](https://s3-ap-southeast-2.amazonaws.com/empire.haus/empirehaus-light.png "EMPIRE App")
+
 
 
 This provides a mechanism to price unlisted properties so that:
@@ -91,19 +92,4 @@ For these reasons:
 - Sellers are averse to listing first, since they are unsure about demand, listing without sale lets buyers infer that the price is too high.
 - Buyers select from a limited pool of desirable homes, settling for second best.
 - Agents have trouble finding listings since they are unsure about supply (of listings) and demand (what buyers actually want).
-
-
-The reason these problems occur is because the seller has to list first, buyers choose, then seller accepts.
-The solution is to make buyers choose first, sellers accept second.
-
-Cons:
-- More work for buyers up-front, since there are more properties to potentially choose from.
-- More problems for buyers, since its not 100% guaranteed a house will list.
-
-Pros:
-- More choice for buyers, more freedom.
-- Less risky for sellers, since they don’t have to list until a buyer is interested.
-- More opportunities for agents.
-- More price discovery.
-
 
