@@ -27,7 +27,7 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 - They can choose to independetly list their house on the platform for private sale or auction sale based on whether they see bids land on their home.
 
 
-![Map-based prediction market, options market, and auctions platform](https://s3-ap-southeast-2.amazonaws.com/empire.haus/empirehaus-light.png "EMPIRE App")
+![Map-based prediction market, options market, and auctions platform](https://s3-ap-southeast-2.amazonaws.com/empire.haus/empirehaus-light.png)
 
 
 
