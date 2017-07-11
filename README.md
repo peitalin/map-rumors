@@ -62,7 +62,7 @@ There are 3 large problems with how real-estate transactions are done currently.
 
 1) Existing real-estate platform platforms leverage their market power (via network effects) to extract monopoly rents from the very people who contribute to their success. Agents spend 70% of their looking for listings, in order to __pay these platforms to list their listings__. These costs are passed onto home-buyers.
 
-2) Agents play a game of playing the buyer against the seller in order to speed up the deal and maximize dealflow, distorting local property prices when an agent finds a naive buyer who pays a premium. Agents also do not disclose who is interested and may lie about competing offers. The entire pricing and negotiation process is not transparent nor open to scrutiny.
+2) Agents play a game of playing the buyer against the seller in order to speed up the deal and maximize dealflow, distorting property prices. Agents do not disclose who is interested and may lie about competing offers. The entire pricing and negotiation process is not transparent nor open to scrutiny.
 
 3) Property investing is a giant rat-race game that rewards those who accumulate and hoard properties, with little opportunity for those without properties to start. Part of the problem is the general expectation that prices will increase indefinately, and also the fact that houses are illiquid and do not quickly reflect low demand in properties prices.
 
