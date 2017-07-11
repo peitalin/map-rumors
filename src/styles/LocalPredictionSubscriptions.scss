@@ -58,14 +58,13 @@
   background-color: rgba(22,22,22,0.8);
   color: #aaa;
   padding: 2%;
-  transition: background-color 0.2s ease;
-  transition: width 0.2s ease;
+  transition: background-color 0.2s cubic-bezier(.85,-0.2,0,1.7), width 0.2s cubic-bezier(.85,-0.2,0,1.7);
 }
 .subscriptions-inner:hover {
   border: 1px solid #e4bFeF;
   background-color: #D4AFDF;
   color: #222;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s cubic-bezier(.85,-0.2,0,1.7);
 }
 .subscriptions-inner-expand-height {
   height: 100%;

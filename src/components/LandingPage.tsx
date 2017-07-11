@@ -6,8 +6,9 @@ import WorldMap from './WorldMap'
 import FooterLinks from './FooterLinks'
 import DraggableList from './DraggableList'
 import ImgOverlay from './ImgOverlay'
-import Carousel from './Carousel.tsx'
-import CarouselTile from './CarouselTile.tsx'
+import Carousel from './Carousel'
+import CarouselTile from './CarouselTile'
+import Globe from './Globe'
 
 import * as CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import * as gsap from 'gsap'
@@ -68,6 +69,10 @@ export default class LandingPage extends React.Component<any, any> {
             <div className="world-map-background"></div>
             <SarahDrasner language={this.state.language}/>
           </div>
+
+          {/* <div className='world-map-container'> */}
+          {/*   <Globe/> */}
+          {/* </div> */}
 
           { switchLanguageHeader2(this.state.language) }
 

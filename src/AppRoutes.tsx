@@ -46,7 +46,6 @@ const SarahDrasner = asyncComponent({ loader: () => System.import('./components/
 const SarahMarker = asyncComponent({ loader: () => System.import('./components/SarahMarker.tsx') })
 
 
-
 const Login = (): JSX.Element => {
   const clientId: string = 'uzVT8nCGaQwjyXC2QYyGCfsJOCn6Q61c'
   const domain: string = 'peitalin.au.auth0.com'
