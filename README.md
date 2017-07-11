@@ -34,7 +34,8 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 - Once Phase 2 is complete, we can incentivize predictions by giving correct predictions payoffs from proceeds of sale.
 
-#### Phase 3: Decentralized Auction Platform<a name="phase-3"></a>
+<a name="phase-3"></a>
+#### Phase 3: Decentralized Auction Platform
 - Decentralized market for real-estate transactions, mediated by arbiters.
 - Sellers can signup to the platform and view bidding demand for comparable homes
 - They can choose to independetly list their house on the platform for private sale or auction sale based on whether they see bids land on their home.
