@@ -5,6 +5,8 @@
 - [Phase 1: Prediction Market](#phase-1)
 - [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
 - [Phase 3: Decentralized Auction Platform](#phase-3)
+2. [Vision and Outcomes](#vision-outcomes)
+3. [Buyer-driven Real-estate Marketplace](#why-buyer-first)
 
 
 <a name="what-is-empire"></a>
@@ -47,6 +49,9 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 
 
+
+<a name="vision-outcomes"></a>
+### Vision and Outcomes
 This provides a mechanism to price unlisted properties so that:
 1. Buyers can discover and express interest (bid) on any property on the map.
 2. Agents can easily find new, exclusive listings based on latent bidding demand.
@@ -63,6 +68,7 @@ The overarching vision and core values are:
 
 
 
+<a name="vision-outcomes"></a>
 ### What does this mean for Agents?
 Existing real-estate platform platforms leverage their market power (via network effects) to extract monopoly rents from the very people who contribute to their success. Agents spend 70% of their looking for listings, in order to __pay theses platforms to list their listings__. This platform aims to change that.
 
@@ -78,6 +84,7 @@ Agents who develop reputation on the platform can enjoy a steady stream of leads
 
 
 
+<a name="why-buyers-first"></a>
 ### Why does this make sense economically?
 Traditionally, people have bought and sold homes in the following way:
 1. Seller lists
