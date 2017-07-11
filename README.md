@@ -59,7 +59,7 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 <a name="motivation"></a>
 #### Motivation
-There are 3 large problems with how real-estate transactions are done currently.
+There are 4 large problems with how real-estate transactions are done currently.
 
 1) Existing real-estate platform platforms leverage their market power (via network effects) to extract monopoly rents from the very people who contribute to their success. Agents spend 70% of their looking for listings, in order to __pay these platforms to list their listings__. These costs are passed onto home-buyers.
 
