@@ -79,8 +79,8 @@ The overarching vision and core values are in direct opposition of these problem
 This provides a mechanism to price unlisted properties so that:
 1. Buyers can discover and express interest (bid) on any property on the map.
 2. Agents can easily find new, exclusive listings based on latent bidding demand.
-  - Reduce agent's time spent searching for listings (search costs).
-  - Reduce costs/effort of property valuation for sellers.
+:  Reduce agent's time spent searching for listings (search costs).
+:  Reduce costs/effort of property valuation for sellers.
 3. Sellers can discover the value of their properties without exposing themselves by officially listing their property.
 4. Expand the size and liquidity of the real-estate market 10-fold.
 5. Turning Real-Estate into a product that 99% of people use, crowdsourcing localized property information.
@@ -107,7 +107,6 @@ Traditionally, people have bought and sold homes in the following way:
 3. Buyers makes an offer
 4. Agents negotiate trade.
 
-
 Real-estate markets are unique compared to other markets.
 In commodity markets: price does the matching. Identity of the traders irrelevant.
 In matching markets such as dating sites, price does not do the matching. Identity of the traders 100% relevant.
@@ -118,8 +117,8 @@ What's interesting about property markets is that it exists outside of this spec
 
 The problems that arise from these incentives are:
 1. Sellers are afraid of listing properties since they are unsure whether they can sell (particularly seller investors)
-  - Long time-on-market without sale is dangerous, since buyers then infer that the price is too high.
+:  - Long time-on-market without sale is dangerous, since buyers then infer that the price is too high.
 2. Buyers select from a limited pool of desirable homes, settling for second best.
-  - the ideal home may only be a few weeks away from listing.
+:  - the ideal home may only be a few weeks away from listing.
 3. Agents have trouble finding listings since they are unsure about supply (of listings) and demand (what buyers actually want).
 4. Price discovery is slow as a result, leading to momentum in property markets, property bubbles and delayed price discovery.
