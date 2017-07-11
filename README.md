@@ -1,6 +1,12 @@
 
 ## Building an Market for Unlisted Properties, EMPIRE
 
+1. [What is EMPIRE?](#What-is-EMPIRE?)
+- [Phase 1: Prediction Market](#Phase-1:-Prediction-Market)
+- [Phase 2: Listings Lead Generator & Options Platform](#Phase-2:-Listings-Lead-Generator-and-Options-Platform)
+- [Phase 3: Decentralized Auction Platform](#Phase-3:-Decentralized-Auction-Platform)
+
+
 
 ### What is EMPIRE?
 EMPIRE is a new map-based marketplace for real-estate.
@@ -15,7 +21,7 @@ Incentivizing local experts to provide accurate predictions about houses they se
 
 Once there is a liquid prediction market, we can begin to think about lettings people place indicators of interest.
 
-#### Phase 2: Listings Lead Generator, and Options Platform
+#### Phase 2: Listings Lead Generator and Options Platform
 - Users will can place indications of interest (bids) on any property on the map.
 - When +3 bids land on a property, we will send an alert to local agents and homeowners who can take the next steps to make the deal happen.
 - The platform builds bidding demand first,then entices sellers to list on the platform.
@@ -26,10 +32,12 @@ Once there is a liquid prediction market, we can begin to think about lettings p
 
 - Once Phase 2 is complete, we can incentivize predictions by giving correct predictions payoffs from proceeds of sale.
 
-#### Phase 3: Online Auction Platform
-- Decentralized market for real-estate transactions, mediated by arbiters
+#### Phase 3: Decentralized Auction Platform
+- Decentralized market for real-estate transactions, mediated by arbiters.
 - Sellers can signup to the platform and view bidding demand for comparable homes
 - They can choose to independetly list their house on the platform for private sale or auction sale based on whether they see bids land on their home.
+- Bidding information cannot be censored. Freedom to bid and express desire for any home on the map. NIMBY groups may attempt to censor unfavourable bidding information in order to inflate their home values.
+
 
 
 ![Map-based prediction market, options market, and auctions platform](./houses/empirehaus-light.png)
