@@ -2,9 +2,9 @@
 ## Building an Market for Unlisted Properties, EMPIRE
 
 1. [What is EMPIRE?](#what-is-empire)
-- [Phase 1: Prediction Market](#phase-1)
-- [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
-- [Phase 3: Decentralized Auction Platform](#phase-3)
+  1. [Phase 1: Prediction Market](#phase-1)
+  2. [Phase 2: Listings Lead Generator & Options Platform](#phase-2)
+  3. [Phase 3: Decentralized Auction Platform](#phase-3)
 2. [Vision and Outcomes](#vision-outcomes)
 3. [Buyer-driven Real-estate Marketplace](#why-buyer-first)
 
