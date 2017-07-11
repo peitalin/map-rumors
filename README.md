@@ -121,8 +121,8 @@ What's interesting about property markets is that it exists outside of this spec
 
 The problems that arise from these incentives are:
 1. Sellers are afraid of listing properties since they are unsure whether they can sell (particularly seller investors)
-:  - Long time-on-market without sale is dangerous, since buyers then infer that the price is too high.
+  - Long time-on-market without sale is dangerous, since buyers then infer that the price is too high.
 2. Buyers select from a limited pool of desirable homes, settling for second best.
-:  - the ideal home may only be a few weeks away from listing.
+  - the ideal home may only be a few weeks away from listing.
 3. Agents have trouble finding listings since they are unsure about supply (of listings) and demand (what buyers actually want).
 4. Price discovery is slow as a result, leading to momentum in property markets, property bubbles and delayed price discovery.
