@@ -34,9 +34,8 @@ import GeoSearchBar from './GeoSearchBar'
 
 // Typings and Data validation
 import { geoData, iGeojson, gplacesDestination, userGQL, mapboxFeature, iPrediction } from '../typings/interfaceDefinitions'
-import { geojsonValidate } from '../typings/geojson-validate.d'
+// import { geojsonValidate } from '../typings/geojson-validate.d'
 import * as geojsonValidation from 'geojson-validation'
-declare var geojsonValidation: geojsonValidate
 
 import { isParcelNear, L2Norm } from '../utils/worker'
 let MyWorker = require('worker-loader!../utils/worker.ts')

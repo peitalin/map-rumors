@@ -141,12 +141,9 @@ export class Navbar extends React.Component<StateProps & DispatchProps & ReactPr
           </div>
           <br/>
           <Link className="menu-item" to='/'>Home</Link>
-          <Link className="menu-item" to='/map'>Map</Link>
-          <Link className="menu-item" to='/map/parallax/localpredictions'>Local Predictions</Link>
-          <Link className="menu-item" to='/map/parallax/mypredictionlistings'>My Predictions</Link>
+          <Link className="menu-item" to='/map/parallax/localpredictions'>Local Auctions</Link>
+          <Link className="menu-item" to='/map/parallax/mypredictionlistings'>My Auction Predictions</Link>
 
-          <Link className="menu-item" to='/SarahDrasner'>SarahDrasner</Link>
-          <Link className="menu-item" to='/SarahMarker'>SarahMarker</Link>
           <br/>
           <div className="Nav__upvotes">
             Upvotes: <span>{ this.props.upvotes }</span>

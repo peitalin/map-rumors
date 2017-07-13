@@ -303,6 +303,8 @@
 
 .tile__container:hover ~ .tile__container {
   transform: translate3d(25px, 0, 0);
+}.tile__img {
+  border: 3px solid #96616B;
 }::-webkit-scrollbar {
   display: none;
 }
@@ -6793,7 +6795,7 @@ button.add-prediction-button:hover {
   backgroundColor: #fff;
   position: fixed;
   top: 15vh;
-  left: 10px;
+  left: 20px;
 }.house__stats {
   min-width: 150px;
 }
@@ -7333,6 +7335,7 @@ button.add-prediction-button:hover {
   height: 200px;
   width: 300px;
   background-color: #fafafa;
+  overflow: hidden;
   border-radius: 5px;
   opacity: 0.5;
   transition: all 0.4s cubic-bezier(0.85, -0.2, 0, 1.4);

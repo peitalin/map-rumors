@@ -40,6 +40,7 @@ const PredictionStats = asyncComponent({ loader: () => System.import('./componen
 const CardExpander = asyncComponent({ loader: () => System.import('./components/CardExpander.tsx') })
 const Parallax = asyncComponent({ loader: () => System.import('./components/Parallax.tsx') })
 const TopPlayers = asyncComponent({ loader: () => System.import('./components/TopPlayers.tsx') })
+const PredictionStats = asyncComponent({ loader: () => System.import('./components/PredictionStats.tsx') })
 
 const Profile = asyncComponent({ loader: () => System.import('./components/Profile.tsx') })
 const SarahDrasner = asyncComponent({ loader: () => System.import('./components/SarahDrasner.tsx') })

@@ -173,7 +173,7 @@ export class MyPredictionListings extends React.Component<DispatchProps & StateP
             <Price price={p.prediction}/>
           </div>
 
-          <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.id}`} className="router-link">
+          <Link to={`${PREDICTIONLISTINGS_ROUTE}/${p.geojson.id}`} className="router-link">
             { p.geojson.properties.lotPlan }
           </Link>
 

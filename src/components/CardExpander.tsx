@@ -5,6 +5,7 @@ import * as classnames from 'classnames'
 
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { TweenLite, TweenMax } from 'gsap'
+import Price from './Price'
 
 import { iPrediction } from '../typings/interfaceDefinitions'
 
@@ -72,6 +73,7 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
   }
 
   render() {
+    // console.info(this.props.data.allPredictions)
     return (
       <div className={classnames({
         "card__container": true,
@@ -100,17 +102,23 @@ export class CardExpander extends React.Component<StateProps & DispatchProps & R
           "expanded-full": this.state.infoClicked && this.state.imgClicked
           })} style={{
         }}>
+        <hr/><br/>
+        <h2>PREDICTION STATS</h2>
+        <h4> { this.props.data.Geojson.properties.address }</h4>
+        <br/><hr/><br/>
         {(
           !!this.props.data
-          ? <div>
-              <p>-------------</p>
-              <h2>PREDICTION STATS</h2>
-              <p> { this.props.data.allPredictions[0].geojson.properties.address }</p>
-              <p> { this.props.data.allPredictions[0].user.emailAddress }</p>
-              <p> { this.props.data.allPredictions[0].prediction }</p>
-              <p>*****</p>
-            </div>
-          : <div>No Predictions in CardExpander</div>
+            ? this.props.data.Geojson.predictions.map((p, i) => {
+              return (
+                <div key={i}>
+                  <p> { p.user.emailAddress }</p>
+                  <Price price={p.prediction}/>
+                  <p>*****</p>
+                  <br/>
+                </div>
+              )
+            })
+            : <div>No Predictions in CardExpander</div>
          )}
         </div>
       </div>

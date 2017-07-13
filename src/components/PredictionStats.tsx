@@ -5,7 +5,7 @@ import { graphql } from 'react-apollo'
 
 import Title from './Title'
 import AddPrediction from './AddPrediction'
-import { iPrediction } from '../typings/interfaceDefinitions'
+import { iGeoson } from '../typings/interfaceDefinitions'
 
 import { Link, Redirect } from 'react-router-dom'
 
@@ -18,7 +18,7 @@ interface PredictionStatsProps {
   data?: {
     error?: string
     loading?: boolean
-    allPredictions: iPrediction[]
+    Geojson: iGeojson
   }
   match?: {
     params?: {
@@ -40,13 +40,14 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
   }
 
   render() {
+    console.info(this.props.data)
     if (this.props.data.error) {
       return <Title><div>PredictionStats: GraphQL Errored.</div></Title>
     }
     if (this.props.data.loading) {
       return <div style={{ positoin: 'fixed' }}><SpinnerRectangle height='48px' width='6px' style={{ padding: '2rem' }}/></div>
     }
-    if (!!this.props.data.allPredictions.length) {
+    if (this.props.data) {
       return (
         <CardExpander data={this.props.data}/>
       )
@@ -63,17 +64,14 @@ export class PredictionStats extends React.Component<PredictionStatsProps, any> 
 
 export const PredictionStatsQuery = gql`
 query PredictionStatsQuery($id: ID!) {
-  allPredictions(filter: { id: $id }) {
-    prediction
-    user {
-      emailAddress
-    }
-    house {
+  Geojson(id: $id) {
+    properties {
       address
     }
-    geojson {
-      properties {
-        address
+    predictions {
+      prediction
+      user {
+        emailAddress
       }
     }
   }

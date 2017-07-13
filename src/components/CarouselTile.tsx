@@ -1,6 +1,7 @@
 
 import * as React from 'react'
 import * as className from 'classnames'
+import 'styles/CarouselTile.scss'
 
 
 interface ReactProps {

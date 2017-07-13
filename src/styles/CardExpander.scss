@@ -58,6 +58,7 @@ $card-height: 200px;
   height: 200px;
   width: 300px;
   background-color: #fafafa;
+  overflow: hidden;
   border-radius: 5px;
   opacity: 0.5;
   transition: all 0.4s cubic-bezier(.85,-0.2,0,1.4);

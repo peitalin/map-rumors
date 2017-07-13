@@ -57,7 +57,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
 
   private gotoPredictionLocation = (geojson: iGeojson): void => {
     let lngLat: LngLat = new mapboxgl.LngLat( geojson.lngCenter, geojson.latCenter )
-    message.info(`Going to ${geojson.properties.address}`)
+    // message.info(`Going to ${geojson.properties.address}`)
 
     this.props.updateGeoDataLngLat(lngLat)
     this.props.updateLngLat(lngLat)
@@ -80,7 +80,7 @@ export class LocalPredictions extends React.Component<DispatchProps & StateProps
           >
             <div>{ p.user.emailAddress }</div>
             <Price price={p.prediction}/>
-            <Link to={`${LOCALPREDICTIONS_ROUTE}/${p.id}`} className="router-link">
+            <Link to={`${LOCALPREDICTIONS_ROUTE}/${p.geojson.id}`} className="router-link">
               { p.geojson.properties.lotPlan }
             </Link>
             <div>{ p.geojson.properties.address }</div>
