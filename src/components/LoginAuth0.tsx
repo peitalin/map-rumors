@@ -174,6 +174,7 @@ query {
       id
       prediction
       geojson {
+        id
         lngCenter
         latCenter
         properties {
